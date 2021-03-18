@@ -45,6 +45,7 @@
 #include "pm_shared.h"
 #include "hltv.h"
 #include "UserMessages.h"
+#include "client.h"
 
 #include "rope/CRope.h"
 
@@ -60,8 +61,6 @@ extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
 BOOL gInitHUD = TRUE;
 
 extern void CopyToBodyQue(entvars_t* pev);
-extern void respawn(entvars_t *pev, BOOL fCopyCorpse);
-extern Vector VecBModelOrigin(entvars_t *pevBModel );
 extern edict_t *EntSelectSpawnPoint( CBasePlayer *pPlayer );
 
 // the world node graph
@@ -2906,7 +2905,6 @@ BOOL IsSpawnPointValid( CBaseEntity *pPlayer, CBaseEntity *pSpot )
 
 
 DLL_GLOBAL CBaseEntity	*g_pLastSpawn;
-inline int FNullEnt( CBaseEntity *ent ) { return (ent == NULL) || FNullEnt( ent->edict() ); }
 
 /*
 ============
@@ -3434,32 +3432,6 @@ void CBasePlayer::SelectItem(const char *pstr)
 	}
 }
 
-
-void CBasePlayer::SelectLastItem()
-{
-	if (!m_pLastItem)
-	{
-		return;
-	}
-
-	if ( m_pActiveItem && !m_pActiveItem->CanHolster() )
-	{
-		return;
-	}
-
-	ResetAutoaim( );
-
-	// FIX, this needs to queue them up and delay
-	if (m_pActiveItem)
-		m_pActiveItem->Holster( );
-	
-	CBasePlayerItem *pTemp = m_pActiveItem;
-	m_pActiveItem = m_pLastItem;
-	m_pLastItem = pTemp;
-	m_pActiveItem->Deploy( );
-	m_pActiveItem->UpdateItemInfo( );
-}
-
 //==============================================
 // HasWeapons - do I have any weapons at all?
 //==============================================
@@ -3609,23 +3581,6 @@ void CBasePlayer::GiveNamedItem( const char *pszName )
 	DispatchSpawn( pent );
 	DispatchTouch( pent, ENT( pev ) );
 }
-
-
-
-CBaseEntity *FindEntityForward( CBaseEntity *pMe )
-{
-	TraceResult tr;
-
-	UTIL_MakeVectors(pMe->pev->v_angle);
-	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs,pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * 8192,dont_ignore_monsters, pMe->edict(), &tr );
-	if ( tr.flFraction != 1.0 && !FNullEnt( tr.pHit) )
-	{
-		CBaseEntity *pHit = CBaseEntity::Instance( tr.pHit );
-		return pHit;
-	}
-	return NULL;
-}
-
 
 BOOL CBasePlayer :: FlashlightIsOn()
 {
@@ -3864,7 +3819,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 
 	case 103:
 		// What the hell are you doing?
-		pEntity = FindEntityForward( this );
+		pEntity = UTIL_FindEntityForward( this );
 		if ( pEntity )
 		{
 			CBaseMonster *pMonster = pEntity->MyMonsterPointer();
@@ -3895,7 +3850,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 
 	case 106:
 		// Give me the classname and targetname of this entity.
-		pEntity = FindEntityForward( this );
+		pEntity = UTIL_FindEntityForward( this );
 		if ( pEntity )
 		{
 			ALERT ( at_console, "Classname: %s", STRING( pEntity->pev->classname ) );
@@ -3963,7 +3918,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case	203:// remove creature.
-		pEntity = FindEntityForward( this );
+		pEntity = UTIL_FindEntityForward( this );
 		if ( pEntity )
 		{
 			if ( pEntity->pev->takedamage )
@@ -4325,8 +4280,6 @@ void CBasePlayer :: UpdateClientData()
 
 	if (pev->health != m_iClientHealth)
 	{
-		//TODO: clean up this macro
-#define clamp( val, min, max ) ( ((val) > (max)) ? (max) : ( ((val) < (min)) ? (min) : (val) ) )
 		int iHealth = clamp( pev->health, 0, std::numeric_limits<short>::max() );  // make sure that no negative health values are sent
 		if ( pev->health > 0.0f && pev->health <= 1.0f )
 			iHealth = 1;

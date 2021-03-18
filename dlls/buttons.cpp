@@ -184,12 +184,16 @@ void CMultiSource::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 	int i = 0;
 
 	// Find the entity in our list
-	while (i < m_iTotal)
-		if ( m_rgEntities[i++] == pCaller )
+	for (; i < m_iTotal; ++i)
+	{
+		if (m_rgEntities[i] == pCaller)
+		{
 			break;
+		}
+	}
 
 	// if we didn't find it, report error and leave
-	if (i > m_iTotal)
+	if (i >= m_iTotal)
 	{
 		ALERT(at_console, "MultiSrc:Used by non member %s.\n", STRING(pCaller->pev->classname));
 		return;	
@@ -197,7 +201,7 @@ void CMultiSource::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 
 	// CONSIDER: a Use input to the multisource always toggles.  Could check useType for ON/OFF/TOGGLE
 
-	m_rgTriggered[i-1] ^= 1;
+	m_rgTriggered[i] ^= 1;
 
 	// 
 	if ( IsTriggered( pActivator ) )
@@ -906,8 +910,8 @@ public:
 	int		m_lastUsed;
 	int		m_direction;
 	float	m_returnSpeed;
-	vec3_t	m_start;
-	vec3_t	m_end;
+	Vector	m_start;
+	Vector	m_end;
 	int		m_sounds;
 };
 TYPEDESCRIPTION CMomentaryRotButton::m_SaveData[] =

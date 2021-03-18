@@ -31,7 +31,6 @@ This file contains "stubs" of class member implementations so that we can predic
 #include	"skill.h"
 
 // Globals used by game logic
-const Vector g_vecZero = Vector( 0, 0, 0 );
 int gmsgWeapPickup = 0;
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
@@ -269,7 +268,6 @@ int CBasePlayer::Restore( CRestore &restore ) { return 0; }
 void CBasePlayer::SelectNextItem( int iItem ) { }
 BOOL CBasePlayer::HasWeapons() { return FALSE; }
 void CBasePlayer::SelectPrevItem( int iItem ) { }
-CBaseEntity *FindEntityForward( CBaseEntity *pMe ) { return NULL; }
 BOOL CBasePlayer :: FlashlightIsOn() { return FALSE; }
 void CBasePlayer :: FlashlightTurnOn() { }
 void CBasePlayer :: FlashlightTurnOff() { }
@@ -303,6 +301,7 @@ const char *CBasePlayer::TeamID() { return ""; }
 int CBasePlayer :: GiveAmmo( int iCount, const char *szName, int iMax ) { return 0; }
 void CBasePlayer::AddPoints( int score, BOOL bAllowNegativeScore ) { } 
 void CBasePlayer::AddPointsToTeam( int score, BOOL bAllowNegativeScore ) { } 
+void CBasePlayer::TabulateAmmo() {}
 
 void ClearMultiDamage() { }
 void ApplyMultiDamage(entvars_t *pevInflictor, entvars_t *pevAttacker ) { }
