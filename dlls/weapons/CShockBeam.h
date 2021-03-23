@@ -18,6 +18,9 @@
 
 class CShockBeam : public CGrenade
 {
+private:
+	static const size_t NUM_BEAMS = 4;
+
 public:
 	using BaseClass = CGrenade;
 
@@ -42,6 +45,12 @@ public:
 
 	void EXPORT BallTouch( CBaseEntity* pOther );
 
+	void InitBeams();
+
+	void ClearBeams();
+
+	void ArmBeam(int iSide);
+
 	static CShockBeam* CreateShockBeam( const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner );
 
 private:
@@ -52,6 +61,10 @@ public:
 	CBeam* m_pBeam2;
 
 	CSprite* m_pSprite;
+
+	CBeam* m_pBeam[NUM_BEAMS];
+
+	size_t m_uiBeams;
 
 	int m_iBeams;
 };
