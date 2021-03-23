@@ -18,7 +18,7 @@
 class CDisplacerBall : public CBaseEntity
 {
 private:
-	static const size_t NUM_BEAMS = 8;
+	static const size_t NUM_BEAMS = 12;
 
 public:
 	using BaseClass = CBaseEntity;
@@ -40,6 +40,8 @@ public:
 	void EXPORT ExplodeThink();
 
 	void EXPORT KillThink();
+
+	void Animate();
 
 	void InitBeams();
 

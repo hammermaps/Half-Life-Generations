@@ -80,7 +80,7 @@ LINK_ENTITY_TO_CLASS( displacer_ball, CDisplacerBall );
 void CDisplacerBall::Precache()
 {
 	PRECACHE_MODEL( "sprites/exit1.spr" );
-	PRECACHE_MODEL( "sprites/lgtning.spr" );
+	PRECACHE_MODEL( "sprites/plasma.spr" );
 	m_iTrail = PRECACHE_MODEL( "sprites/disp_ring.spr" );
 
 	PRECACHE_SOUND( "weapons/displacer_impact.wav" );
@@ -119,9 +119,37 @@ int CDisplacerBall::Classify()
 	return CLASS_NONE;
 }
 
+void CDisplacerBall::Animate() {
+	pev->frame += 1; //animate teleball
+	if (pev->frame > 24)
+		pev->frame = fmod(pev->frame, 24);
+
+	ArmBeam(-1);
+	ArmBeam(1);
+
+	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		WRITE_BYTE(TE_DLIGHT);
+		WRITE_COORD(pev->origin.x);	// X
+		WRITE_COORD(pev->origin.y);	// Y
+		WRITE_COORD(pev->origin.z);	// Z
+		WRITE_BYTE(25);     // radius
+		WRITE_BYTE(255);		// r
+		WRITE_BYTE(180);		// g
+		WRITE_BYTE(96);		// b
+		WRITE_BYTE(1);     // life * 10
+		WRITE_BYTE(0); // decay
+	MESSAGE_END();
+}
+
 void CDisplacerBall::BallTouch( CBaseEntity* pOther )
 {
-	pev->velocity = g_vecZero;
+	if (UTIL_PointContents(pev->origin) == CONTENT_WATER) { //Impact on Water
+		entvars_t* pevOwner = VARS(pev->owner);
+		EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/displacer_impact.wav", VOL_NORM, ATTN_NORM);
+		::RadiusDamage(pev->origin, pev, pevOwner, pev->dmg, pev->dmg, CLASS_NONE, DMG_ENERGYBEAM | DMG_SHOCK);
+		UTIL_Remove(this);
+		return;
+	}
 
 	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
 		WRITE_BYTE( TE_BEAMCYLINDER );
@@ -159,16 +187,14 @@ void CDisplacerBall::BallTouch( CBaseEntity* pOther )
 	SetThink( nullptr );
 
 	TraceResult tr;
-
 	UTIL_TraceLine( pev->origin, pev->origin + pev->velocity * 10, dont_ignore_monsters, edict(), &tr );
-
-	UTIL_DecalTrace( &tr, DECAL_SCORCH1 + RANDOM_LONG( 0, 1 ) );
+	UTIL_DecalTrace(&tr, DECAL_SCORCH1 + RANDOM_LONG(0, 1));
+	UTIL_Sparks(tr.vecPlaneNormal);
 
 	if( pOther->IsPlayer() )
 	{
 		CBasePlayer* pPlayer = static_cast<CBasePlayer*>( pOther );
-
-		//TODO: what is this for? - Solokiller
+		
 		pPlayer->pev->flags = FL_CLIENT;
 		pPlayer->m_flFallVelocity = 0;
 
@@ -252,8 +278,8 @@ void CDisplacerBall::BallTouch( CBaseEntity* pOther )
 
 void CDisplacerBall::FlyThink()
 {
-	ArmBeam( -1 );
-	ArmBeam( 1 );
+	Animate();
+	
 	pev->nextthink = gpGlobals->time + 0.05;
 }
 
@@ -261,8 +287,7 @@ void CDisplacerBall::FlyThink2()
 {
 	UTIL_SetSize( pev, Vector( -8, -8, -8 ), Vector( 8, 8, 8 ) );
 
-	ArmBeam( -1 );
-	ArmBeam( 1 );
+	Animate();
 
 	pev->nextthink = gpGlobals->time + 0.05;
 }
@@ -271,17 +296,24 @@ void CDisplacerBall::FizzleThink()
 {
 	ClearBeams();
 
+	if (UTIL_PointContents(pev->origin) == CONTENT_SKY) {
+		UTIL_Remove(this);
+		return;
+	}
+	
 	pev->dmg = gSkillData.plrDmgDisplacerOther;
 
-	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-		WRITE_BYTE( TE_DLIGHT );
-		WRITE_COORD_VECTOR( pev->origin );
-		WRITE_BYTE( 16 );
-		WRITE_BYTE( 255 );
-		WRITE_BYTE( 180 );
-		WRITE_BYTE( 96 );
-		WRITE_BYTE( 10 );
-		WRITE_BYTE( 10 );
+	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+		WRITE_BYTE(TE_DLIGHT);
+		WRITE_COORD(pev->origin.x);	// X
+		WRITE_COORD(pev->origin.y);	// Y
+		WRITE_COORD(pev->origin.z);	// Z
+		WRITE_BYTE(32);		// radius * 0.1
+		WRITE_BYTE(255);		// r
+		WRITE_BYTE(180);		// g
+		WRITE_BYTE(96);		// b
+		WRITE_BYTE(60);		// time * 10
+		WRITE_BYTE(20);		// decay * 0.1
 	MESSAGE_END();
 
 	auto pOwner = VARS( pev->owner );
@@ -299,11 +331,29 @@ void CDisplacerBall::ExplodeThink()
 {
 	ClearBeams();
 
+	if (UTIL_PointContents(pev->origin) == CONTENT_SKY) {
+		UTIL_Remove(this);
+		return;
+	}
+
 	pev->dmg = gSkillData.plrDmgDisplacerOther;
 
 	auto pOwner = VARS( pev->owner );
 
 	pev->owner = nullptr;
+
+	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+	WRITE_BYTE(TE_DLIGHT);
+		WRITE_COORD(pev->origin.x);	// X
+		WRITE_COORD(pev->origin.y);	// Y
+		WRITE_COORD(pev->origin.z);	// Z
+		WRITE_BYTE(32);		// radius * 0.1
+		WRITE_BYTE(255);		// r
+		WRITE_BYTE(180);		// g
+		WRITE_BYTE(96);		// b
+		WRITE_BYTE(60);		// time * 10
+		WRITE_BYTE(20);		// decay * 0.1
+	MESSAGE_END();
 
 	RadiusDamage( pev->origin, pev, pOwner, pev->dmg, gSkillData.plrRadiusDisplacer, CLASS_NONE, DMG_ALWAYSGIB | DMG_BLAST );
 
@@ -380,7 +430,7 @@ void CDisplacerBall::ArmBeam( int iSide )
 
 	//The beam might already exist if we've created all beams before. - Solokiller
 	if( !m_pBeam[ m_uiBeams ] )
-		m_pBeam[ m_uiBeams ] = CBeam::BeamCreate( "sprites/lgtning.spr", 30 );
+		m_pBeam[ m_uiBeams ] = CBeam::BeamCreate( "sprites/plasma.spr", RANDOM_LONG(2, 3) * 10);
 
 	if( !m_pBeam[ m_uiBeams ] )
 		return;
@@ -391,21 +441,20 @@ void CDisplacerBall::ArmBeam( int iSide )
 	{
 		//Beam hit something, deal radius damage to it. - Solokiller
 		m_pBeam[ m_uiBeams ]->EntsInit( pHit->entindex(), entindex() );
-
-		m_pBeam[ m_uiBeams ]->SetColor( 255, 255, 255 );
-
-		m_pBeam[ m_uiBeams ]->SetBrightness( 255 );
+		m_pBeam[ m_uiBeams ]->SetColor(90, 170, 16);
+		m_pBeam[ m_uiBeams ]->SetBrightness(255);
 
 		RadiusDamage( tr.vecEndPos, pev, VARS( pev->owner ), 25, 15, CLASS_NONE, DMG_ENERGYBEAM );
 	}
 	else
 	{
-		m_pBeam[ m_uiBeams ]->PointEntInit( tr.vecEndPos, entindex() );
-		m_pBeam[ m_uiBeams ]->SetEndAttachment( iSide < 0 ? 2 : 1 );
-		// m_pBeam[ m_uiBeams ]->SetColor( 180, 255, 96 );
-		m_pBeam[ m_uiBeams ]->SetColor( 96, 128, 16 );
-		m_pBeam[ m_uiBeams ]->SetBrightness( 255 );
-		m_pBeam[ m_uiBeams ]->SetNoise( 80 );
+		m_pBeam[m_uiBeams]->PointEntInit(tr.vecEndPos, entindex());
+		m_pBeam[m_uiBeams]->SetEndAttachment(iSide < 0 ? 2 : 1);
+		m_pBeam[m_uiBeams]->SetColor(90, 170, 16);
+		m_pBeam[m_uiBeams]->SetBrightness(255);
+		m_pBeam[m_uiBeams]->SetNoise(65);
+		m_pBeam[m_uiBeams]->SetScrollRate(35);
+		m_pBeam[m_uiBeams]->RelinkBeam();
 	}
 
 	++m_uiBeams;
