@@ -123,6 +123,8 @@ enum
 class CHGrunt : public CSquadMonster
 {
 public:
+	using BaseClass = CSquadMonster;
+	
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed () override;

@@ -37,7 +37,7 @@ TYPEDESCRIPTION	CM249::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CM249, CM249::BaseClass );
 #endif
 
-LINK_ENTITY_TO_CLASS( weapon_m249, CM249 );
+LINK_WEAPON_TO_CLASS( weapon_m249, CM249 );
 
 void CM249::Precache()
 {

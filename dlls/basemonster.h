@@ -25,6 +25,8 @@ private:
 		int					m_afConditions;
 
 public:
+		using BaseClass = CBaseToggle;
+	
 		typedef enum
 		{
 			SCRIPT_PLAYING = 0,		// Playing the sequence

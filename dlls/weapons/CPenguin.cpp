@@ -30,7 +30,7 @@ TYPEDESCRIPTION	CPenguin::m_SaveData[] =
 IMPLEMENT_SAVERESTORE(CPenguin, CPenguin::BaseClass);
 #endif
 
-LINK_ENTITY_TO_CLASS(weapon_penguin, CPenguin);
+LINK_WEAPON_TO_CLASS(weapon_penguin, CPenguin);
 
 void CPenguin::Precache()
 {

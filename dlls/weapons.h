@@ -15,6 +15,8 @@
 #ifndef WEAPONS_H
 #define WEAPONS_H
 
+#include <cassert>
+
 #include "effects.h"
 #include "weaponinfo.h"
 
@@ -270,6 +272,8 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname);
 class CBasePlayerItem : public CBaseAnimating
 {
 public:
+	using BaseClass = CBaseAnimating;
+	
     void SetObjectCollisionBox() override;
 
     int		Save( CSave &save ) override;
@@ -344,6 +348,8 @@ public:
 class CBasePlayerWeapon : public CBasePlayerItem
 {
 public:
+	using BaseClass = CBasePlayerItem;
+	
     int		Save( CSave &save ) override;
     int		Restore( CRestore &restore ) override;
 	
@@ -421,6 +427,8 @@ public:
 class CBasePlayerAmmo : public CBaseEntity
 {
 public:
+	using BaseClass = CBaseEntity;
+	
     void Spawn() override;
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
 	virtual BOOL AddAmmo( CBaseEntity *pOther ) { return TRUE; }
@@ -464,6 +472,74 @@ typedef struct
 
 extern MULTIDAMAGE gMultiDamage;
 
+class CWeaponRegistry
+{
+public:
+	using FactoryFn = CBasePlayerWeapon * (*)(entvars_t* pev);
+
+public:
+	CWeaponRegistry(const char* pszMapName, const char* pszDLLClassName, FactoryFn pFactoryFn)
+		: m_pszMapName(pszMapName)
+		, m_pszDLLClassName(pszDLLClassName)
+		, m_pFactoryFn(pFactoryFn)
+	{
+		//Don't register multiple weapons with the same underlying class
+		for (CWeaponRegistry* pReg = m_pHead; pReg; pReg = pReg->GetNext())
+		{
+			if (!strcmp(pszDLLClassName, pReg->GetDLLClassName()))
+			{
+				//The problem in question is the wrong name being used to look up HUD sprites and selecting weapons
+				//Only use LINK_WEAPON_TO_CLASS for the name used for sprites, and the name the classname is set to in Spawn()
+				assert(!"Registering multiple names for the same weapon will cause problems");
+				return;
+			}
+		}
+
+		m_pNext = m_pHead;
+		m_pHead = this;
+	}
+
+	const char* GetMapName() const { return m_pszMapName; }
+
+	const char* GetDLLClassName() const { return m_pszDLLClassName; }
+
+	FactoryFn GetFactory() const { return m_pFactoryFn; }
+
+	static CWeaponRegistry* GetHead() { return m_pHead; }
+
+	CWeaponRegistry* GetNext() const { return m_pNext; }
+
+private:
+	const char* const m_pszMapName;
+	const char* const m_pszDLLClassName;
+	const FactoryFn m_pFactoryFn;
+
+	static CWeaponRegistry* m_pHead;
+
+	CWeaponRegistry* m_pNext;
+
+private:
+	//No copying
+	CWeaponRegistry(const CWeaponRegistry&);
+	CWeaponRegistry& operator=(const CWeaponRegistry&);
+};
+
+/**
+*	@brief Registers a weapon
+*
+*	This will register the class like LINK_ENTITY_TO_CLASS does, but will also register it as a weapon, which ensures it is precached and available for client side prediction
+*	Use this to replace LINK_ENTITY_TO_CLASS, but only one per C++ class
+*	If a weapon has multiple names only link the one used for the HUD sprite name,
+*	which should also be the one used in Spawn() by setting pev->classname to that name
+*/
+#define LINK_WEAPON_TO_CLASS( mapClassName, DLLClassName )															\
+static CBasePlayerWeapon* __Create##mapClassName( entvars_t* pev )													\
+{																													\
+	return static_cast<CBasePlayerWeapon*>( new ( pev ) DLLClassName );												\
+}																													\
+static CWeaponRegistry __g_##mapClassName##WeaponRegistry( #mapClassName, #DLLClassName, &__Create##mapClassName );	\
+LINK_ENTITY_TO_CLASS( mapClassName, DLLClassName )
+
 void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, const Vector& mins, const Vector& maxs, edict_t *pEntity );
 
 
@@ -500,6 +576,8 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, const Vector& 
 //=========================================================
 class CWeaponBox : public CBaseEntity
 {
+	using BaseClass = CBaseEntity;
+	
 	void Precache() override;
 	void Spawn() override;
 	void Touch( CBaseEntity *pOther ) override;
@@ -548,6 +626,8 @@ enum glock_e
 class CGlock : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
+	
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 2; }
@@ -595,6 +675,8 @@ enum crowbar_e
 class CCrowbar : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
+	
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 1; }
@@ -636,6 +718,8 @@ enum python_e
 class CPython : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
+	
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 2; }
@@ -677,6 +761,8 @@ enum mp5_e
 class CMP5 : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
+	
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 3; }
@@ -726,6 +812,8 @@ enum crossbow_e
 class CCrossbow : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
+	
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot( ) override { return 3; }
@@ -773,7 +861,8 @@ enum shotgun_e
 class CShotgun : public CBasePlayerWeapon
 {
 public:
-
+	using BaseClass = CBasePlayerWeapon;
+	
 #ifndef CLIENT_DLL
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -815,6 +904,8 @@ private:
 class CLaserSpot : public CBaseEntity
 {
 public:
+	using BaseClass = CBaseEntity;
+	
 	void Spawn() override;
 	void Precache() override;
 
@@ -843,7 +934,7 @@ enum rpg_e
 class CRpg : public CBasePlayerWeapon
 {
 public:
-
+	using BaseClass = CBasePlayerWeapon;
 #ifndef CLIENT_DLL
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -890,6 +981,8 @@ private:
 class CRpgRocket : public CGrenade
 {
 public:
+	using BaseClass = CGrenade;
+	
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -924,7 +1017,8 @@ enum gauss_e
 class CGauss : public CBasePlayerWeapon
 {
 public:
-
+	using BaseClass = CBasePlayerWeapon;
+	
 #ifndef CLIENT_DLL
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -1006,6 +1100,7 @@ enum EGON_FIREMODE
 class CEgon : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
 #ifndef CLIENT_DLL
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -1081,6 +1176,7 @@ enum hgun_e
 class CHgun : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 4; }
@@ -1127,6 +1223,7 @@ enum handgrenade_e
 class CHandGrenade : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 5; }
@@ -1169,7 +1266,7 @@ enum satchel_radio_e
 class CSatchel : public CBasePlayerWeapon
 {
 public:
-
+	using BaseClass = CBasePlayerWeapon;
 #ifndef CLIENT_DLL
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -1218,6 +1315,7 @@ enum tripmine_e
 class CTripmine : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 5; }
@@ -1261,6 +1359,7 @@ enum squeak_e
 class CSqueak : public CBasePlayerWeapon
 {
 public:
+	using BaseClass = CBasePlayerWeapon;
 	void Spawn() override;
 	void Precache() override;
 	int iItemSlot() override { return 5; }

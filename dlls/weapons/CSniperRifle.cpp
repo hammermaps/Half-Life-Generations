@@ -32,7 +32,7 @@ TYPEDESCRIPTION	CSniperRifle::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CSniperRifle, CSniperRifle::BaseClass );
 #endif
 
-LINK_ENTITY_TO_CLASS( weapon_sniperrifle, CSniperRifle );
+LINK_WEAPON_TO_CLASS( weapon_sniperrifle, CSniperRifle );
 
 void CSniperRifle::Precache()
 {

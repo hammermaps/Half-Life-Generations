@@ -259,46 +259,6 @@ void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count )
 }
 #endif
 
-// Precaches the weapon and queues the weapon info for sending to clients
-void UTIL_PrecacheOtherWeapon( const char *szClassname )
-{
-	edict_t	*pent;
-
-	pent = CREATE_NAMED_ENTITY( MAKE_STRING( szClassname ) );
-	if ( FNullEnt( pent ) )
-	{
-		ALERT ( at_console, "NULL Ent in UTIL_PrecacheOtherWeapon\n" );
-		return;
-	}
-	
-	CBaseEntity *pEntity = CBaseEntity::Instance (VARS( pent ));
-
-	if (pEntity)
-	{
-		ItemInfo II;
-		pEntity->Precache( );
-		memset( &II, 0, sizeof II );
-		if ( ((CBasePlayerItem*)pEntity)->GetItemInfo( &II ) )
-		{
-			CBasePlayerItem::ItemInfoArray[II.iId] = II;
-
-			if ( II.pszAmmo1 && *II.pszAmmo1 )
-			{
-				AddAmmoNameToAmmoRegistry( II.pszAmmo1 );
-			}
-
-			if ( II.pszAmmo2 && *II.pszAmmo2 )
-			{
-				AddAmmoNameToAmmoRegistry( II.pszAmmo2 );
-			}
-
-			memset( &II, 0, sizeof II );
-		}
-	}
-
-	REMOVE_ENTITY(pent);
-}
-
 // called by worldspawn
 void W_Precache()
 {
@@ -315,105 +275,64 @@ void W_Precache()
 	UTIL_PrecacheOther( "item_security" );
 	UTIL_PrecacheOther( "item_longjump" );
 
-	// shotgun
-	UTIL_PrecacheOtherWeapon( "weapon_shotgun" );
+	// precache weapons
+	for (CWeaponRegistry* pReg = CWeaponRegistry::GetHead(); pReg; pReg = pReg->GetNext())
+	{
+		edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(pReg->GetMapName()));
+		if (FNullEnt(pent))
+		{
+			ALERT(at_console, "NULL Ent in Weapon-Precache on WeaponRegistry\n");
+			return;
+		}
+
+		CBaseEntity* pEntity = CBaseEntity::Instance(VARS(pent));
+
+		if (pEntity)
+		{
+			ItemInfo II;
+			pEntity->Precache();
+			memset(&II, 0, sizeof II);
+			if (((CBasePlayerItem*)pEntity)->GetItemInfo(&II))
+			{
+				CBasePlayerItem::ItemInfoArray[II.iId] = II;
+
+				if (II.pszAmmo1 && *II.pszAmmo1)
+				{
+					AddAmmoNameToAmmoRegistry(II.pszAmmo1);
+				}
+
+				if (II.pszAmmo2 && *II.pszAmmo2)
+				{
+					AddAmmoNameToAmmoRegistry(II.pszAmmo2);
+				}
+
+				memset(&II, 0, sizeof II);
+			}
+		}
+
+		REMOVE_ENTITY(pent);
+	}
+	
 	UTIL_PrecacheOther( "ammo_buckshot" );
-
-	// crowbar
-	UTIL_PrecacheOtherWeapon( "weapon_crowbar" );
-
-	// glock
-	UTIL_PrecacheOtherWeapon( "weapon_9mmhandgun" );
 	UTIL_PrecacheOther( "ammo_9mmclip" );
-
-	// mp5
-	UTIL_PrecacheOtherWeapon( "weapon_9mmAR" );
 	UTIL_PrecacheOther( "ammo_9mmAR" );
 	UTIL_PrecacheOther( "ammo_ARgrenades" );
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// python
-	UTIL_PrecacheOtherWeapon( "weapon_357" );
 	UTIL_PrecacheOther( "ammo_357" );
-#endif
-	
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// gauss
-	UTIL_PrecacheOtherWeapon( "weapon_gauss" );
 	UTIL_PrecacheOther( "ammo_gaussclip" );
-#endif
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// rpg
-	UTIL_PrecacheOtherWeapon( "weapon_rpg" );
 	UTIL_PrecacheOther( "ammo_rpgclip" );
-#endif
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// crossbow
-	UTIL_PrecacheOtherWeapon( "weapon_crossbow" );
 	UTIL_PrecacheOther( "ammo_crossbow" );
-#endif
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// egon
-	UTIL_PrecacheOtherWeapon( "weapon_egon" );
-#endif
-
-	// tripmine
-	UTIL_PrecacheOtherWeapon( "weapon_tripmine" );
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// satchel charge
-	UTIL_PrecacheOtherWeapon( "weapon_satchel" );
-#endif
-
-	// hand grenade
-	UTIL_PrecacheOtherWeapon("weapon_handgrenade");
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// squeak grenade
-	UTIL_PrecacheOtherWeapon( "weapon_snark" );
-#endif
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// hornetgun
-	UTIL_PrecacheOtherWeapon( "weapon_hornetgun" );
-#endif
-
-	UTIL_PrecacheOtherWeapon( "weapon_grapple" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_eagle" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_pipewrench" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_m249" );
 	UTIL_PrecacheOther( "ammo_556" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_displacer" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_sporelauncher" );
 	UTIL_PrecacheOther( "ammo_spore" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_shockrifle" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_sniperrifle" );
 	UTIL_PrecacheOther( "ammo_762" );
-
-	UTIL_PrecacheOtherWeapon( "weapon_knife" );
-
-	UTIL_PrecacheOtherWeapon("weapon_penguin");
 
 	PRECACHE_SOUND( "weapons/spore_hit1.wav" );
 	PRECACHE_SOUND( "weapons/spore_hit2.wav" );
 	PRECACHE_SOUND( "weapons/spore_hit3.wav" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	if ( g_pGameRules->IsDeathmatch() )
 	{
 		UTIL_PrecacheOther( "weaponbox" );// container for dropped deathmatch weapons
 	}
-#endif
 
 	g_sModelIndexFireball = PRECACHE_MODEL ("sprites/zerogxplode.spr");// fireball
 	g_sModelIndexWExplosion = PRECACHE_MODEL ("sprites/WXplo1.spr");// underwater fireball
@@ -476,9 +395,6 @@ void W_Precache()
 	PRECACHE_SOUND("bulletimpact/wood3.wav");
 }
 
-
- 
-
 TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] = 
 {
 	DEFINE_FIELD( CBasePlayerItem, m_pPlayer, FIELD_CLASSPTR ),
@@ -489,7 +405,6 @@ TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
 	// DEFINE_FIELD( CBasePlayerItem, m_iIdSecondary, FIELD_INTEGER ),
 };
 IMPLEMENT_SAVERESTORE( CBasePlayerItem, CBaseAnimating );
-
 
 TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] = 
 {

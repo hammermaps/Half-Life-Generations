@@ -98,6 +98,8 @@ enum
 class CTalkMonster : public CBaseMonster
 {
 public:
+	using BaseClass = CBaseMonster;
+	
 	void			TalkInit();				
 	CBaseEntity		*FindNearestFriend(BOOL fPlayer);
 	float			TargetDistance();

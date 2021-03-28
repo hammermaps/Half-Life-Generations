@@ -37,7 +37,7 @@ TYPEDESCRIPTION	CPipewrench::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CPipewrench, CPipewrench::BaseClass );
 #endif
 
-LINK_ENTITY_TO_CLASS( weapon_pipewrench, CPipewrench );
+LINK_WEAPON_TO_CLASS( weapon_pipewrench, CPipewrench );
 
 void CPipewrench::Spawn()
 {

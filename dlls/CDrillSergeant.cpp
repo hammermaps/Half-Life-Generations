@@ -42,6 +42,8 @@
 class CDrillSergeant : public CTalkMonster
 {
 public:
+	using BaseClass = CTalkMonster;
+	
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -260,7 +262,7 @@ void CDrillSergeant::DeclineFollowing()
 
 MONSTERSTATE CDrillSergeant::GetIdealState()
 {
-	return CBaseMonster::GetIdealState();
+	return BaseClass::GetIdealState();
 }
 
 Schedule_t* CDrillSergeant::GetSchedule()
@@ -339,13 +341,13 @@ Schedule_t* CDrillSergeant::GetSchedule()
 		break;
 	}
 
-	return CTalkMonster::GetSchedule();
+	return BaseClass::GetSchedule();
 }
 
 void CDrillSergeant::Killed( entvars_t *pevAttacker, int iGib )
 {
 	SetUse( NULL );
-	CTalkMonster::Killed( pevAttacker, iGib );
+	BaseClass::Killed( pevAttacker, iGib );
 }
 
 void CDrillSergeant::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType )
@@ -374,7 +376,7 @@ void CDrillSergeant::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector
 		break;
 	}
 
-	CTalkMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
+	BaseClass::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }
 
 void CDrillSergeant::DeathSound()
@@ -408,12 +410,12 @@ void CDrillSergeant::Spawn()
 	m_afCapability = bits_CAP_HEAR | bits_CAP_TURN_HEAD | bits_CAP_DOORS_GROUP;
 
 	MonsterInit();
-	SetUse( &CTalkMonster::FollowerUse );
+	SetUse( &BaseClass::FollowerUse );
 }
 
 void CDrillSergeant::StartTask( Task_t* pTask )
 {
-	CTalkMonster::StartTask( pTask );
+	BaseClass::StartTask( pTask );
 }
 
 void CDrillSergeant::AlertSound()
@@ -445,7 +447,7 @@ Schedule_t* CDrillSergeant::GetScheduleOfType( int Type )
 	case SCHED_TARGET_FACE:
 		// call base class default so that barney will talk
 		// when 'used' 
-		psched = CTalkMonster::GetScheduleOfType( Type );
+		psched = BaseClass::GetScheduleOfType( Type );
 
 		if( psched == slIdleStand )
 			return slDrFaceTarget;	// override this for different target face behavior
@@ -458,7 +460,7 @@ Schedule_t* CDrillSergeant::GetScheduleOfType( int Type )
 	case SCHED_IDLE_STAND:
 		// call base class default so that scientist will talk
 		// when standing during idle
-		psched = CTalkMonster::GetScheduleOfType( Type );
+		psched = BaseClass::GetScheduleOfType( Type );
 
 		if( psched == slIdleStand )
 		{
@@ -469,7 +471,7 @@ Schedule_t* CDrillSergeant::GetScheduleOfType( int Type )
 			return psched;
 	}
 
-	return CTalkMonster::GetScheduleOfType( Type );
+	return BaseClass::GetScheduleOfType( Type );
 }
 
 void CDrillSergeant::RunTask( Task_t *pTask )
@@ -481,10 +483,10 @@ void CDrillSergeant::RunTask( Task_t *pTask )
 		{
 			pev->framerate = 1.5;
 		}
-		CTalkMonster::RunTask( pTask );
+		BaseClass::RunTask( pTask );
 		break;
 	default:
-		CTalkMonster::RunTask( pTask );
+		BaseClass::RunTask( pTask );
 		break;
 	}
 }
@@ -531,7 +533,7 @@ BOOL CDrillSergeant::CheckRangeAttack1( float flDot, float flDist )
 int CDrillSergeant::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	// make sure friends talk about it if player hurts talkmonsters...
-	int ret = CTalkMonster::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
+	int ret = BaseClass::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
 	if( !IsAlive() || pev->deadflag == DEAD_DYING )
 		return ret;
 
@@ -586,7 +588,7 @@ void CDrillSergeant::Precache()
 	// every new barney must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
 	TalkInit();
-	CTalkMonster::Precache();
+	BaseClass::Precache();
 }
 
 void CDrillSergeant::BarneyFirePistol()
@@ -639,14 +641,13 @@ void CDrillSergeant::HandleAnimEvent( MonsterEvent_t *pEvent )
 		break;
 
 	default:
-		CTalkMonster::HandleAnimEvent( pEvent );
+		BaseClass::HandleAnimEvent( pEvent );
 	}
 }
 
 void CDrillSergeant::TalkInit()
 {
-
-	CTalkMonster::TalkInit();
+	BaseClass::TalkInit();
 
 	// scientists speach group names (group names are in sentences.txt)
 

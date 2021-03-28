@@ -23,8 +23,8 @@
 #include "gamerules.h"
 #include "UserMessages.h"
 
-LINK_ENTITY_TO_CLASS( weapon_python, CPython );
-LINK_ENTITY_TO_CLASS( weapon_357, CPython );
+LINK_ENTITY_TO_CLASS(weapon_python, CPython);
+LINK_WEAPON_TO_CLASS(weapon_357, CPython);
 
 int CPython::GetItemInfo(ItemInfo *p)
 {

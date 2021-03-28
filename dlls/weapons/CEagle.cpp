@@ -33,7 +33,7 @@ TYPEDESCRIPTION	CEagle::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CEagle, CEagle::BaseClass );
 #endif
 
-LINK_ENTITY_TO_CLASS( weapon_eagle, CEagle );
+LINK_WEAPON_TO_CLASS( weapon_eagle, CEagle );
 
 void CEagle::Precache()
 {

@@ -474,6 +474,8 @@ public:
 class CBaseDelay : public CBaseEntity
 {
 public:
+	using BaseClass = CBaseEntity;
+	
 	float		m_flDelay;
 	int			m_iszKillTarget;
 
@@ -491,6 +493,8 @@ public:
 class CBaseAnimating : public CBaseDelay
 {
 public:
+	using BaseClass = CBaseDelay;
+	
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
 
@@ -534,6 +538,8 @@ public:
 class CBaseToggle : public CBaseAnimating
 {
 public:
+	using BaseClass = CBaseAnimating;
+	
 	void				KeyValue( KeyValueData *pkvd ) override;
 
 	TOGGLE_STATE		m_toggle_state;

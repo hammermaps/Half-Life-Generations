@@ -34,7 +34,7 @@ extern CBaseEntity* g_pLastSpawn;
 
 #include "CDisplacer.h"
 
-LINK_ENTITY_TO_CLASS( weapon_displacer, CDisplacer );
+LINK_WEAPON_TO_CLASS( weapon_displacer, CDisplacer );
 
 void CDisplacer::Precache()
 {

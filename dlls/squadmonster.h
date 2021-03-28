@@ -56,6 +56,8 @@
 class CSquadMonster : public CBaseMonster 
 {
 public:
+	using BaseClass = CBaseMonster;
+	
 	// squad leader info
 	EHANDLE	m_hSquadLeader;		// who is my leader
 	EHANDLE	m_hSquadMember[MAX_SQUAD_MEMBERS-1];	// valid only for leader

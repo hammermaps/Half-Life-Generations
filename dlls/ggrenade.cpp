@@ -275,7 +275,7 @@ void CGrenade::BounceTouch( CBaseEntity *pOther )
 		// add a bit of static friction
 		pev->velocity = pev->velocity * 0.8;
 
-		pev->sequence = RANDOM_LONG( 1, 1 );
+		pev->sequence = RANDOM_LONG( 0, 1 );
 	}
 	else
 	{
