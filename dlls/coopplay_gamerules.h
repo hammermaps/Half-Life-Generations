@@ -66,7 +66,7 @@ public:
 
 	float FlWeaponRespawnTime(CBasePlayerItem* pWeapon) override;
 
-	const char* GetGameDescription() override { return "HL Coopplay"; }
+	const char* GetGameDescription() override { return "Half-Life: Generations - Coop"; }
 
 private:
 	BOOL m_DisableDeathMessages;

@@ -59,7 +59,7 @@ public:
 	BOOL IsTeamplay() override { return TRUE; }
 	BOOL IsCTF() override { return TRUE; }
 
-	const char* GetGameDescription() override { return "OpFor CTF"; }
+	const char* GetGameDescription() override { return "Half-Life: Generations - CTF"; }
 
 	BOOL ClientConnected( edict_t* pEntity, const char* pszName, const char* pszAddress, char* szRejectReason ) override;
 
