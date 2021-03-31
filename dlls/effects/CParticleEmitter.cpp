@@ -45,7 +45,7 @@ void CParticleEmitter::Spawn(void)
 	SET_MODEL(ENT(pev), STRING(pev->model));
 	pev->effects |= EF_NODRAW;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 	UTIL_SetSize(pev, pev->absmin, pev->absmax);
 
 	SetUse(&CParticleEmitter::Use);

@@ -121,7 +121,7 @@ void CPitdroneSpike::Shoot( entvars_t *pevOwner, Vector vecStart, Vector vecVelo
 	CPitdroneSpike *pSpit = GetClassPtr( ( CPitdroneSpike *)NULL );
 	
 	pSpit->pev->angles = vecAngles;
-	UTIL_SetOrigin( pSpit->pev, vecStart );
+	UTIL_SetOrigin( pSpit, vecStart );
 
 	pSpit->Spawn();
 
@@ -157,7 +157,7 @@ void CPitdroneSpike::SpikeTouch( CBaseEntity *pOther )
 
 		const auto vecOrigin = pev->origin - vecDir * 6;
 
-		UTIL_SetOrigin( pev, vecOrigin );
+		UTIL_SetOrigin( this, vecOrigin );
 
 		auto v41 = UTIL_VecToAngles( vecDir );
 

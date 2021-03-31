@@ -133,7 +133,7 @@ void COFChargedBolt::Spawn()
 
 	SET_MODEL( edict(), "sprites/blueflare2.spr" );
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	UTIL_SetSize( pev, g_vecZero, g_vecZero );
 
@@ -209,7 +209,7 @@ void COFChargedBolt::SetAttachment( CBaseAnimating* pAttachEnt, int iAttachIdx )
 
 	pAttachEnt->GetAttachment( iAttachIdx, vecOrigin, vecAngles );
 
-	UTIL_SetOrigin( pev, vecOrigin );
+	UTIL_SetOrigin( this, vecOrigin );
 
 	SetThink( &COFChargedBolt::AttachThink );
 
@@ -279,7 +279,7 @@ void COFChargedBolt::AttachThink()
 	Vector vecAngles;
 
 	m_pAttachEnt->GetAttachment( m_iAttachIdx, vecOrigin, vecAngles );
-	UTIL_SetOrigin( pev, vecOrigin );
+	UTIL_SetOrigin( this, vecOrigin );
 
 	pev->nextthink = gpGlobals->time + 0.05;
 }
@@ -1087,7 +1087,7 @@ void COFVoltigore :: StartTask ( Task_t *pTask )
 
 			m_pChargedBolt = COFChargedBolt::ChargedBoltCreate();
 
-			UTIL_SetOrigin( m_pChargedBolt->pev, vecConverge );
+			UTIL_SetOrigin( m_pChargedBolt, vecConverge );
 
 			UTIL_EmitAmbientSound( edict(), pev->origin, "debris/beamstart2.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG( 140, 160 ) );
 			CBaseMonster::StartTask( pTask );

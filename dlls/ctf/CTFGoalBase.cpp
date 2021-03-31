@@ -59,7 +59,7 @@ void CTFGoalBase::Spawn()
 {
     pev->movetype = MOVETYPE_TOSS;
     pev->solid = SOLID_NOT;
-    UTIL_SetOrigin(pev, pev->origin);
+    UTIL_SetOrigin(this, pev->origin);
 
     Vector vecMin;
     Vector vecMax;

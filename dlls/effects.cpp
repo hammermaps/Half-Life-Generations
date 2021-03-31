@@ -305,7 +305,7 @@ void CBeam::RelinkBeam()
 	pev->maxs = pev->maxs - pev->origin;
 
 	UTIL_SetSize( pev, pev->mins, pev->maxs );
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 }
 
 #if 0
@@ -1044,7 +1044,7 @@ void CLaser::FireAtPoint( TraceResult &tr )
 {
 	SetEndPos( tr.vecEndPos );
 	if ( m_pSprite )
-		UTIL_SetOrigin( m_pSprite->pev, tr.vecEndPos );
+		UTIL_SetOrigin( m_pSprite, tr.vecEndPos );
 
 	BeamDamage( &tr );
 	DoSparks( GetStartPos(), tr.vecEndPos );

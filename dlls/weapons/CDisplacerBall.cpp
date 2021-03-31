@@ -96,7 +96,7 @@ void CDisplacerBall::Spawn()
 
 	SET_MODEL( edict(), "sprites/exit1.spr" );
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	UTIL_SetSize( pev, g_vecZero, g_vecZero );
 
@@ -240,7 +240,7 @@ void CDisplacerBall::BallTouch( CBaseEntity* pOther )
 
 		UTIL_TraceLine( pSpawnSpot->origin, pSpawnSpot->origin - Vector( 0, 0, 100 ), ignore_monsters, edict(), &tr );
 	
-		UTIL_SetOrigin( pPlayer->pev, tr.vecEndPos + Vector( 0, 0, 37 ) );
+		UTIL_SetOrigin( pPlayer, tr.vecEndPos + Vector( 0, 0, 37 ) );
 
 		pPlayer->pev->sequence = pPlayer->LookupActivity( ACT_IDLE );
 
@@ -269,7 +269,7 @@ void CDisplacerBall::BallTouch( CBaseEntity* pOther )
 
 	pev->solid = SOLID_NOT;
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	SetThink( &CDisplacerBall::KillThink );
 
@@ -480,7 +480,7 @@ CDisplacerBall* CDisplacerBall::CreateDisplacerBall( const Vector& vecOrigin, co
 
 	pBall->pev->classname = MAKE_STRING( "displacer_ball" );
 
-	UTIL_SetOrigin( pBall->pev, vecOrigin );
+	UTIL_SetOrigin( pBall, vecOrigin );
 
 	Vector vecNewAngles = vecAngles;
 

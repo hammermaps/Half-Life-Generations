@@ -202,7 +202,7 @@ void CGrapple::PrimaryAttack()
 
 			case CGrappleTip::TargetClass::SMALL:
 				//pTarget->BarnacleVictimGrabbed( this );
-				UTIL_SetOrigin( m_pTip->pev, pTarget->Center() );
+				UTIL_SetOrigin( m_pTip, pTarget->Center() );
 
 				pTarget->pev->velocity = pTarget->pev->velocity + ( m_pPlayer->pev->origin - pTarget->pev->origin );
 
@@ -218,7 +218,7 @@ void CGrapple::PrimaryAttack()
 				//pTarget->BarnacleVictimGrabbed( this );
 
 				if( m_pTip->GetGrappleType() != CGrappleTip::TargetClass::FIXED )
-					UTIL_SetOrigin( m_pTip->pev, pTarget->Center() );
+					UTIL_SetOrigin( m_pTip, pTarget->Center() );
 
 				m_pPlayer->pev->velocity = m_pPlayer->pev->velocity + ( m_pTip->pev->origin - m_pPlayer->pev->origin );
 

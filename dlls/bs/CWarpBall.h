@@ -44,7 +44,7 @@ public:
 	{
 		auto warpBall = GetClassPtr<CWarpBall>(nullptr);
 
-		UTIL_SetOrigin(warpBall->pev, vecOrigin);
+		UTIL_SetOrigin(warpBall, vecOrigin);
 
 		warpBall->pev->classname = MAKE_STRING("env_warpball");
 		warpBall->Spawn();

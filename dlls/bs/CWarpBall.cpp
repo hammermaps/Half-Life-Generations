@@ -81,7 +81,7 @@ void CWarpBall::Spawn()
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 	UTIL_SetSize(pev, g_vecZero, g_vecZero);
 
 	pev->rendermode = kRenderGlow;
@@ -103,7 +103,7 @@ void CWarpBall::WarpBallUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 		{
 			auto targetEntity = g_engfuncs.pfnFindEntityByString(0, "targetname", STRING(m_iszWarpTarget));
 			if (targetEntity)
-				UTIL_SetOrigin(pev, targetEntity->v.origin);
+				UTIL_SetOrigin(this, targetEntity->v.origin);
 		}
 
 		SET_MODEL(pev->pContainingEntity, "sprites/XFlare1.spr");
@@ -136,7 +136,7 @@ void CWarpBall::WarpBallUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 			m_pBeams->m_iszSpriteName = MAKE_STRING("sprites/lgtning.spr");
 
 			m_pBeams->pev->origin = pev->origin;
-			UTIL_SetOrigin(m_pBeams->pev, pev->origin);
+			UTIL_SetOrigin(m_pBeams, pev->origin);
 
 			m_pBeams->m_restrike = -0.5;
 			m_pBeams->m_noiseAmplitude = 65;

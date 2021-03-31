@@ -134,7 +134,7 @@ void ClientDisconnect( edict_t *pEntity )
 // since the edict doesn't get deleted, fix it so it doesn't interfere.
 	pEntity->v.takedamage = DAMAGE_NO;// don't attract autoaim
 	pEntity->v.solid = SOLID_NOT;// nonsolid
-	UTIL_SetOrigin ( &pEntity->v, pEntity->v.origin );
+	UTIL_SetEntvarsOrigin( &pEntity->v, pEntity->v.origin );
 
 	auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity));
 

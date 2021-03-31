@@ -267,7 +267,7 @@ void CopyToBodyQue(entvars_t *pev)
 	pevHead->sequence = pev->sequence;
 	pevHead->animtime = pev->animtime;
 
-	UTIL_SetOrigin(pevHead, pev->origin);
+	UTIL_SetEntvarsOrigin(pevHead, pev->origin);
 	UTIL_SetSize(pevHead, pev->mins, pev->maxs);
 	g_pBodyQueueHead = pevHead->owner;
 }

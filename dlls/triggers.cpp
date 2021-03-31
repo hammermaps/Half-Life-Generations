@@ -621,7 +621,7 @@ void CTriggerMonsterJump :: Spawn ()
 	if ( !FStringNull ( pev->targetname ) )
 	{// if targetted, spawn turned off
 		pev->solid = SOLID_NOT;
-		UTIL_SetOrigin( pev, pev->origin ); // Unlink from trigger list
+		UTIL_SetOrigin( this, pev->origin ); // Unlink from trigger list
 		SetUse( &CTriggerMonsterJump::ToggleUse );
 	}
 }
@@ -630,7 +630,7 @@ void CTriggerMonsterJump :: Spawn ()
 void CTriggerMonsterJump :: Think()
 {
 	pev->solid = SOLID_NOT;// kill the trigger for now !!!UNDONE
-	UTIL_SetOrigin( pev, pev->origin ); // Unlink from trigger list
+	UTIL_SetOrigin( this, pev->origin ); // Unlink from trigger list
 	SetThink( NULL );
 }
 
@@ -832,7 +832,7 @@ void CTriggerHurt :: Spawn()
 	if ( FBitSet (pev->spawnflags, SF_TRIGGER_HURT_START_OFF) )// if flagged to Start Turned Off, make trigger nonsolid.
 		pev->solid = SOLID_NOT;
 
-	UTIL_SetOrigin( pev, pev->origin );		// Link into the list
+	UTIL_SetOrigin( this, pev->origin );		// Link into the list
 }
 
 // trigger hurt that causes radiation will do a radius
@@ -911,7 +911,7 @@ void CBaseTrigger :: ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, 
 	{// turn the trigger off
 		pev->solid = SOLID_NOT;
 	}
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 }
 
 // When touched, a hurt trigger does DMG points of damage each half-second
@@ -1822,7 +1822,7 @@ void CTriggerPush :: Spawn( )
 
 	SetUse( &CTriggerPush::ToggleUse );
 
-	UTIL_SetOrigin( pev, pev->origin );		// Link into the list
+	UTIL_SetOrigin( this, pev->origin );		// Link into the list
 }
 
 
@@ -1913,7 +1913,7 @@ void CBaseTrigger :: TeleportTouch( CBaseEntity *pOther )
 
 	pevToucher->flags &= ~FL_ONGROUND;
 	
-	UTIL_SetOrigin( pevToucher, tmp );
+	UTIL_SetEntvarsOrigin( pevToucher, tmp );
 
 	pevToucher->angles = pentTarget->v.angles;
 
@@ -2306,7 +2306,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	// copy over player information
 	if (FBitSet (pev->spawnflags, SF_CAMERA_PLAYER_POSITION ) )
 	{
-		UTIL_SetOrigin( pev, pActivator->pev->origin + pActivator->pev->view_ofs );
+		UTIL_SetOrigin( this, pActivator->pev->origin + pActivator->pev->view_ofs );
 		pev->angles.x = -pActivator->pev->angles.x;
 		pev->angles.y = pActivator->pev->angles.y;
 		pev->angles.z = 0;
@@ -2606,7 +2606,7 @@ void CTriggerXenReturn::ReturnTouch( CBaseEntity* pOther )
 		vecDest.z -= pPlayer->pev->mins.z;
 		vecDest.z += 1;
 
-		UTIL_SetOrigin( pPlayer->pev, vecDest );
+		UTIL_SetOrigin( pPlayer, vecDest );
 
 		pPlayer->pev->angles = pTarget->pev->angles;
 		pPlayer->pev->v_angle = pTarget->pev->angles;
@@ -2690,7 +2690,7 @@ void COFTriggerGeneWormHit::Spawn()
 		pev->solid = SOLID_NOT;
 	}
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->dmg = gSkillData.geneWormDmgHit;
 	m_flLastDamageTime = gpGlobals->time;

@@ -597,6 +597,12 @@
     <ClCompile Include="..\..\dlls\effects\CParticleEmitter.cpp">
       <Filter>Source Files\dlls\effects</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\dlls\movewith.cpp">
+      <Filter>Source Files\dlls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\alias.cpp">
+      <Filter>Source Files\dlls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\dlls\doors.h">
@@ -994,6 +1000,9 @@
     </ClInclude>
     <ClInclude Include="..\..\dlls\effects\CParticleEmitter.h">
       <Filter>Source Files\dlls\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\movewith.h">
+      <Filter>Header Files\dlls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

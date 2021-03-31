@@ -161,7 +161,7 @@ void COFGonomeGuts::Shoot( entvars_t* pevOwner, Vector vecStart, Vector vecVeloc
 	auto pGuts = GetClassPtr<COFGonomeGuts>( nullptr );
 	pGuts->Spawn();
 
-	UTIL_SetOrigin( pGuts->pev, vecStart );
+	UTIL_SetOrigin( pGuts, vecStart );
 	pGuts->pev->velocity = vecVelocity;
 	pGuts->pev->owner = ENT( pevOwner );
 
@@ -184,7 +184,7 @@ COFGonomeGuts* COFGonomeGuts::GonomeGutsCreate( const Vector& origin )
 
 void COFGonomeGuts::Launch( entvars_t* pevOwner, Vector vecStart, Vector vecVelocity )
 {
-	UTIL_SetOrigin( pev, vecStart );
+	UTIL_SetOrigin( this, vecStart );
 	pev->velocity = vecVelocity;
 	pev->owner = ENT( pevOwner );
 

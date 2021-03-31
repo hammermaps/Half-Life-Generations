@@ -55,7 +55,7 @@ void CLaserSpot::Spawn()
 	pev->renderamt = 255;
 
 	SET_MODEL(ENT(pev), "sprites/laserdot.spr");
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 };
 
 //=========================================================
@@ -92,7 +92,7 @@ CRpgRocket *CRpgRocket::CreateRpgRocket( Vector vecOrigin, Vector vecAngles, CBa
 {
 	CRpgRocket *pRocket = GetClassPtr( (CRpgRocket *)NULL );
 
-	UTIL_SetOrigin( pRocket->pev, vecOrigin );
+	UTIL_SetOrigin( pRocket, vecOrigin );
 	pRocket->pev->angles = vecAngles;
 	pRocket->Spawn();
 	pRocket->SetTouch( &CRpgRocket::RocketTouch );
@@ -114,7 +114,7 @@ void CRpgRocket :: Spawn()
 
 	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
 	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->classname = MAKE_STRING("rpg_rocket");
 
@@ -558,7 +558,7 @@ void CRpg::UpdateSpot()
 		TraceResult tr;
 		UTIL_TraceLine ( vecSrc, vecSrc + vecAiming * 8192, dont_ignore_monsters, ENT(m_pPlayer->pev), &tr );
 		
-		UTIL_SetOrigin( m_pSpot->pev, tr.vecEndPos );
+		UTIL_SetOrigin( m_pSpot, tr.vecEndPos );
 	}
 #endif
 

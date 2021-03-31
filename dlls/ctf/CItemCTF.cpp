@@ -54,7 +54,7 @@ void CItemCTF::Spawn()
 	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_TRIGGER;
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	UTIL_SetSize( pev, { -16, -16, 0 }, { 16, 16, 48 } );
 
@@ -215,7 +215,7 @@ void CItemCTF::DropThink()
 
 	m_pLastSpawn = pSpawn;
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	if( !g_engfuncs.pfnDropToFloor( edict() ) )
 	{
@@ -263,7 +263,7 @@ void CItemCTF::ItemTouch( CBaseEntity* pOther )
 			pev->solid = SOLID_NOT;
 			pev->effects |= EF_NODRAW;
 
-			UTIL_SetOrigin( pev, pev->origin );
+			UTIL_SetOrigin( this, pev->origin );
 
 			pev->owner = pOther->edict();
 
@@ -300,7 +300,7 @@ void CItemCTF::DropItem( CBasePlayer* pPlayer, bool bForceRespawn )
 		pev->origin = pPlayer->pev->origin + Vector( 0, 0, ( pPlayer->pev->flags & FL_DUCKING ) ? 34 : 16 );
 	}
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->flags &= ~FL_ONGROUND;
 	pev->movetype = MOVETYPE_TOSS;
@@ -346,7 +346,7 @@ void CItemCTF::ScatterItem( CBasePlayer* pPlayer )
 		pev->origin = pPlayer->pev->origin + Vector( 0, 0, ( pPlayer->pev->flags & FL_DUCKING ) ? 34 : 16 );
 	}
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->flags &= ~FL_ONGROUND;
 	pev->movetype = MOVETYPE_TOSS;
@@ -397,7 +397,7 @@ void CItemCTF::ThrowItem( CBasePlayer* pPlayer )
 		pev->origin = pPlayer->pev->origin + Vector( 0, 0, ( pPlayer->pev->flags & FL_DUCKING ) ? 34 : 16 );
 	}
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	EMIT_SOUND( edict(), CHAN_VOICE, "ctf/itemthrow.wav", VOL_NORM, ATTN_NORM );
 

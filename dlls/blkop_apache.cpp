@@ -122,7 +122,7 @@ void COFBlackOpsApache :: Spawn()
 
 	SET_MODEL(ENT(pev), "models/blkop_apache.mdl");
 	UTIL_SetSize( pev, Vector( -32, -32, -64 ), Vector( 32, 32, 0 ) );
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->flags |= FL_MONSTER;
 	pev->takedamage		= DAMAGE_AIM;
@@ -973,7 +973,7 @@ void COFBlackOpsApacheHVR :: Spawn()
 
 	SET_MODEL(ENT(pev), "models/HVR.mdl");
 	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	SetThink( &COFBlackOpsApacheHVR::IgniteThink );
 	SetTouch( &COFBlackOpsApacheHVR::ExplodeTouch );

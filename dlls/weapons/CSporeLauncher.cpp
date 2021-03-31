@@ -400,7 +400,7 @@ public:
 
 		pev->origin.z += 16;
 
-		UTIL_SetOrigin( pev, pev->origin );
+		UTIL_SetOrigin( this, pev->origin );
 
 		pev->angles.x -= 90;
 

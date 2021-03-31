@@ -82,7 +82,7 @@ void CTFGoalFlag::ReturnFlag()
 	pev->effects |= EF_NODRAW;
 	pev->origin = pev->oldorigin;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 
 	if (pev->model)
 	{
@@ -213,7 +213,7 @@ void CTFGoalFlag::Spawn()
 	{
 		pev->movetype = MOVETYPE_TOSS;
 		pev->solid = SOLID_TRIGGER;
-		UTIL_SetOrigin(pev, pev->origin);
+		UTIL_SetOrigin(this, pev->origin);
 
 		Vector vecMax, vecMin;
 		vecMax.x = 16;
@@ -259,7 +259,7 @@ void CTFGoalFlag::Spawn()
 				pev->netname = MAKE_STRING("goalflag");
 			}
 
-			UTIL_SetOrigin(pev, pev->origin);
+			UTIL_SetOrigin(this, pev->origin);
 
 			m_OriginalAngles = pev->angles;
 
@@ -726,7 +726,7 @@ void CTFGoalFlag::DoDrop(const Vector& vecOrigin)
 {
 	pev->flags &= ~FL_ONGROUND;
 	pev->origin = vecOrigin;
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 
 	pev->angles = g_vecZero;
 

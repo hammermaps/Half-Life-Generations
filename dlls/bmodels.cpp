@@ -107,7 +107,7 @@ void CFuncWallToggle :: TurnOff()
 {
 	pev->solid = SOLID_NOT;
 	pev->effects |= EF_NODRAW;
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 }
 
 
@@ -115,7 +115,7 @@ void CFuncWallToggle :: TurnOn()
 {
 	pev->solid = SOLID_BSP;
 	pev->effects &= ~EF_NODRAW;
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 }
 
 
@@ -416,7 +416,7 @@ void CFuncRotating :: Spawn( )
 		pev->movetype	= MOVETYPE_PUSH;
 	}
 
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 	SET_MODEL( ENT(pev), STRING(pev->model) );
 
 	SetUse( &CFuncRotating::RotatingUse );
@@ -796,7 +796,7 @@ void CPendulum :: Spawn()
 	else
 		pev->solid		= SOLID_BSP;
 	pev->movetype	= MOVETYPE_PUSH;
-	UTIL_SetOrigin(pev, pev->origin);
+	UTIL_SetOrigin(this, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model) );
 
 	if ( m_distance == 0 )

@@ -12,6 +12,9 @@
 *   without written permission from Valve LLC.
 *
 ****/
+#ifndef UTIL_H
+#define UTIL_H
+
 #include "archtypes.h"     // DAL
 
 //
@@ -69,6 +72,11 @@ inline edict_t *FIND_ENTITY_BY_TARGET(edict_t *entStart, const char *pszName)
 // Until we figure out why "const" gives the compiler problems, we'll just have to use
 // this bogus "empty" define to mark things as constant.
 #define CONSTANT
+
+/**
+*	Number of static buffers used by functions that return pointers to static string buffers.
+*/
+const size_t NUM_STATIC_BUFFERS = 4;
 
 // More explicit than "int"
 typedef int EOFFSET;
@@ -175,7 +183,18 @@ typedef enum
 
 } MONSTERSTATE;
 
+//LRC- the values used for the new "global states" mechanism.
+typedef enum
+{
+	STATE_OFF = 0,	// disabled, inactive, invisible, closed, or stateless. Or non-alert monster.
+	STATE_TURN_ON,  // door opening, env_fade fading in, etc.
+	STATE_ON,		// enabled, active, visisble, or open. Or alert monster.
+	STATE_TURN_OFF, // door closing, monster dying (?).
+	STATE_IN_USE,	// player is in control (train/tank/barney/scientist).
+					// In_Use isn't very useful, I'll probably remove it.
+} STATE;
 
+extern char* GetStringForState(STATE state);
 
 // Things that toggle (buttons/triggers/doors) need this
 typedef enum
@@ -203,11 +222,21 @@ extern Vector		UTIL_VecToAngles		(const Vector &vec);
 extern float		UTIL_AngleMod			(float a);
 extern float		UTIL_AngleDiff			( float destAngle, float srcAngle );
 
-extern CBaseEntity	*UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius);
-extern CBaseEntity	*UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue );
-extern CBaseEntity	*UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *szName );
-extern CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName );
-extern CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, Vector &vecSrc, float flRadius );
+extern Vector		UTIL_AxisRotationToAngles(const Vector& vec, float angle); //LRC
+extern Vector		UTIL_AxisRotationToVec(const Vector& vec, float angle); //LRC
+
+//LRC
+class CBaseAlias;
+extern void			UTIL_AddToAliasList(CBaseAlias* pAlias);
+extern void			UTIL_FlushAliases(void);
+
+extern CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
+extern CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
+extern CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName);
+extern CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName);
+extern CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName, CBaseEntity* pActivator); //LRC - for $locus references
+extern CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szName);
+extern CBaseEntity* UTIL_FindEntityGeneric(const char* szName, Vector& vecSrc, float flRadius);
 
 // returns a CBaseEntity pointer to a player by index.  Only returns if the player is spawned and connected
 // otherwise returns NULL
@@ -226,18 +255,20 @@ inline void UTIL_MakeVectorsPrivate( const Vector &vecAngles, float *p_vForward,
 	g_engfuncs.pfnAngleVectors( vecAngles, p_vForward, p_vRight, p_vUp );
 }
 
-extern void			UTIL_MakeAimVectors		( const Vector &vecAngles ); // like MakeVectors, but assumes pitch isn't inverted
-extern void			UTIL_MakeInvVectors		( const Vector &vec, globalvars_t *pgv );
+extern void			UTIL_MakeAimVectors(const Vector& vecAngles); // like MakeVectors, but assumes pitch isn't inverted
+extern void			UTIL_MakeInvVectors(const Vector& vec, globalvars_t* pgv);
 
-extern void			UTIL_SetOrigin			( entvars_t* pev, const Vector &vecOrigin );
-extern void			UTIL_EmitAmbientSound	( edict_t *entity, const Vector &vecOrigin, const char *samp, float vol, float attenuation, int fFlags, int pitch );
-extern void			UTIL_ParticleEffect		( const Vector &vecOrigin, const Vector &vecDirection, ULONG ulColor, ULONG ulCount );
-extern void			UTIL_ScreenShake		( const Vector &center, float amplitude, float frequency, float duration, float radius );
-extern void			UTIL_ScreenShakeAll		( const Vector &center, float amplitude, float frequency, float duration );
-extern void			UTIL_ShowMessage		( const char *pString, CBaseEntity *pPlayer );
-extern void			UTIL_ShowMessageAll		( const char *pString );
-extern void			UTIL_ScreenFadeAll		( const Vector &color, float fadeTime, float holdTime, int alpha, int flags );
-extern void			UTIL_ScreenFade			( CBaseEntity *pEntity, const Vector &color, float fadeTime, float fadeHold, int alpha, int flags );
+extern void			UTIL_SetEdictOrigin(edict_t* pEdict, const Vector& vecOrigin);
+extern void			UTIL_SetEntvarsOrigin(entvars_t* pEntvars, const Vector& vecOrigin);
+extern void			UTIL_SetOrigin(CBaseEntity* pEntity, const Vector& vecOrigin);
+extern void			UTIL_EmitAmbientSound(edict_t* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch);
+extern void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, ULONG ulColor, ULONG ulCount);
+extern void			UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, float duration, float radius);
+extern void			UTIL_ScreenShakeAll(const Vector& center, float amplitude, float frequency, float duration);
+extern void			UTIL_ShowMessage(const char* pString, CBaseEntity* pPlayer);
+extern void			UTIL_ShowMessageAll(const char* pString);
+extern void			UTIL_ScreenFadeAll(const Vector& color, float fadeTime, float holdTime, int alpha, int flags);
+extern void			UTIL_ScreenFade(CBaseEntity* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags);
 
 typedef enum { ignore_monsters=1, dont_ignore_monsters=0, missile=2 } IGNORE_MONSTERS;
 typedef enum { ignore_glass=1, dont_ignore_glass=0 } IGNORE_GLASS;
@@ -250,24 +281,32 @@ extern void			UTIL_TraceModel			(const Vector &vecStart, const Vector &vecEnd, i
 extern Vector		UTIL_GetAimVector		(edict_t* pent, float flSpeed);
 extern int			UTIL_PointContents		(const Vector &vec);
 
-extern int			UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
-extern void			UTIL_BloodStream( const Vector &origin, const Vector &direction, int color, int amount );
-extern void			UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, int amount );
-extern Vector		UTIL_RandomBloodVector();
-extern BOOL			UTIL_ShouldShowBlood( int bloodColor );
-extern void			UTIL_BloodDecalTrace( TraceResult *pTrace, int bloodColor );
-extern void			UTIL_DecalTrace( TraceResult *pTrace, int decalNumber );
-extern void			UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, BOOL bIsCustom );
-extern void			UTIL_GunshotDecalTrace( TraceResult *pTrace, int decalNumber );
-extern void			UTIL_Sparks( const Vector &position );
-extern void			UTIL_Ricochet( const Vector &position, float scale );
-extern void			UTIL_StringToVector( float *pVector, const char *pString );
-extern void			UTIL_StringToIntArray( int *pVector, int count, const char *pString );
-extern Vector		UTIL_ClampVectorToBox( const Vector &input, const Vector &clampSize );
-extern float		UTIL_Approach( float target, float value, float speed );
-extern float		UTIL_ApproachAngle( float target, float value, float speed );
-extern float		UTIL_AngleDistance( float next, float cur );
+extern int			UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity* pActivator);
+extern void			UTIL_BloodStream(const Vector& origin, const Vector& direction, int color, int amount);
+extern void			UTIL_BloodDrips(const Vector& origin, const Vector& direction, int color, int amount);
+extern Vector		UTIL_RandomBloodVector(void);
+extern BOOL			UTIL_ShouldShowBlood(int bloodColor);
+extern void			UTIL_BloodDecalTrace(TraceResult* pTrace, int bloodColor);
+extern void			UTIL_DecalTrace(TraceResult* pTrace, int decalNumber);
+extern void			UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber, BOOL bIsCustom);
+extern void			UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber);
+extern void			UTIL_Sparks(const Vector& position);
+extern void			UTIL_Ricochet(const Vector& position, float scale);
+extern void			UTIL_StringToVector(float* pVector, const char* pString);
+extern void			UTIL_StringToRandomVector(float* pVector, const char* pString); //LRC
+extern void			UTIL_StringToIntArray(int* pVector, int count, const char* pString);
+extern Vector		UTIL_ClampVectorToBox(const Vector& input, const Vector& clampSize);
+extern float		UTIL_Approach(float target, float value, float speed);
+extern float		UTIL_ApproachAngle(float target, float value, float speed);
+extern float		UTIL_AngleDistance(float next, float cur);
 
+/**
+*	Utility function to format strings without creating a buffer to store the result in.
+*	@param format Format string.
+*	@param ... Arguments.
+*	@return Pointer to the string. Up to NUM_STATIC_BUFFERS strings returned sequentially from this can be valid at the same time.
+*	@see NUM_STATIC_BUFFERS.
+*/
 extern char			*UTIL_VarArgs( const char *format, ... );
 extern void			UTIL_Remove( CBaseEntity *pEntity );
 extern BOOL			UTIL_IsValidEntity( edict_t *pent );
@@ -321,10 +360,7 @@ extern void			UTIL_HudMessageAll( const hudtextparms_t &textparms, const char *p
 extern void			UTIL_HudMessage( CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage );
 
 // for handy use with ClientPrint params
-extern char *UTIL_dtos1( int d );
-extern char *UTIL_dtos2( int d );
-extern char *UTIL_dtos3( int d );
-extern char *UTIL_dtos4( int d );
+extern char* UTIL_dtos(const int iValue);
 
 // Writes message to console with timestamp and FragLog header.
 extern void			UTIL_LogPrintf( const char *fmt, ... );
@@ -520,6 +556,10 @@ int UTIL_SharedRandomLong( unsigned int seed, int low, int high );
 float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
 
 float UTIL_WeaponTimeBase();
+int GetStdLightStyle(int iStyle); //LRC- declared here so it can be used by everything that
+									// needs to deal with the standard lightstyles.
+// LRC- for aliases and groups
+CBaseEntity* UTIL_FollowReference(CBaseEntity* pStartEntity, const char* szName);
 
 CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
 
@@ -703,3 +743,4 @@ inline CEntityEnumeratorWithStart<T, FindByTargetnameFunctor<T>> UTIL_FindEntiti
 {
 	return { pszName, pStartEntity };
 }
+#endif // UTIL_H

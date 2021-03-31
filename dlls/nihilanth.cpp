@@ -286,7 +286,7 @@ void CNihilanth :: Spawn()
 	SET_MODEL(edict(), "models/nihilanth.mdl");
 	// UTIL_SetSize(pev, Vector( -300, -300, 0), Vector(300, 300, 512));
 	UTIL_SetSize(pev, Vector( -32, -32, 0), Vector(32, 32, 64));
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->flags			|= FL_MONSTER;
 	pev->takedamage		= DAMAGE_AIM;
@@ -964,7 +964,7 @@ void CNihilanth :: Flight()
 			m_flForce -= 10;
 	}
 
-	UTIL_SetOrigin( pev, pev->origin + m_velocity * 0.1 );
+	UTIL_SetOrigin( this, pev->origin + m_velocity * 0.1 );
 	pev->angles = pev->angles + m_avelocity * 0.1;
 
 	// ALERT( at_console, "%5.0f %5.0f : %4.0f : %3.0f : %2.0f\n", m_posDesired.z, pev->origin.z, m_velocity.z, m_avelocity.y, m_flForce ); 
@@ -1038,7 +1038,7 @@ void CNihilanth :: 	TargetSphere( USE_TYPE useType, float value )
 
 	Vector vecSrc, vecAngles;
 	GetAttachment( 2, vecSrc, vecAngles ); 
-	UTIL_SetOrigin( pSphere->pev, vecSrc );
+	UTIL_SetOrigin( pSphere, vecSrc );
 	pSphere->Use( this, this, useType, value );
 	pSphere->pev->velocity = m_vecDesired * RANDOM_FLOAT( 50, 100 ) + Vector( RANDOM_FLOAT( -50, 50 ), RANDOM_FLOAT( -50, 50 ), RANDOM_FLOAT( -50, 50 ) );
 }
@@ -1346,7 +1346,7 @@ void CNihilanthHVR :: CircleInit( CBaseEntity *pTarget )
 	pev->renderamt = 255;
 
 	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	SetThink( &CNihilanthHVR::HoverThink );
 	SetTouch( &CNihilanthHVR::BounceTouch );

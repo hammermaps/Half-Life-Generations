@@ -69,7 +69,7 @@ void CTFGoal::Spawn()
     if (!m_iGoalState)
         m_iGoalState = 1;
 
-    UTIL_SetOrigin(pev, pev->origin);
+    UTIL_SetOrigin(this, pev->origin);
 
     SetThink(&CTFGoal::PlaceGoal);
     pev->nextthink = gpGlobals->time + 0.2;

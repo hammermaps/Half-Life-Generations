@@ -58,7 +58,7 @@ void CRopeSegment::Spawn()
 	pev->solid = SOLID_TRIGGER;
 	pev->flags |= FL_ALWAYSTHINK;
 	pev->effects = EF_NODRAW;
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	UTIL_SetSize( pev, Vector( -30, -30, -30 ), Vector( 30, 30, 30 ) );
 
@@ -88,7 +88,7 @@ void CRopeSegment::Touch( CBaseEntity* pOther )
 			{
 				auto& data = m_pSample->GetData();
 
-				UTIL_SetOrigin( pOther->pev, data.mPosition );
+				UTIL_SetOrigin( pOther, data.mPosition );
 
 				pPlayer->SetOnRopeState( true );
 				pPlayer->SetRope( m_pSample->GetMasterRope() );

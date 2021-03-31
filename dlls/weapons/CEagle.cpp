@@ -321,7 +321,7 @@ void CEagle::UpdateLaser()
 
 		UTIL_TraceLine( vecSrc, vecEnd, dont_ignore_monsters, m_pPlayer->edict(), &tr );
 
-		UTIL_SetOrigin( m_pLaser->pev, tr.vecEndPos );
+		UTIL_SetOrigin( m_pLaser, tr.vecEndPos );
 	}
 #endif
 }

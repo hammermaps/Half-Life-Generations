@@ -148,11 +148,11 @@ void CRope::Spawn()
 	{
 		CRopeSegment* pSegment = seg[ 0 ] = CRopeSegment::CreateSegment( m_CurrentSys[ 0 ], GetBodyModel() );
 
-		UTIL_SetOrigin( pSegment->pev, pev->origin );
+		UTIL_SetOrigin( pSegment, pev->origin );
 
 		pSegment = altseg[ 0 ] = CRopeSegment::CreateSegment( m_CurrentSys[ 0 ], GetBodyModel() );
 
-		UTIL_SetOrigin( pSegment->pev, pev->origin );
+		UTIL_SetOrigin( pSegment, pev->origin );
 	}
 
 	Vector origin;
@@ -181,8 +181,8 @@ void CRope::Spawn()
 
 			origin = flLength * vecGravity + pCurrent->pev->origin;
 
-			UTIL_SetOrigin( seg[ uiSeg ]->pev, origin );
-			UTIL_SetOrigin( altseg[ uiSeg ]->pev, origin );
+			UTIL_SetOrigin( seg[ uiSeg ], origin );
+			UTIL_SetOrigin( altseg[ uiSeg ], origin );
 		}
 	}
 
@@ -201,8 +201,8 @@ void CRope::Spawn()
 
 	origin = flLength * vecGravity + pCurrent->pev->origin;
 
-	UTIL_SetOrigin(seg[ m_uiSegments - 1 ]->pev, origin );
-	UTIL_SetOrigin(altseg[ m_uiSegments - 1 ]->pev, origin );
+	UTIL_SetOrigin(seg[ m_uiSegments - 1 ], origin );
+	UTIL_SetOrigin(altseg[ m_uiSegments - 1 ], origin );
 
 	memset( seg + m_uiSegments, 0, sizeof( CRopeSegment* ) * ( MAX_SEGMENTS - m_uiSegments ) );
 	memset( altseg + m_uiSegments, 0, sizeof( CRopeSegment* ) * ( MAX_SEGMENTS - m_uiSegments ) );
@@ -690,7 +690,7 @@ void CRope::TraceModels( CRopeSegment** ppPrimarySegs, CRopeSegment** ppHiddenSe
 
 				TruncateEpsilon( vecOrigin );
 
-				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ]->pev, vecOrigin );
+				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ], vecOrigin );
 				
 				Vector vecNormal = tr.vecPlaneNormal.Normalize() * 20000.0;
 
@@ -708,7 +708,7 @@ void CRope::TraceModels( CRopeSegment** ppPrimarySegs, CRopeSegment** ppHiddenSe
 
 				TruncateEpsilon( vecOrigin );
 
-				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ]->pev, vecOrigin );
+				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ], vecOrigin );
 			}
 		}
 	}
@@ -727,7 +727,7 @@ void CRope::TraceModels( CRopeSegment** ppPrimarySegs, CRopeSegment** ppHiddenSe
 
 				TruncateEpsilon( vecOrigin );
 
-				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ]->pev, vecOrigin );
+				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ], vecOrigin );
 			}
 			else
 			{
@@ -738,7 +738,7 @@ void CRope::TraceModels( CRopeSegment** ppPrimarySegs, CRopeSegment** ppHiddenSe
 
 				TruncateEpsilon( vecOrigin );
 
-				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ]->pev, vecOrigin );
+				UTIL_SetOrigin( ppPrimarySegs[ uiSeg ], vecOrigin );
 
 				ppPrimarySegs[ uiSeg ]->GetSample()->GetData().mApplyExternalForce = true;
 
@@ -826,7 +826,7 @@ void CRope::SetRopeSegments( const size_t uiNumSegments,
 			//vecOrigin.x += 10.0;
 			//vecOrigin.y += 10.0;
 
-			UTIL_SetOrigin( pHidden->pev, vecOrigin );
+			UTIL_SetOrigin( pHidden, vecOrigin );
 		}
 	}
 }

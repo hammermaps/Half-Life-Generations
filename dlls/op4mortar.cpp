@@ -73,7 +73,7 @@ void CMortarShell::Spawn()
 	SET_MODEL( edict(), "models/mortarshell.mdl" );
 
 	UTIL_SetSize( pev, g_vecZero, g_vecZero );
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 	pev->classname = MAKE_STRING( "mortar_shell" );
 
 	SetThink( &CMortarShell::BurnThink );
@@ -218,7 +218,7 @@ CMortarShell* CMortarShell::CreateMortarShell( Vector vecOrigin, Vector vecAngle
 {
 	auto pShell = GetClassPtr<CMortarShell>( nullptr );
 
-	UTIL_SetOrigin( pShell->pev, vecOrigin );
+	UTIL_SetOrigin( pShell, vecOrigin );
 
 	pShell->pev->angles = vecAngles;
 	pShell->m_velocity = velocity;
@@ -374,7 +374,7 @@ void COp4Mortar::Spawn()
 {
 	Precache();
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	SET_MODEL( edict(), "models/mortar.mdl" );
 
@@ -837,7 +837,7 @@ void COp4MortarController::Spawn()
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_PUSH;
 
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	SET_MODEL( edict(), STRING( pev->model ) );
 

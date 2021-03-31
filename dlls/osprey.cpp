@@ -151,7 +151,7 @@ void COsprey :: Spawn()
 
 	SET_MODEL(ENT(pev), "models/osprey.mdl");
 	UTIL_SetSize(pev, Vector( -400, -400, -100), Vector(400, 400, 32));
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin( this, pev->origin );
 
 	pev->flags |= FL_MONSTER;
 	pev->takedamage		= DAMAGE_YES;
@@ -422,7 +422,7 @@ void COsprey::Flight( )
 	Vector ang = (m_ang1) * (1.0 - f) + (m_ang2) * f;
 	m_velocity = m_vel1 * (1.0 - f) + m_vel2 * f;
 
-	UTIL_SetOrigin( pev, pos );
+	UTIL_SetOrigin( this, pos );
 	pev->angles = ang;
 	UTIL_MakeAimVectors( pev->angles );
 	float flSpeed = DotProduct( gpGlobals->v_forward, m_velocity );
