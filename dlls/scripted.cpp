@@ -882,10 +882,6 @@ BOOL CBaseMonster :: CineCleanup( )
 		pev->deadflag = DEAD_NO;
 	}
 
-
-	//	SetAnimation( m_MonsterState );
-	//LRC- removed, was never implemented. ClearBits(pev->spawnflags, SF_MONSTER_WAIT_FOR_SCRIPT );
-
 	return TRUE;
 }
 

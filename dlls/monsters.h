@@ -34,7 +34,7 @@
 #define	HITGROUP_HEAD		1
 #define	HITGROUP_CHEST		2
 #define	HITGROUP_STOMACH	3
-#define HITGROUP_LEFTARM	4	
+#define HITGROUP_LEFTARM	4
 #define HITGROUP_RIGHTARM	5
 #define HITGROUP_LEFTLEG	6
 #define HITGROUP_RIGHTLEG	7
@@ -48,7 +48,7 @@
 #define SF_MONSTER_PRISONER				16 // monster won't attack anyone, no one will attacke him.
 //										32
 //										64
-#define	SF_MONSTER_WAIT_FOR_SCRIPT		128 //spawnflag that makes monsters wait to check for attacking until the script is done or they've been attacked
+#define SF_MONSTER_NO_YELLOW_BLOBS		128 //LRC- if the monster is stuck, don't give errors or show yellow blobs.
 #define SF_MONSTER_PREDISASTER			256	//this is a predisaster scientist or barney. Influences how they speak.
 #define SF_MONSTER_FADECORPSE			512 // Fade out corpse after death
 #define SF_MONSTER_NO_WPN_DROP			1024 //LRC- never drop your weapon (player can't pick it up.)
@@ -62,7 +62,6 @@
 #define SF_MONSTER_WAIT_UNTIL_PROVOKED	64 // don't attack the player unless provoked
 
 
-
 // MoveToOrigin stuff
 #define		MOVE_START_TURN_DIST	64 // when this far away from moveGoal, start turning to face next goal
 #define		MOVE_STUCK_DIST			32 // if a monster can't step this far, it is stuck.
@@ -73,20 +72,19 @@
 #define		MOVE_STRAFE				1// moves in direction specified, no matter which way monster is facing
 
 // spawn flags 256 and above are already taken by the engine
-extern void UTIL_MoveToOrigin( edict_t* pent, const Vector &vecGoal, float flDist, int iMoveType ); 
+extern void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int iMoveType);
 
-Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0 );
-Vector VecCheckThrow ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0 );
-extern DLL_GLOBAL Vector		g_vecAttackDir;
+Vector VecCheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
+Vector VecCheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
+extern DLL_GLOBAL Vector g_vecAttackDir;
 extern DLL_GLOBAL CONSTANT float g_flMeleeRange;
 extern DLL_GLOBAL CONSTANT float g_flMediumRange;
 extern DLL_GLOBAL CONSTANT float g_flLongRange;
-extern void EjectBrass (const Vector &vecOrigin, const Vector &vecVelocity, float rotation, int model, int soundtype );
-extern void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count );
-extern BOOL IsFacing( entvars_t *pevTest, const Vector &reference );
+extern void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype);
+extern void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count);
+extern BOOL IsFacing(entvars_t* pevTest, const Vector& reference);
 
-BOOL FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget );
-BOOL FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTargetOrigin, float flSize = 0.0 );
+BOOL FBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
 
 // monster to monster relationship types
 #define R_AL	-2 // (ALLY) pals. Good alternative to R_NO when applicable.
@@ -114,7 +112,7 @@ BOOL FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTarget
 
 // trigger conditions for scripted AI
 // these MUST match the CHOICES interface in halflife.fgd for the base monster
-enum 
+enum
 {
 	AITRIGGER_NONE = 0,
 	AITRIGGER_SEEPLAYER_ANGRY_AT_PLAYER,
@@ -129,6 +127,7 @@ enum
 	AITRIGGER_SEEPLAYER_UNCONDITIONAL,
 	AITRIGGER_SEEPLAYER_NOT_IN_COMBAT,
 };
+
 /*
 		0 : "No Trigger"
 		1 : "See Player"
@@ -170,24 +169,23 @@ struct GibData
 class CGib : public CBaseEntity
 {
 public:
-	void Spawn( const char *szGibModel );
-	void EXPORT BounceGibTouch ( CBaseEntity *pOther );
-	void EXPORT StickyGibTouch ( CBaseEntity *pOther );
+	void Spawn(const char* szGibModel);
+	void EXPORT BounceGibTouch(CBaseEntity* pOther);
+	void EXPORT StickyGibTouch(CBaseEntity* pOther);
 	void EXPORT WaitTillLand();
-	void		LimitVelocity();
+	void LimitVelocity();
 
-	int	ObjectCaps() override { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
-	static	void SpawnHeadGib( entvars_t *pevVictim );
-	static	void SpawnRandomGibs( entvars_t *pevVictim, int cGibs, const GibData& gibData );
-	static	void SpawnRandomGibs( entvars_t *pevVictim, int cGibs, int human );
-	static  void SpawnStickyGibs( entvars_t *pevVictim, Vector vecOrigin, int cGibs );
+	int ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
+	static void SpawnHeadGib(entvars_t* pevVictim);
+	static void SpawnRandomGibs(entvars_t* pevVictim, int cGibs, const GibData& gibData);
+	static void SpawnRandomGibs(entvars_t* pevVictim, int cGibs, int human);
+	static void SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs);
 
-	int		m_bloodColor;
-	int		m_cBloodDecals;
-	int		m_material;
-	float	m_lifeTime;
+	int m_bloodColor;
+	int m_cBloodDecals;
+	int m_material;
+	float m_lifeTime;
 };
-
 
 #define CUSTOM_SCHEDULES\
 		virtual Schedule_t *ScheduleFromName( const char *pName );\
@@ -204,7 +202,5 @@ public:
 				return baseClass::ScheduleFromName(pName);\
 			return pSchedule;\
 		}
-
-
 
 #endif	//MONSTERS_H
