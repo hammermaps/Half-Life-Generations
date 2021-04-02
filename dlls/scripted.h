@@ -65,6 +65,10 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	//LRC: states for script entities
+	virtual STATE GetState() { return m_iState; };
+	STATE	m_iState;
+
 	// void EXPORT CineSpawnThink();
 	void EXPORT CineThink();
 	void Pain();

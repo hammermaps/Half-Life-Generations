@@ -941,3 +941,10 @@ bool UTIL_IsCTF()
 {
 	return giTeamplay == 2;
 }
+
+//LRC
+void CBasePlayerWeapon::SetNextThink(float delay)
+{
+	m_fNextThink = UTIL_WeaponTimeBase() + delay;
+	pev->nextthink = m_fNextThink;
+}

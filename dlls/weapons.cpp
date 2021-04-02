@@ -644,6 +644,13 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 	SetTouch( NULL );
 }
 
+//LRC
+void CBasePlayerWeapon::SetNextThink(float delay)
+{
+	m_fNextThink = UTIL_WeaponTimeBase() + delay;
+	pev->nextthink = m_fNextThink;
+}
+
 // CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
 int CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
 {

@@ -123,6 +123,11 @@ public:
 	void EXPORT			MonsterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void EXPORT			CorpseUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
+	// LRC- to allow level-designers to change monster allegiances
+	int					m_iClass;
+	int					m_iPlayerReact;
+	virtual int			Classify() { return m_iClass ? m_iClass : CLASS_NONE; }
+	
 // overrideable Monster member functions
 	
 	int	 BloodColor() override { return m_bloodColor; }

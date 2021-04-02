@@ -57,6 +57,10 @@ TYPEDESCRIPTION	CBaseMonster::m_SaveData[] =
 	DEFINE_FIELD( CBaseMonster, m_hEnemy, FIELD_EHANDLE ),
 	DEFINE_FIELD( CBaseMonster, m_hTargetEnt, FIELD_EHANDLE ),
 	DEFINE_ARRAY( CBaseMonster, m_hOldEnemy, FIELD_EHANDLE, MAX_OLD_ENEMIES ),
+
+	DEFINE_FIELD(CBaseMonster, m_iClass, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseMonster, m_iPlayerReact, FIELD_INTEGER),
+	
 	DEFINE_ARRAY( CBaseMonster, m_vecOldEnemy, FIELD_POSITION_VECTOR, MAX_OLD_ENEMIES ),
 	DEFINE_FIELD( CBaseMonster, m_flFieldOfView, FIELD_FLOAT ),
 	DEFINE_FIELD( CBaseMonster, m_flWaitFinished, FIELD_TIME ),
@@ -3014,6 +3018,16 @@ void CBaseMonster :: KeyValue( KeyValueData *pkvd )
 		m_iTriggerCondition = atoi( pkvd->szValue );
 		pkvd->fHandled = TRUE;
 	}
+	else if (FStrEq(pkvd->szKeyName, "m_iClass")) //LRC
+	{
+		m_iClass = atoi(pkvd->szValue);
+		pkvd->fHandled = TRUE;
+	}
+	else if (FStrEq(pkvd->szKeyName, "m_iPlayerReact")) //LRC
+	{
+		m_iPlayerReact = atoi(pkvd->szValue);
+		pkvd->fHandled = TRUE;
+	}
 	else
 	{
 		CBaseToggle::KeyValue( pkvd );
@@ -3029,15 +3043,13 @@ void CBaseMonster :: KeyValue( KeyValueData *pkvd )
 //=========================================================
 BOOL CBaseMonster :: FCheckAITrigger ()
 {
-	BOOL fFireTarget;
-
 	if ( m_iTriggerCondition == AITRIGGER_NONE )
 	{
 		// no conditions, so this trigger is never fired.
 		return FALSE; 
 	}
 
-	fFireTarget = FALSE;
+	BOOL fFireTarget = FALSE;
 
 	switch ( m_iTriggerCondition )
 	{

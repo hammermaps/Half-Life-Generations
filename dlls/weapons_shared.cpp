@@ -76,6 +76,11 @@ BOOL CBasePlayerWeapon::CanDeploy()
 	return TRUE;
 }
 
+/*
+=====================
+CBasePlayerWeapon :: DefaultDeploy
+=====================
+*/
 BOOL CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)

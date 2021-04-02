@@ -355,6 +355,8 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	virtual void SetNextThink(float delay); //LRC
+
 	// generic weapon versions of CBasePlayerItem calls
 	int AddToPlayer( CBasePlayer *pPlayer ) override;
 	int AddDuplicate( CBasePlayerItem *pItem ) override;

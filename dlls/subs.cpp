@@ -383,6 +383,19 @@ void CBaseToggle::KeyValue( KeyValueData *pkvd )
 		CBaseDelay::KeyValue( pkvd );
 }
 
+//LRC- mapping toggle-states to global states
+STATE CBaseToggle::GetState()
+{
+	switch (m_toggle_state)
+	{
+	case TS_AT_TOP:		return STATE_ON;
+	case TS_AT_BOTTOM:	return STATE_OFF;
+	case TS_GOING_UP:	return STATE_TURN_ON;
+	case TS_GOING_DOWN:	return STATE_TURN_OFF;
+	default:			return STATE_OFF; // This should never happen.
+	}
+}
+
 /*
 =============
 LinearMove

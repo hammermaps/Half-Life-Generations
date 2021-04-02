@@ -88,7 +88,7 @@ void CShockBeam::Spawn()
 
 		if( g_pGameRules->IsMultiplayer() )
 		{
-			pev->nextthink = gpGlobals->time + 0.01;
+			SetNextThink(0.01);
 			return;
 		}
 
@@ -109,7 +109,7 @@ void CShockBeam::Spawn()
 			m_pBeam2->SetNoise(30);
 			m_pBeam2->SetScrollRate(30);
 
-			pev->nextthink = gpGlobals->time + 0.01;
+			SetNextThink(0.01);
 		}
 	}
 
@@ -139,7 +139,7 @@ void CShockBeam::FlyThink()
 	ArmBeam(-1);
 	ArmBeam(1);
 	
-	pev->nextthink = gpGlobals->time + 0.01;
+	SetNextThink(0.01);
 }
 
 void CShockBeam::ExplodeThink()
@@ -235,7 +235,7 @@ void CShockBeam::BallTouch( CBaseEntity* pOther )
 	}
 
 	SetThink(&CShockBeam::ExplodeThink);
-	pev->nextthink = gpGlobals->time + 0.01;
+	SetNextThink(0.01);
 }
 
 void CShockBeam::Explode()

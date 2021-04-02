@@ -50,6 +50,8 @@ public:
 	void Expand( float scaleSpeed, float fadeSpeed );
 	void SpriteInit( const char *pSpriteName, const Vector &origin );
 
+	virtual STATE GetState() { return (pev->effects & EF_NODRAW) ? STATE_OFF : STATE_ON; };
+	
 	inline void SetAttachment( edict_t *pEntity, int attachment )
 	{
 		if ( pEntity )
@@ -192,6 +194,8 @@ public:
 	void	TurnOn();
 	void	TurnOff();
 	int		IsOn();
+
+	virtual STATE GetState() { return (pev->effects & EF_NODRAW) ? STATE_OFF : STATE_ON; };
 
 	void	FireAtPoint( TraceResult &point );
 

@@ -461,6 +461,7 @@ void CBarney :: Precache()
 	// every new barney must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
 	TalkInit();
+	
 	CTalkMonster::Precache();
 }	
 

@@ -935,6 +935,8 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	STATE GetState() { return m_playing ? STATE_ON : STATE_OFF; }
+
 	CBaseMonster *FindEntity();
 	BOOL AcceptableSpeaker( CBaseMonster *pMonster );
 	BOOL StartSentence( CBaseMonster *pTarget );
@@ -949,6 +951,7 @@ private:
 	float	m_flAttenuation;
 	float	m_flVolume;
 	BOOL	m_active;
+	BOOL	m_playing; //LRC- is the sentence playing? (for GetState)
 	int		m_iszListener;	// name of entity to look at while talking
 };
 
@@ -967,6 +970,7 @@ TYPEDESCRIPTION	CScriptedSentence::m_SaveData[] =
 	DEFINE_FIELD( CScriptedSentence, m_flAttenuation, FIELD_FLOAT ),
 	DEFINE_FIELD( CScriptedSentence, m_flVolume, FIELD_FLOAT ),
 	DEFINE_FIELD( CScriptedSentence, m_active, FIELD_BOOLEAN ),
+	DEFINE_FIELD(CScriptedSentence,  m_playing, FIELD_BOOLEAN),
 	DEFINE_FIELD( CScriptedSentence, m_iszListener, FIELD_STRING ),
 };
 

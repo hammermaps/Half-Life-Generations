@@ -39,6 +39,8 @@ public:
 	BOOL IsBreakable();
 	BOOL SparkWhenHit();
 
+	STATE GetState(void);
+
 	int	 DamageDecal( int bitsDamageType ) override;
 
 	void EXPORT		Die();

@@ -174,6 +174,18 @@ void CBreakable::Spawn()
 		pev->flags |= FL_WORLDBRUSH;
 }
 
+STATE CBreakable::GetState()
+{
+	//if (m_iRespawnTime)
+	//{
+	//	if (pev->effects & EF_NODRAW)
+	//		return STATE_OFF;
+	//	else
+	//		return STATE_ON;
+	//}
+	//else
+	return STATE_OFF;
+}
 
 const char *CBreakable::pSoundsWood[] = 
 {
