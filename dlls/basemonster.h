@@ -305,6 +305,8 @@ public:
 	virtual BOOL	HasAlienGibs();
 	virtual void	FadeMonster();	// Called instead of GibMonster() when gibs are disabled
 
+	BOOL IsFacing(entvars_t* pevTest, const Vector& reference);
+	
 	Vector ShootAtEnemy( const Vector &shootOrigin );
 	Vector BodyTarget( const Vector &posSrc ) override { return Center( ) * 0.75 + EyePosition() * 0.25; }		// position to shoot at
 
