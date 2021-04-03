@@ -149,15 +149,22 @@ void COsprey :: Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/osprey.mdl");
+	if (pev->model)
+		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+	else
+		SET_MODEL(ENT(pev), "models/osprey.mdl");
 	UTIL_SetSize(pev, Vector( -400, -400, -100), Vector(400, 400, 32));
 	UTIL_SetOrigin( this, pev->origin );
+
+	//ALERT(at_console, "Osprey origin %f %f %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
 
 	pev->flags |= FL_MONSTER;
 	pev->takedamage		= DAMAGE_YES;
 	m_flRightHealth		= 200;
 	m_flLeftHealth		= 200;
 	pev->health			= 400;
+
+	pev->speed = 80; //LRC - default speed, in case path corners don't give a speed.
 
 	m_flFieldOfView = 0; // 180 degrees
 
@@ -167,12 +174,12 @@ void COsprey :: Spawn()
 
 	InitBoneControllers();
 
-	SetThink( &COsprey::FindAllThink );
-	SetUse( &COsprey::CommandUse );
+	SetThink(&COsprey :: FindAllThink );
+	SetUse(&COsprey :: CommandUse );
 
 	if (!(pev->spawnflags & SF_WAITFORTRIGGER))
 	{
-		SetNextThink(1.0);
+		SetNextThink( 1.0 );
 	}
 
 	m_pos2 = pev->origin;
@@ -185,7 +192,10 @@ void COsprey::Precache()
 {
 	UTIL_PrecacheOther( "monster_human_grunt" );
 
-	PRECACHE_MODEL("models/osprey.mdl");
+	if (pev->model)
+		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+	else
+		PRECACHE_MODEL("models/osprey.mdl");
 	PRECACHE_MODEL("models/HVR.mdl");
 
 	PRECACHE_SOUND("apache/ap_rotor4.wav");
@@ -221,9 +231,11 @@ void COsprey :: FindAllThink()
 
 	if (m_iUnits == 0)
 	{
-		ALERT( at_console, "osprey error: no grunts to resupply\n");
-		UTIL_Remove( this );
-		return;
+		m_iUnits = 4; //LRC - stop whining, just make the damn grunts...
+
+//		ALERT( at_console, "osprey error: no grunts to resupply\n");
+//		UTIL_Remove( this );
+//		return;
 	}
 	SetThink( &COsprey::FlyThink );
 	SetNextThink(0.1);
@@ -355,10 +367,17 @@ void COsprey::UpdateGoal( )
 		m_pos2 = m_pGoalEnt->pev->origin;
 		m_ang2 = m_pGoalEnt->pev->angles;
 		UTIL_MakeAimVectors( Vector( 0, m_ang2.y, 0 ) );
-		m_vel2 = gpGlobals->v_forward * m_pGoalEnt->pev->speed;
+
+		//LRC - ugh. we shouldn't require our path corners to specify a speed!
+		if (m_pGoalEnt->pev->speed)
+			pev->speed = m_pGoalEnt->pev->speed;
+
+		m_vel2 = gpGlobals->v_forward * pev->speed; //LRC
 
 		m_startTime = m_startTime + m_dTime;
-		m_dTime = 2.0 * (m_pos1 - m_pos2).Length() / (m_vel1.Length() + m_pGoalEnt->pev->speed);
+		m_dTime = 2.0 * (m_pos1 - m_pos2).Length() / (m_vel1.Length() + pev->speed);
+
+		//ALERT(at_console, "osprey m_dTime = %f / %f + %f\n", (m_pos1 - m_pos2).Length(), m_vel1.Length(), m_pGoalEnt->pev->speed);
 
 		if (m_ang1.y - m_ang2.y < -180)
 		{
@@ -369,7 +388,7 @@ void COsprey::UpdateGoal( )
 			m_ang1.y -= 360;
 		}
 
-		if (m_pGoalEnt->pev->speed < 400)
+		if (pev->speed < 400)
 			m_flIdealtilt = 0;
 		else
 			m_flIdealtilt = -90;
@@ -400,9 +419,11 @@ void COsprey::FlyThink()
 		{
 			SetThink( &COsprey::DeployThink );
 		}
+		int loopbreaker = 100; //LRC - <slap> don't loop indefinitely!
 		do {
 			m_pGoalEnt = CBaseEntity::Instance( FIND_ENTITY_BY_TARGETNAME ( NULL, STRING( m_pGoalEnt->pev->target ) ) );
-		} while (m_pGoalEnt->pev->speed < 400 && !HasDead());
+			loopbreaker--; //LRC
+		} while (m_pGoalEnt->pev->speed < 400 && !HasDead() && loopbreaker > 0);
 		UpdateGoal( );
 	}
 

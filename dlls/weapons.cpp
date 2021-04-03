@@ -1417,6 +1417,49 @@ void CBasePlayerWeapon::PrintState()
 	ALERT( at_console, "m_iclip:  %i\n", m_iClip );
 }
 
+//=========================================================
+// LRC - remove the specified ammo from this gun
+//=========================================================
+void CBasePlayerWeapon::DrainClip(CBasePlayer* pPlayer, BOOL keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium, 
+	int iSatchel, int iSnark, int iTrip, int iGren, int i556, int iPenguins, int iShock, int i762, int iSpores)
+{
+	int iPAI = PrimaryAmmoIndex();
+	int iAmt;
+	if (iPAI == -1) return;
+	else if (iPAI == pPlayer->GetAmmoIndex("9mm"))			iAmt = i9mm;
+	else if (iPAI == pPlayer->GetAmmoIndex("357"))			iAmt = i357;
+	else if (iPAI == pPlayer->GetAmmoIndex("buckshot"))		iAmt = iBuck;
+	else if (iPAI == pPlayer->GetAmmoIndex("bolts"))		iAmt = iBolt;
+	else if (iPAI == pPlayer->GetAmmoIndex("ARgrenades"))	iAmt = iARGren;
+	else if (iPAI == pPlayer->GetAmmoIndex("uranium"))		iAmt = iUranium;
+	else if (iPAI == pPlayer->GetAmmoIndex("rockets"))		iAmt = iRock;
+	else if (iPAI == pPlayer->GetAmmoIndex("Satchel Charge")) iAmt = iSatchel;
+	else if (iPAI == pPlayer->GetAmmoIndex("Snarks"))		iAmt = iSnark;
+	else if (iPAI == pPlayer->GetAmmoIndex("Trip Mine"))	iAmt = iTrip;
+	else if (iPAI == pPlayer->GetAmmoIndex("Hand Grenade")) iAmt = iGren;
+	else if (iPAI == pPlayer->GetAmmoIndex("556")) iAmt = i556;
+	else if (iPAI == pPlayer->GetAmmoIndex("Penguins")) iAmt = iPenguins;
+	else if (iPAI == pPlayer->GetAmmoIndex("shock")) iAmt = iShock;
+	else if (iPAI == pPlayer->GetAmmoIndex("762")) iAmt = i762;
+	else if (iPAI == pPlayer->GetAmmoIndex("spores")) iAmt = iSpores;
+	else return;
+
+	if (iAmt > 0)
+	{
+		m_iClip -= iAmt;
+		if (m_iClip < 0) m_iClip = 0;
+	}
+	else if (iAmt >= -1)
+	{
+		m_iClip = 0;
+	}
+
+	// if we're not keeping the gun, transfer the remainder of its clip
+	// into the main ammo store
+	if (!keep)
+		pPlayer->m_rgAmmo[iPAI] = m_iClip;
+}
+
 TYPEDESCRIPTION	CRpg::m_SaveData[] = 
 {
 	DEFINE_FIELD( CRpg, m_fSpotActive, FIELD_INTEGER ),

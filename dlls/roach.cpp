@@ -75,7 +75,7 @@ int CRoach :: ISoundMask ()
 //=========================================================
 int	CRoach :: Classify ()
 {
-	return CLASS_INSECT;
+	return m_iClass?m_iClass:CLASS_INSECT;
 }
 
 //=========================================================
@@ -120,7 +120,10 @@ void CRoach :: Spawn()
 {
 	Precache( );
 
-	SET_MODEL(ENT(pev), "models/roach.mdl");
+	if (pev->model)
+		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+	else
+		SET_MODEL(ENT(pev), "models/roach.mdl");
 	UTIL_SetSize( pev, Vector( -1, -1, 0 ), Vector( 1, 1, 2 ) );
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -147,7 +150,10 @@ void CRoach :: Spawn()
 //=========================================================
 void CRoach :: Precache()
 {
-	PRECACHE_MODEL("models/roach.mdl");
+	if (pev->model)
+		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+	else
+		PRECACHE_MODEL("models/roach.mdl");
 
 	PRECACHE_SOUND("roach/rch_die.wav");
 	PRECACHE_SOUND("roach/rch_walk.wav");

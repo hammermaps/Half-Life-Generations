@@ -2789,6 +2789,12 @@ Vector CBaseMonster::GetGunPosition()
 	return vecSrc;
 }
 
+
+//=========================================================
+// NODE GRAPH
+//=========================================================
+
+
 //=========================================================
 // FGetNodeRoute - tries to build an entire node path from
 // the callers origin to the passed vector. If this is 

@@ -71,6 +71,14 @@ public:
 	float		m_angle;
 	int			m_iszGibModel;
 	int			m_iszSpawnObject;
+	//LRC
+	int			m_iRespawnTime;
+	int			m_iInitialHealth;
+	int			m_iInitialRenderAmt;
+	int			m_iInitialRenderMode;
+	int			m_iClass; //so that monsters will attack it
+	int			m_iszWhenHit; // locus trigger
+	CPointEntity	*m_pHitProxy;
 };
 
 #endif	// FUNC_BREAK_H

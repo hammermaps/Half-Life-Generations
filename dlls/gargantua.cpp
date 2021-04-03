@@ -735,7 +735,7 @@ void CGargantua :: PrescheduleThink()
 //=========================================================
 int	CGargantua :: Classify ()
 {
-	return	CLASS_ALIEN_MONSTER;
+	return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }
 
 //=========================================================
@@ -776,13 +776,18 @@ void CGargantua :: Spawn()
 {
 	Precache( );
 
-	SET_MODEL(ENT(pev), "models/garg.mdl");
+	if (pev->model)
+		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+	else
+		SET_MODEL(ENT(pev), "models/garg.mdl");
+	
 	UTIL_SetSize( pev, Vector( -32, -32, 0 ), Vector( 32, 32, 64 ) );
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
 	m_bloodColor		= BLOOD_COLOR_GREEN;
-	pev->health			= gSkillData.gargantuaHealth;
+	if (pev->health == 0)
+		pev->health			= gSkillData.gargantuaHealth;
 	//pev->view_ofs		= Vector ( 0, 0, 96 );// taken from mdl file
 	m_flFieldOfView		= -0.2;// width of forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
@@ -805,7 +810,11 @@ void CGargantua :: Precache()
 {
 	int i;
 
-	PRECACHE_MODEL("models/garg.mdl");
+	if (pev->model)
+		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+	else
+		PRECACHE_MODEL("models/garg.mdl");
+	
 	PRECACHE_MODEL( GARG_EYE_SPRITE_NAME );
 	PRECACHE_MODEL( GARG_BEAM_SPRITE_NAME );
 	PRECACHE_MODEL( GARG_BEAM_SPRITE2 );
@@ -1052,7 +1061,8 @@ void CGargantua::HandleAnimEvent(MonsterEvent_t *pEvent)
 		break;
 
 	case GARG_AE_BREATHE:
-		EMIT_SOUND_DYN ( edict(), CHAN_VOICE, pBreatheSounds[ RANDOM_LONG(0,ARRAYSIZE(pBreatheSounds)-1) ], 1.0, ATTN_GARG, 0, PITCH_NORM + RANDOM_LONG(-10,10) );
+		if ( !(pev->spawnflags & SF_MONSTER_GAG) || m_MonsterState != MONSTERSTATE_IDLE)
+			EMIT_SOUND_DYN ( edict(), CHAN_VOICE, pBreatheSounds[ RANDOM_LONG(0,ARRAYSIZE(pBreatheSounds)-1) ], 1.0, ATTN_GARG, 0, PITCH_NORM + RANDOM_LONG(-10,10) );
 		break;
 
 	default:
@@ -1137,6 +1147,20 @@ void CGargantua::StartTask( Task_t *pTask )
 		TaskComplete();
 		break;
 	
+	// allow a scripted_action to make gargantua shoot flames.
+	case TASK_PLAY_SCRIPT:
+		if ( m_pCine->IsAction() && m_pCine->m_fAction == 3)
+		{
+			FlameCreate();
+			m_flWaitFinished = gpGlobals->time + 4.5;
+			m_flameTime = gpGlobals->time + 6;
+			m_flameX = 0;
+			m_flameY = 0;
+		}
+		else
+			CBaseMonster::StartTask( pTask );
+		break;
+
 	case TASK_DIE:
 		m_flWaitFinished = gpGlobals->time + 1.6;
 		DeathEffect();
@@ -1225,6 +1249,30 @@ void CGargantua::RunTask( Task_t *pTask )
 			CBaseMonster::RunTask(pTask);
 		break;
 
+	case TASK_PLAY_SCRIPT:
+		if (m_pCine->IsAction() && m_pCine->m_fAction == 3)
+		{
+			if (m_fSequenceFinished)
+			{
+				if (m_pCine->m_iRepeatsLeft > 0)
+					CBaseMonster::RunTask( pTask );
+				else
+				{
+					FlameDestroy();
+					FlameControls( 0, 0 );
+					SetBoneController( 0, 0 );
+					SetBoneController( 1, 0 );
+					m_pCine->SequenceDone( this );
+				}
+				break;
+			}
+			//if not finished, drop through into task_flame_sweep!
+		}
+		else
+		{
+			CBaseMonster::RunTask( pTask );
+			break;
+		}
 	case TASK_FLAME_SWEEP:
 		if ( gpGlobals->time > m_flWaitFinished )
 		{
@@ -1241,7 +1289,11 @@ void CGargantua::RunTask( Task_t *pTask )
 			Vector angles = g_vecZero;
 
 			FlameUpdate();
-			CBaseEntity *pEnemy = m_hEnemy;
+			CBaseEntity *pEnemy;
+			if (m_pCine) // LRC- are we obeying a scripted_action?
+				pEnemy = m_hTargetEnt;
+			else
+				pEnemy = m_hEnemy;
 			if ( pEnemy )
 			{
 				Vector org = pev->origin;
@@ -1332,7 +1384,7 @@ CSpiral *CSpiral::Create( const Vector &origin, float height, float radius, floa
 
 	CSpiral *pSpiral = GetClassPtr( (CSpiral *)NULL );
 	pSpiral->Spawn();
-	pSpiral->pev->dmgtime = pSpiral->pev->nextthink;
+	pSpiral->pev->dmgtime = pSpiral->m_fNextThink;
 	pSpiral->pev->origin = origin;
 	pSpiral->pev->scale = radius;
 	pSpiral->pev->dmg = height;
