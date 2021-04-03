@@ -1622,6 +1622,7 @@ void CBasePlayer::PlayerUse()
 			m_pTank = nullptr;
 			return;
 		}
+		
 		if (m_afPhysicsFlags & PFLAG_ONTRAIN)
 		{
 			m_afPhysicsFlags &= ~PFLAG_ONTRAIN;
@@ -1725,8 +1726,7 @@ void CBasePlayer::PlayerUse()
 		// UNDONE: Send different USE codes for ON/OFF.  Cache last ONOFF_USE object to send 'off' if you turn away
 		// (actually, nothing uses on/off. They're either continuous - rechargers and momentary
 		// buttons - or they're impulse - buttons, doors, tanks, trains, etc.) --LRC
-		else if ((m_afButtonReleased & IN_USE) && (pObject->ObjectCaps() & FCAP_ONOFF_USE))
-			// BUGBUG This is an "off" use
+		else if ((m_afButtonReleased & IN_USE) && (pObject->ObjectCaps() & FCAP_ONOFF_USE)) // BUGBUG This is an "off" use
 		{
 			pObject->Use(this, this, USE_SET, 0);
 		}
@@ -2842,15 +2842,10 @@ void CBasePlayer::PostThink()
 		goto pt_end;
 
 	// Handle Tank controlling
-	if (m_pTank != NULL)
+	if (m_pTank != nullptr)
 	{
 		// if they've moved too far from the gun,  or selected a weapon, unuse the gun
-		if (m_pTank->OnControls(pev) && !pev->weaponmodel)
-		{
-			//LRC - This is now handled with the Think function, by TrackTarget
-			//			m_pTank->Use( this, this, USE_SET, 2 );	// try fire the gun
-		}
-		else
+		if (!m_pTank->OnControls(pev) || pev->weaponmodel)
 		{
 			// they've moved off the platform
 			m_pTank->Use(this, this, USE_OFF, 0);

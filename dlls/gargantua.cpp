@@ -30,6 +30,7 @@
 #include	"decals.h"
 #include	"explode.h"
 #include	"func_break.h"
+#include	"scripted.h"
 
 //=========================================================
 // Gargantua Monster

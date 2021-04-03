@@ -206,7 +206,7 @@ void CPathTrack :: Link( void  )
 			m_pnext->SetPrevious( this );
 		}
 		else
-			ALERT( at_debug, "Dead end link %s\n", STRING(pev->target) );
+			ALERT( at_console, "Dead end link %s\n", STRING(pev->target) );
 	}
 
 	// Find "alternate" path
