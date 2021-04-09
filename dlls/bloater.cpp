@@ -191,9 +191,9 @@ void CBloater :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/floater.mdl");
+		SetModel( "models/floater.mdl");
 	
 	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX );
 
@@ -215,9 +215,9 @@ void CBloater :: Spawn()
 void CBloater :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/floater.mdl");
+		PrecacheModel("models/floater.mdl");
 }		
 
 //=========================================================

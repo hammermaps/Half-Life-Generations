@@ -43,7 +43,7 @@ void CParticleEmitter::Spawn()
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 	pev->effects |= EF_NODRAW;
 
 	UTIL_SetOrigin(this, pev->origin);

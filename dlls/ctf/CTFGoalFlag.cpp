@@ -43,7 +43,7 @@ void CTFGoalFlag::Precache()
 {
 	if (pev->model)
 	{
-		PRECACHE_MODEL((char*)STRING(pev->model));
+		PrecacheModel((char*)STRING(pev->model));
 	}
 
 	g_engfuncs.pfnPrecacheSound("ctf/bm_flagtaken.wav");

@@ -642,7 +642,7 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;
 	pev->owner = pPlayer->edict();
-	SetNextThink(0.1);
+	DontThink(); // Remove think - prevents futher attempts to materialize
 	SetTouch( NULL );
 }
 
@@ -830,38 +830,16 @@ BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 //=========================================================
 BOOL CBasePlayerWeapon :: IsUseable()
 {
-	if (m_iClip > 0)
+	if ( m_iClip <= 0 )
 	{
-		return TRUE;
-	}
-
-	//Player has unlimited ammo for this weapon or does not use magazines
-	if (iMaxAmmo1() == WEAPON_NOCLIP)
-	{
-		return TRUE;
-	}
-
-	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
-	{
-		return TRUE;
-	}
-
-	if (pszAmmo2())
-	{
-		//Player has unlimited ammo for this weapon or does not use magazines
-		if (iMaxAmmo2() == WEAPON_NOCLIP)
+		if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] <= 0 && iMaxAmmo1() != -1 )			
 		{
-			return TRUE;
-		}
-
-		if (m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()] > 0)
-		{
-			return TRUE;
+			// clip is empty (or nonexistant) and the player has no more ammo of this type. 
+			return FALSE;
 		}
 	}
 
-	// clip is empty (or nonexistant) and the player has no more ammo of this type. 
-	return FALSE;
+	return TRUE;
 }
 
 BOOL CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal /* = 0 */, int body )
@@ -877,7 +855,7 @@ BOOL CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *sz
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
-	m_flLastFireTime = 0.0f;
+	m_flLastFireTime = 0.0;
 
 	return TRUE;
 }
@@ -948,6 +926,7 @@ void CBasePlayerAmmo::Materialize()
 	}
 
 	SetTouch( &CBasePlayerAmmo::DefaultTouch );
+	SetThink(NULL);
 }
 
 void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )

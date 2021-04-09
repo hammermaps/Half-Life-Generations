@@ -26,8 +26,8 @@ void CItemAcceleratorCTF::Precache()
 {
 	CItemCTF::Precache();
 
-	PRECACHE_MODEL( "models/w_accelerator.mdl" );
-	PRECACHE_SOUND( "turret/tu_ping.wav" );
+	PrecacheModel( "models/w_accelerator.mdl" );
+	PrecacheSound( "turret/tu_ping.wav" );
 }
 
 void CItemAcceleratorCTF::Spawn()

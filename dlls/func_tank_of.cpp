@@ -213,12 +213,12 @@ void COFFuncTank :: Spawn()
 void COFFuncTank :: Precache()
 {
 	if ( m_iszSpriteSmoke )
-		PRECACHE_MODEL( (char *)STRING(m_iszSpriteSmoke) );
+		PrecacheModel( (char *)STRING(m_iszSpriteSmoke) );
 	if ( m_iszSpriteFlash )
-		PRECACHE_MODEL( (char *)STRING(m_iszSpriteFlash) );
+		PrecacheModel( (char *)STRING(m_iszSpriteFlash) );
 
 	if ( pev->noise )
-		PRECACHE_SOUND( (char *)STRING(pev->noise) );
+		PrecacheSound( (char *)STRING(pev->noise) );
 }
 
 

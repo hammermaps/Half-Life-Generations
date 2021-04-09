@@ -43,10 +43,10 @@ void CItemCTF::KeyValue( KeyValueData* pkvd )
 void CItemCTF::Precache()
 {
 	if( !FStringNull( pev->model ) )
-		PRECACHE_MODEL( const_cast<char*>( STRING( pev->model ) ) );
+		PrecacheModel( const_cast<char*>( STRING( pev->model ) ) );
 
-	PRECACHE_SOUND( "ctf/itemthrow.wav" );
-	PRECACHE_SOUND( "items/ammopickup1.wav" );
+	PrecacheSound( "ctf/itemthrow.wav" );
+	PrecacheSound( "items/ammopickup1.wav" );
 }
 
 void CItemCTF::Spawn()

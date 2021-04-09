@@ -87,7 +87,7 @@ void CMyMonster :: Spawn()
 {
 	Precache( );
 
-	SET_MODEL(ENT(pev), "models/mymodel.mdl");
+	SetModel( "models/mymodel.mdl");
 	UTIL_SetSize( pev, Vector( -12, -12, 0 ), Vector( 12, 12, 24 ) );
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -108,7 +108,7 @@ void CMyMonster :: Precache()
 {
 	PRECACHE_SOUND("mysound.wav");
 
-	PRECACHE_MODEL("models/mymodel.mdl");
+	PRECACHE_SOUND("models/mymodel.mdl");
 }	
 
 //=========================================================

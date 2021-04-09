@@ -274,9 +274,9 @@ void CZombieBarney :: Spawn()
 	Precache( );
 	
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/zombie_barney.mdl");
+		SetModel( "models/zombie_barney.mdl");
 	
 	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX );
 
@@ -303,27 +303,27 @@ void CZombieBarney :: Precache()
 	int i;
 	
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/zombie_barney.mdl");
+		PrecacheModel("models/zombie_barney.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
+		PrecacheSound((char *)pAttackHitSounds[i]);
 
 	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackMissSounds[i]);
+		PrecacheSound((char *)pAttackMissSounds[i]);
 
 	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackSounds[i]);
+		PrecacheSound((char *)pAttackSounds[i]);
 
 	for ( i = 0; i < ARRAYSIZE( pIdleSounds ); i++ )
-		PRECACHE_SOUND((char *)pIdleSounds[i]);
+		PrecacheSound((char *)pIdleSounds[i]);
 
 	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
+		PrecacheSound((char *)pAlertSounds[i]);
 
 	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PRECACHE_SOUND((char *)pPainSounds[i]);
+		PrecacheSound((char *)pPainSounds[i]);
 }	
 
 //=========================================================

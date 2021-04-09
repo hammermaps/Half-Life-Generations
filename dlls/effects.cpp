@@ -52,8 +52,8 @@ void CInfoTarget::Spawn()
 	pev->solid = SOLID_NOT;
 	if (pev->spawnflags & SF_TARGET_HACK_VISIBLE)
 	{
-		PRECACHE_MODEL("sprites/null.spr");
-		SET_MODEL(ENT(pev), "sprites/null.spr");
+		PrecacheModel("sprites/null.spr");
+		SetModel( "sprites/null.spr");
 		UTIL_SetSize(pev, g_vecZero, g_vecZero);
 	}
 }
@@ -61,7 +61,7 @@ void CInfoTarget::Spawn()
 void CInfoTarget::Precache()
 {
 	if (pev->spawnflags & SF_TARGET_HACK_VISIBLE)
-		PRECACHE_MODEL("sprites/null.spr");
+		PrecacheModel("sprites/null.spr");
 }
 
 
@@ -107,7 +107,7 @@ IMPLEMENT_SAVERESTORE(CBubbling, CBaseEntity);
 void CBubbling::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model)); // Set size
+	SetModel( pev->model); // Set size
 
 	pev->solid = SOLID_NOT; // Remove model & collisions
 	pev->renderamt = 0; // The engine won't draw this model if this is set to 0 and blending is on
@@ -132,7 +132,7 @@ void CBubbling::Spawn()
 
 void CBubbling::Precache()
 {
-	m_bubbleModel = PRECACHE_MODEL("sprites/bubble.spr"); // Precache bubble sprite
+	m_bubbleModel = PrecacheModel("sprites/bubble.spr"); // Precache bubble sprite
 }
 
 
@@ -274,7 +274,7 @@ void CBeam::BeamInit(const char* pSpriteName, int width)
 	SetFrame(0);
 	SetScrollRate(0);
 	pev->model = MAKE_STRING(pSpriteName);
-	SetTexture(PRECACHE_MODEL((char*)pSpriteName));
+	SetTexture(PrecacheModel((char*)pSpriteName));
 	SetWidth(width);
 	pev->skin = 0;
 	pev->sequence = 0;
@@ -553,7 +553,7 @@ void CLightning::Spawn()
 
 void CLightning::Precache()
 {
-	m_spriteTexture = PRECACHE_MODEL((char*)STRING(m_iszSpriteName));
+	m_spriteTexture = PrecacheModel((char*)STRING(m_iszSpriteName));
 	CBeam::Precache();
 }
 
@@ -1182,8 +1182,8 @@ void CLaser::PostSpawn()
 
 void CLaser::Precache()
 {
-	PRECACHE_MODEL("sprites/null.spr");
-	pev->modelindex = PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel("sprites/null.spr");
+	pev->modelindex = PrecacheModel((char*)STRING(pev->model));
 	if (m_iszStartSpriteName)
 	{
 		// UGLY HACK to check whether this is a filename: does it contain a dot?
@@ -1192,7 +1192,7 @@ void CLaser::Precache()
 		{
 			if (*c == '.')
 			{
-				PRECACHE_MODEL((char*)STRING(m_iszStartSpriteName));
+				PrecacheModel((char*)STRING(m_iszStartSpriteName));
 				break;
 			}
 			c++; // the magic word?
@@ -1206,7 +1206,7 @@ void CLaser::Precache()
 		{
 			if (*c == '.')
 			{
-				PRECACHE_MODEL((char*)STRING(m_iszEndSpriteName));
+				PrecacheModel((char*)STRING(m_iszEndSpriteName));
 				break;
 			}
 			c++;
@@ -1468,8 +1468,8 @@ void CGlow::Spawn()
 	pev->effects = 0;
 	pev->frame = 0;
 
-	PRECACHE_MODEL((char*)STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	PrecacheModel((char*)STRING(pev->model));
+	SetModel( pev->model);
 
 	m_maxFrame = static_cast<float>(MODEL_FRAMES(pev->modelindex)) - 1;
 	if (m_maxFrame > 1.0 && pev->framerate != 0)
@@ -1513,7 +1513,7 @@ void CSprite::Spawn()
 	pev->frame = 0;
 
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	m_maxFrame = static_cast<float>(MODEL_FRAMES(pev->modelindex)) - 1;
 	if (pev->targetname && !(pev->spawnflags & SF_SPRITE_STARTON))
@@ -1532,7 +1532,7 @@ void CSprite::Spawn()
 
 void CSprite::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel((char*)STRING(pev->model));
 
 	// Reset attachment after save/restore
 	if (pev->aiment)
@@ -1750,7 +1750,7 @@ void CEnvModel::KeyValue(KeyValueData* pkvd)
 void CEnvModel::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 	UTIL_SetOrigin(this, pev->origin);
 
 	if (pev->spawnflags & SF_ENVMODEL_SOLID)
@@ -1775,7 +1775,7 @@ void CEnvModel::Spawn()
 
 void CEnvModel::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel((char*)STRING(pev->model));
 }
 
 STATE CEnvModel::GetState()
@@ -1939,17 +1939,13 @@ LINK_ENTITY_TO_CLASS(gibshooter, CGibShooter);
 
 void CGibShooter::Precache()
 {
-	if (g_Language == LANGUAGE_GERMAN)
+	if (m_iBloodColor == BLOOD_COLOR_YELLOW)
 	{
-		m_iGibModelIndex = PRECACHE_MODEL("models/germanygibs.mdl");
-	}
-	else if (m_iBloodColor == BLOOD_COLOR_YELLOW)
-	{
-		m_iGibModelIndex = PRECACHE_MODEL("models/agibs.mdl");
+		m_iGibModelIndex = PrecacheModel("models/agibs.mdl");
 	}
 	else
 	{
-		m_iGibModelIndex = PRECACHE_MODEL("models/hgibs.mdl");
+		m_iGibModelIndex = PrecacheModel("models/hgibs.mdl");
 	}
 }
 
@@ -2303,7 +2299,7 @@ void CEnvShooter::KeyValue(KeyValueData* pkvd)
 void CEnvShooter::Precache()
 {
 	if (pev->model)
-		m_iGibModelIndex = PRECACHE_MODEL((char*)STRING(pev->model));
+		m_iGibModelIndex = PrecacheModel((char*)STRING(pev->model));
 	CBreakable::MaterialSoundPrecache(static_cast<Materials>(m_iGibMaterial));
 }
 
@@ -2447,7 +2443,7 @@ void CTestEffect::Spawn()
 
 void CTestEffect::Precache()
 {
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("sprites/lgtning.spr");
 }
 
 void CTestEffect::TestThink()
@@ -2907,7 +2903,7 @@ void CMessage::Spawn()
 void CMessage::Precache()
 {
 	if (pev->noise)
-		PRECACHE_SOUND((char*)STRING(pev->noise));
+		PrecacheSound((char*)STRING(pev->noise));
 }
 
 void CMessage::KeyValue(KeyValueData* pkvd)
@@ -2977,9 +2973,9 @@ void CEnvFunnel::Precache()
 {
 	//LRC
 	if (pev->netname)
-		m_iSprite = PRECACHE_MODEL((char*)STRING(pev->netname));
+		m_iSprite = PrecacheModel((char*)STRING(pev->netname));
 	else
-		m_iSprite = PRECACHE_MODEL("sprites/flare6.spr");
+		m_iSprite = PrecacheModel("sprites/flare6.spr");
 }
 
 LINK_ENTITY_TO_CLASS(env_funnel, CEnvFunnel);
@@ -3097,9 +3093,10 @@ public:
 void CEnvBeamTrail::Precache()
 {
 	if (pev->target)
-		PRECACHE_MODEL("sprites/null.spr");
+		PrecacheModel("sprites/null.spr");
+	
 	if (pev->netname)
-		m_iSprite = PRECACHE_MODEL((char*)STRING(pev->netname));
+		m_iSprite = PrecacheModel((char*)STRING(pev->netname));
 }
 
 LINK_ENTITY_TO_CLASS(env_beamtrail, CEnvBeamTrail);
@@ -3177,7 +3174,7 @@ void CEnvBeamTrail::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "sprites/null.spr");
+	SetModel( "sprites/null.spr");
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	if (!(pev->spawnflags & SF_BEAMTRAIL_OFF))
@@ -3225,12 +3222,12 @@ void CEnvFootsteps::PrecacheNoise(const char* szNoise)
 			for (j = 0; j < 4; j++)
 			{
 				szBuf[i] = j + '1';
-				PRECACHE_SOUND(szBuf);
+				PrecacheSound(szBuf);
 			}
 		}
 	}
 	if (!j)
-		PRECACHE_SOUND((char*)szNoise);
+		PrecacheSound((char*)szNoise);
 }
 
 void CEnvFootsteps::Precache()
@@ -3424,7 +3421,7 @@ IMPLEMENT_SAVERESTORE(CEnvRain, CBaseEntity);
 
 void CEnvRain::Precache()
 {
-	m_spriteTexture = PRECACHE_MODEL((char*)STRING(m_iszSpriteName));
+	m_spriteTexture = PrecacheModel((char*)STRING(m_iszSpriteName));
 }
 
 void CEnvRain::KeyValue(KeyValueData* pkvd)
@@ -3516,7 +3513,7 @@ void CEnvRain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTy
 void CEnvRain::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model)); // Set size
+	SetModel( pev->model); // Set size
 	pev->solid = SOLID_NOT;
 	pev->effects = EF_NODRAW;
 
@@ -3706,7 +3703,7 @@ IMPLEMENT_SAVERESTORE(CEnvShockwave, CBaseEntity);
 
 void CEnvShockwave::Precache()
 {
-	m_iSpriteTexture = PRECACHE_MODEL((char*)STRING(pev->netname));
+	m_iSpriteTexture = PrecacheModel((char*)STRING(pev->netname));
 }
 
 void CEnvShockwave::KeyValue(KeyValueData* pkvd)
@@ -4118,8 +4115,8 @@ public:
 
 void CEnvBeverage::Precache()
 {
-	PRECACHE_MODEL("models/can.mdl");
-	PRECACHE_SOUND("weapons/g_bounce3.wav");
+	PrecacheModel("models/can.mdl");
+	PrecacheSound("weapons/g_bounce3.wav");
 }
 
 LINK_ENTITY_TO_CLASS(env_beverage, CEnvBeverage);
@@ -4185,8 +4182,8 @@ public:
 void CItemSoda::Precache()
 {
 	// added for Nemo1024  --LRC
-	PRECACHE_MODEL("models/can.mdl");
-	PRECACHE_SOUND("weapons/g_bounce3.wav");
+	PrecacheModel("models/can.mdl");
+	PrecacheSound("weapons/g_bounce3.wav");
 }
 
 LINK_ENTITY_TO_CLASS(item_sodacan, CItemSoda);
@@ -4197,7 +4194,7 @@ void CItemSoda::Spawn()
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_TOSS;
 
-	SET_MODEL(ENT(pev), "models/can.mdl");
+	SetModel( "models/can.mdl");
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	SetThink(&CItemSoda::CanThink);
@@ -4553,7 +4550,7 @@ void CParticle::Spawn()
 
 void CParticle::Precache()
 {
-	PRECACHE_MODEL("sprites/null.spr");
+	PrecacheModel("sprites/null.spr");
 }
 
 void CParticle::Activate()

@@ -309,9 +309,9 @@ void CTurret::Spawn()
 { 
 	Precache( );
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/turret.mdl");
+		SetModel( "models/turret.mdl");
 	if (!pev->health)
 		pev->health		= gSkillData.turretHealth;
 	m_HackedGunPos		= Vector( 0, 0, 12.75 );
@@ -339,9 +339,10 @@ void CTurret::Precache()
 {
 	CBaseTurret::Precache( );
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL ("models/turret.mdl");	
+		PrecacheModel("models/turret.mdl");
+	
 	PRECACHE_MODEL (TURRET_GLOW_SPRITE);
 }
 
@@ -349,9 +350,9 @@ void CMiniTurret::Spawn()
 { 
 	Precache( );
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/miniturret.mdl");
+		SetModel( "models/miniturret.mdl");
 	if (!pev->health)
 	pev->health			= gSkillData.miniturretHealth;
 	m_HackedGunPos		= Vector( 0, 0, 12.75 );
@@ -373,12 +374,13 @@ void CMiniTurret::Precache()
 {
 	CBaseTurret::Precache( );
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL ("models/miniturret.mdl");	
-	PRECACHE_SOUND("weapons/hks1.wav");
-	PRECACHE_SOUND("weapons/hks2.wav");
-	PRECACHE_SOUND("weapons/hks3.wav");
+		PrecacheModel("models/miniturret.mdl");
+	
+	PrecacheSound("weapons/hks1.wav");
+	PrecacheSound("weapons/hks2.wav");
+	PrecacheSound("weapons/hks3.wav");
 }
 
 void CBaseTurret::Initialize()
@@ -1196,18 +1198,18 @@ void CSentry::Precache()
 {
 	CBaseTurret::Precache( );
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL ("models/sentry.mdl");	
+		PrecacheModel("models/sentry.mdl");
 }
 
 void CSentry::Spawn()
 { 
 	Precache( );
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/sentry.mdl");
+		SetModel( "models/sentry.mdl");
 	if (!pev->health) //LRC
 		pev->health		= gSkillData.sentryHealth;
 	m_HackedGunPos		= Vector( 0, 0, 48 );

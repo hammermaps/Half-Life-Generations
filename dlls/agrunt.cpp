@@ -590,10 +590,11 @@ void CAGrunt :: Spawn()
 {
 	Precache( );
 
-if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+	if (pev->model)
+		SetModel(pev->model); //LRC
 	else
-	SET_MODEL(ENT(pev), "models/agrunt.mdl");
+		SetModel("models/agrunt.mdl");
+	
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -620,38 +621,22 @@ if (pev->model)
 //=========================================================
 void CAGrunt :: Precache()
 {
-	int i;
-
-if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+	if (pev->model)
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-	PRECACHE_MODEL("models/agrunt.mdl");
+		PrecacheModel("models/agrunt.mdl");
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pIdleSounds);
+	PRECACHE_SOUND_ARRAY(pDieSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
+	PRECACHE_SOUND_ARRAY(pAttackSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
 
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackMissSounds[i]);
+	PrecacheSound( "hassault/hw_shoot1.wav" );
 
-	for ( i = 0; i < ARRAYSIZE( pIdleSounds ); i++ )
-		PRECACHE_SOUND((char *)pIdleSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pDieSounds ); i++ )
-		PRECACHE_SOUND((char *)pDieSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PRECACHE_SOUND((char *)pPainSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
-
-
-	PRECACHE_SOUND( "hassault/hw_shoot1.wav" );
-
-	iAgruntMuzzleFlash = PRECACHE_MODEL( "sprites/muz4.spr" );
+	iAgruntMuzzleFlash = PrecacheModel( "sprites/muz4.spr" );
 
 	UTIL_PrecacheOther( "hornet" );
 }	

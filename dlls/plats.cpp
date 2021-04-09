@@ -220,7 +220,7 @@ void CBasePlatTrain::Precache()
 			break;
 		}
 	}
-	PRECACHE_SOUND((char*)STRING(pev->noiseMoving));
+	PrecacheSound((char*)STRING(pev->noiseMoving));
 
 	// set the plat's 'reached destination' stop sound
 	if (FStringNull(pev->noiseArrived))
@@ -256,7 +256,7 @@ void CBasePlatTrain::Precache()
 			break;
 		}
 	}
-	PRECACHE_SOUND((char*)STRING(pev->noiseArrived));
+	PrecacheSound((char*)STRING(pev->noiseArrived));
 }
 
 //
@@ -339,7 +339,7 @@ void CFuncPlat :: Setup()
 	UTIL_SetOrigin(this, pev->origin);		// set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	
-	SET_MODEL(ENT(pev), STRING(pev->model) );
+	SetModel( pev->model );
 
 	// vecPosition1 is the top position, vecPosition2 is the bottom
 	if (m_pMoveWith)
@@ -365,8 +365,8 @@ void CFuncPlat :: Setup()
 void CFuncPlat :: Precache( )
 {
 	CBasePlatTrain::Precache();
-	//PRECACHE_SOUND("plats/platmove1.wav");
-	//PRECACHE_SOUND("plats/platstop1.wav");
+	//PrecacheSound("plats/platmove1.wav");
+	//PrecacheSound("plats/platstop1.wav");
 	if ( !IsTogglePlat() )
 		PlatSpawnInsideTrigger( pev );		// the "start moving" trigger
 }
@@ -1211,7 +1211,7 @@ void CFuncTrain::Spawn(void)
 	else
 		pev->solid = SOLID_BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(pev->model);
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 
@@ -1270,15 +1270,15 @@ void CFuncTrain::Precache(void)
 		break;
 
 	case 1:
-		PRECACHE_SOUND("plats/train2.wav");
-		PRECACHE_SOUND("plats/train1.wav");
+		PrecacheSound("plats/train2.wav");
+		PrecacheSound("plats/train1.wav");
 		pev->noise = MAKE_STRING("plats/train2.wav");
 		pev->noise1 = MAKE_STRING("plats/train1.wav");
 		break;
 
 	case 2:
-		PRECACHE_SOUND("plats/platmove1.wav");
-		PRECACHE_SOUND("plats/platstop1.wav");
+		PrecacheSound("plats/platmove1.wav");
+		PrecacheSound("plats/platstop1.wav");
 		pev->noise = MAKE_STRING("plats/platstop1.wav");
 		pev->noise1 = MAKE_STRING("plats/platmove1.wav");
 		break;
@@ -1838,7 +1838,7 @@ void CSpriteTrain::Spawn()
 
 void CSpriteTrain::Precache()
 {
-	PRECACHE_MODEL( const_cast<char*>( STRING( pev->model ) ) );
+	PrecacheModel( const_cast<char*>( STRING( pev->model ) ) );
 
 	CBasePlatTrain::Precache();
 
@@ -1994,7 +1994,7 @@ void CFuncTrackTrain::Spawn(void)
 		pev->solid = SOLID_BSP;
 	pev->movetype = MOVETYPE_PUSH;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
@@ -2038,12 +2038,12 @@ void CFuncTrackTrain::Precache(void)
 		pev->noise2 = MAKE_STRING("plats/ttrain_start1.wav");
 
 	if (pev->noise)
-		PRECACHE_SOUND((char*)STRING(pev->noise)); //LRC
+		PrecacheSound((char*)STRING(pev->noise)); //LRC
 	
-	PRECACHE_SOUND((char*)STRING(pev->noise1));
-	PRECACHE_SOUND((char*)STRING(pev->noise2));
+	PrecacheSound((char*)STRING(pev->noise1));
+	PrecacheSound((char*)STRING(pev->noise2));
 
-	m_usAdjustPitch = PRECACHE_EVENT(1, "events/train.sc");
+	m_usAdjustPitch = PrecacheEvent("events/train.sc");
 }
 
 TYPEDESCRIPTION	CFuncTrackTrain::m_SaveData[] =
@@ -2934,7 +2934,7 @@ void CFuncTrackChange::Spawn()
 void CFuncTrackChange::Precache()
 {
 	// Can't trigger sound
-	PRECACHE_SOUND("buttons/button11.wav");
+	PrecacheSound("buttons/button11.wav");
 
 	CFuncPlatRot::Precache();
 }
@@ -3392,7 +3392,7 @@ void CGunTarget::Spawn(void)
 	pev->movetype = MOVETYPE_PUSH;
 
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	if (pev->speed == 0)
 		pev->speed = 100;

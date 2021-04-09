@@ -361,11 +361,11 @@ void COFBabyVoltigore :: HandleAnimEvent( MonsterEvent_t *pEvent )
 {
 	//This is in the original for some reason
 	/*
-	PRECACHE_SOUND( "voltigore/voltigore_footstep1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_footstep2.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_footstep3.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_run_grunt1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_run_grunt2.wav" );
+	PrecacheSound( "voltigore/voltigore_footstep1.wav" );
+	PrecacheSound( "voltigore/voltigore_footstep2.wav" );
+	PrecacheSound( "voltigore/voltigore_footstep3.wav" );
+	PrecacheSound( "voltigore/voltigore_run_grunt1.wav" );
+	PrecacheSound( "voltigore/voltigore_run_grunt2.wav" );
 	*/
 
 	switch( pEvent->event )
@@ -464,9 +464,9 @@ void COFBabyVoltigore :: Spawn()
 	Precache( );
 	
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/baby_voltigore.mdl");
+		SetModel("models/baby_voltigore.mdl");
 	
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 32));
 
@@ -502,50 +502,42 @@ void COFBabyVoltigore :: Precache()
 	int i;
 	
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/baby_voltigore.mdl");
+		PrecacheModel("models/baby_voltigore.mdl");
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
+	PRECACHE_SOUND_ARRAY(pAttackSounds);
 
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackMissSounds[i]);
+	PrecacheSound( "voltigore/voltigore_attack_shock.wav" );
 
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PRECACHE_SOUND((char *)pPainSounds[i]);
+	PrecacheSound( "voltigore/voltigore_communicate1.wav" );
+	PrecacheSound( "voltigore/voltigore_communicate2.wav" );
+	PrecacheSound( "voltigore/voltigore_communicate3.wav" );
 
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
+	PrecacheSound( "voltigore/voltigore_die1.wav" );
+	PrecacheSound( "voltigore/voltigore_die2.wav" );
+	PrecacheSound( "voltigore/voltigore_die3.wav" );
 
-	PRECACHE_SOUND_ARRAY( pAttackSounds );
+	PrecacheSound( "voltigore/voltigore_footstep1.wav" );
+	PrecacheSound( "voltigore/voltigore_footstep2.wav" );
+	PrecacheSound( "voltigore/voltigore_footstep3.wav" );
 
-	PRECACHE_SOUND( "voltigore/voltigore_attack_shock.wav" );
+	PrecacheSound( "voltigore/voltigore_run_grunt1.wav" );
+	PrecacheSound( "voltigore/voltigore_run_grunt2.wav" );
 
-	PRECACHE_SOUND( "voltigore/voltigore_communicate1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_communicate2.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_communicate3.wav" );
+	PrecacheSound( "hassault/hw_shoot1.wav" );
 
-	PRECACHE_SOUND( "voltigore/voltigore_die1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_die2.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_die3.wav" );
+	PrecacheSound( "debris/beamstart2.wav" );
 
-	PRECACHE_SOUND( "voltigore/voltigore_footstep1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_footstep2.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_footstep3.wav" );
-
-	PRECACHE_SOUND( "voltigore/voltigore_run_grunt1.wav" );
-	PRECACHE_SOUND( "voltigore/voltigore_run_grunt2.wav" );
-
-	PRECACHE_SOUND( "hassault/hw_shoot1.wav" );
-
-	PRECACHE_SOUND( "debris/beamstart2.wav" );
-
-	iBabyVoltigoreMuzzleFlash = PRECACHE_MODEL( "sprites/muz4.spr" );
+	iBabyVoltigoreMuzzleFlash = PrecacheModel( "sprites/muz4.spr" );
 
 	UTIL_PrecacheOther( "charged_bolt" );
 
-	m_iBabyVoltigoreGibs = PRECACHE_MODEL( "models/vgibs.mdl" );
+	m_iBabyVoltigoreGibs = PrecacheModel( "models/vgibs.mdl" );
 }	
 	
 //=========================================================

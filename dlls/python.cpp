@@ -68,7 +68,7 @@ void CPython::Spawn( )
 	pev->classname = MAKE_STRING("weapon_357"); // hack to allow for old names
 	Precache( );
 	m_iId = WEAPON_PYTHON;
-	SET_MODEL(ENT(pev), "models/w_357.mdl");
+	SetModel( "models/w_357.mdl");
 
 	m_iDefaultAmmo = PYTHON_DEFAULT_GIVE;
 
@@ -78,19 +78,19 @@ void CPython::Spawn( )
 
 void CPython::Precache()
 {
-	PRECACHE_MODEL("models/v_357.mdl");
-	PRECACHE_MODEL("models/w_357.mdl");
-	PRECACHE_MODEL("models/p_357.mdl");
+	PrecacheModel("models/v_357.mdl");
+	PrecacheModel("models/w_357.mdl");
+	PrecacheModel("models/p_357.mdl");
 
-	PRECACHE_MODEL("models/w_357ammobox.mdl");
-	PRECACHE_SOUND("items/9mmclip1.wav");              
+	PrecacheModel("models/w_357ammobox.mdl");
+	PrecacheSound("items/9mmclip1.wav");              
 
 	PRECACHE_SOUND ("weapons/357_reload1.wav");
 	PRECACHE_SOUND ("weapons/357_cock1.wav");
 	PRECACHE_SOUND ("weapons/357_shot1.wav");
 	PRECACHE_SOUND ("weapons/357_shot2.wav");
 
-	m_usFirePython = PRECACHE_EVENT( 1, "events/python.sc" );
+	m_usFirePython = PrecacheEvent("events/python.sc" );
 }
 
 BOOL CPython::Deploy( )
@@ -277,13 +277,13 @@ class CPythonAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_357ammobox.mdl");
+		SetModel( "models/w_357ammobox.mdl");
 		CBasePlayerAmmo::Spawn( );
 	}
 	void Precache() override
 	{
 		PRECACHE_MODEL ("models/w_357ammobox.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	BOOL AddAmmo( CBaseEntity *pOther ) override
 	{ 

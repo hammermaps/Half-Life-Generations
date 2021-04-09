@@ -370,9 +370,9 @@ void CController :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/controller.mdl");
+		SetModel( "models/controller.mdl");
 	UTIL_SetSize( pev, Vector( -32, -32, 0 ), Vector( 32, 32, 64 ));
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -394,9 +394,9 @@ void CController :: Spawn()
 void CController :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/controller.mdl");
+		PrecacheModel("models/controller.mdl");
 
 	PRECACHE_SOUND_ARRAY( pAttackSounds );
 	PRECACHE_SOUND_ARRAY( pIdleSounds );
@@ -404,7 +404,7 @@ void CController :: Precache()
 	PRECACHE_SOUND_ARRAY( pPainSounds );
 	PRECACHE_SOUND_ARRAY( pDeathSounds );
 
-	PRECACHE_MODEL( "sprites/xspark4.spr");
+	PrecacheModel( "sprites/xspark4.spr");
 
 	UTIL_PrecacheOther( "controller_energy_ball" );
 	UTIL_PrecacheOther( "controller_head_ball" );
@@ -1207,7 +1207,7 @@ void CControllerHeadBall :: Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "sprites/xspark4.spr");
+	SetModel( "sprites/xspark4.spr");
 	pev->rendermode = kRenderTransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1232,9 +1232,9 @@ void CControllerHeadBall :: Spawn()
 
 void CControllerHeadBall :: Precache()
 {
-	PRECACHE_MODEL("sprites/xspark1.spr");
-	PRECACHE_SOUND("debris/zap4.wav");
-	PRECACHE_SOUND("weapons/electro4.wav");
+	PrecacheModel("sprites/xspark1.spr");
+	PrecacheSound("debris/zap4.wav");
+	PrecacheSound("weapons/electro4.wav");
 }
 
 
@@ -1401,7 +1401,7 @@ void CControllerZapBall :: Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "sprites/xspark4.spr");
+	SetModel( "sprites/xspark4.spr");
 	pev->rendermode = kRenderTransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1423,9 +1423,9 @@ void CControllerZapBall :: Spawn()
 
 void CControllerZapBall :: Precache()
 {
-	PRECACHE_MODEL("sprites/xspark4.spr");
-	// PRECACHE_SOUND("debris/zap4.wav");
-	// PRECACHE_SOUND("weapons/electro4.wav");
+	PrecacheModel("sprites/xspark4.spr");
+	// PrecacheSound("debris/zap4.wav");
+	// PrecacheSound("weapons/electro4.wav");
 }
 
 

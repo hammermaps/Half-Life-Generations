@@ -31,7 +31,7 @@ LINK_ENTITY_TO_CLASS( item_nuclearbombbutton, COFNuclearBombButton );
 
 void COFNuclearBombButton::Precache()
 {
-	PRECACHE_MODEL( "models/nuke_button.mdl" );
+	PrecacheModel( "models/nuke_button.mdl" );
 }
 
 void COFNuclearBombButton::Spawn()
@@ -84,8 +84,8 @@ LINK_ENTITY_TO_CLASS( item_nuclearbombtimer, COFNuclearBombTimer );
 
 void COFNuclearBombTimer::Precache()
 {
-	PRECACHE_MODEL( "models/nuke_timer.mdl" );
-	PRECACHE_SOUND( "common/nuke_ticking.wav" );
+	PrecacheModel( "models/nuke_timer.mdl" );
+	PrecacheSound( "common/nuke_ticking.wav" );
 }
 
 void COFNuclearBombTimer::Spawn()
@@ -208,13 +208,13 @@ void COFNuclearBomb::KeyValue( KeyValueData* pkvd )
 
 void COFNuclearBomb::Precache()
 {
-	PRECACHE_MODEL( "models/nuke_case.mdl" );
+	PrecacheModel( "models/nuke_case.mdl" );
 	UTIL_PrecacheOther( "item_nuclearbombtimer" );
 	UTIL_PrecacheOther( "item_nuclearbombbutton" );
-	PRECACHE_MODEL( "models/nuke_timer.mdl" );
-	PRECACHE_MODEL( "models/nuke_button.mdl" );
-	PRECACHE_SOUND( "buttons/button4.wav" );
-	PRECACHE_SOUND( "buttons/button6.wav" );
+	PrecacheModel( "models/nuke_timer.mdl" );
+	PrecacheModel( "models/nuke_button.mdl" );
+	PrecacheSound( "buttons/button4.wav" );
+	PrecacheSound( "buttons/button6.wav" );
 
 	//The other entities are created here since a restore only calls Precache
 	//TODO: set the classname members for both entities

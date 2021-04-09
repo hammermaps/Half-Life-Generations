@@ -2988,3 +2988,19 @@ char UTIL_TextureHit(TraceResult* ptr, Vector vecSrc, Vector vecEnd)
 
 	return chTextureType;
 }
+
+char* UTIL_FileExtension(char* in)
+{
+	static char exten[8];
+	int             i;
+
+	while (*in && *in != '.')
+		in++;
+	if (!*in)
+		return "";
+	in++;
+	for (i = 0; i < 7 && *in; i++, in++)
+		exten[i] = *in;
+	exten[i] = 0;
+	return exten;
+}

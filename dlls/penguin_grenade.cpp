@@ -83,17 +83,17 @@ LINK_ENTITY_TO_CLASS(monster_penguin, CPenguinGrenade);
 void CPenguinGrenade::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/w_penguin.mdl");
+		PrecacheModel("models/w_penguin.mdl");
 	
-	PRECACHE_SOUND("squeek/sqk_blast1.wav");
-	PRECACHE_SOUND("common/bodysplat.wav");
-	PRECACHE_SOUND("squeek/sqk_die1.wav");
-	PRECACHE_SOUND("squeek/sqk_hunt1.wav");
-	PRECACHE_SOUND("squeek/sqk_hunt2.wav");
-	PRECACHE_SOUND("squeek/sqk_hunt3.wav");
-	PRECACHE_SOUND("squeek/sqk_deploy1.wav");
+	PrecacheSound("squeek/sqk_blast1.wav");
+	PrecacheSound("common/bodysplat.wav");
+	PrecacheSound("squeek/sqk_die1.wav");
+	PrecacheSound("squeek/sqk_hunt1.wav");
+	PrecacheSound("squeek/sqk_hunt2.wav");
+	PrecacheSound("squeek/sqk_hunt3.wav");
+	PrecacheSound("squeek/sqk_deploy1.wav");
 }
 
 void CPenguinGrenade::GibMonster()
@@ -231,9 +231,9 @@ void CPenguinGrenade::Spawn()
 	pev->solid = SOLID_BBOX;
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/w_penguin.mdl");
+		SetModel( "models/w_penguin.mdl");
 	
 	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 8));
 	UTIL_SetOrigin(this, pev->origin);

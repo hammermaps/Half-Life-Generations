@@ -182,11 +182,11 @@ void CLeech::Spawn()
 {
 	Precache();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/leech.mdl");
+		SetModel( "models/leech.mdl");
 	// Just for fun
-	//	SET_MODEL(ENT(pev), "models/icky.mdl");
+	//	SetModel( "models/icky.mdl");
 	
 //	UTIL_SetSize( pev, g_vecZero, g_vecZero );
 	UTIL_SetSize( pev, Vector(-1,-1,0), Vector(1,1,2));
@@ -301,14 +301,14 @@ void CLeech::Precache()
 
 	//PRECACHE_MODEL("models/icky.mdl");
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/leech.mdl");
+		PrecacheModel("models/leech.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackSounds[i]);
+		PrecacheSound((char *)pAttackSounds[i]);
 	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
+		PrecacheSound((char *)pAlertSounds[i]);
 }
 
 

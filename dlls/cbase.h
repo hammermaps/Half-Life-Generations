@@ -80,6 +80,12 @@ extern "C" DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfa
 extern "C" DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 extern "C" DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 
+extern DLL_GLOBAL	short	g_sModelIndexNullModel; //null model index
+extern DLL_GLOBAL	short	g_sModelIndexErrorModel;//error model index
+extern DLL_GLOBAL	short	g_sModelIndexNullSprite;//null sprite index
+extern DLL_GLOBAL	short	g_sModelIndexErrorSprite;//error sprite index
+extern DLL_GLOBAL	short	g_sSoundIndexNullSound;//null sound index
+
 extern int DispatchSpawn(edict_t* pent);
 extern void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
 extern void DispatchTouch(edict_t* pentTouched, edict_t* pentOther);
@@ -347,6 +353,61 @@ public:
 	virtual BOOL IsNetClient() { return FALSE; }
 	virtual const char* TeamID() { return ""; }
 
+	/**
+*	Sets the model.
+*	@param pszModelName Name of the model.
+*/
+	void SetModel(const char* const pszModelName);
+
+	/**
+	*	Sets the model.
+	*	@param iszModelName Name of the model.
+	*/
+	void SetModel(const string_t iszModelName)
+	{
+		SetModel(STRING(iszModelName));
+	}
+
+	/**
+	*	Precache the model.
+	*	@param pszModelName Name of the model.
+	*/
+	int PrecacheModel(const char* const pszModelName);
+
+	/**
+	*	Precache the model.
+	*	@param iszModelName Name of the model.
+	*/
+	int PrecacheModel(const string_t iszModelName)
+	{
+		return PrecacheModel((char*)STRING(iszModelName));
+	}
+
+	/**
+	*	Precache sounds.
+	*	@param pszModelName Name of the model.
+	*/
+	int PrecacheSound(const char* const pszSoundName);
+
+	/**
+	*	Precache sounds.
+	*	@param iszModelName Name of the model.
+	*/
+	int PrecacheSound(const string_t iszSoundName)
+	{
+		return PrecacheSound((char*)STRING(iszSoundName));
+	}
+
+	/**
+	*	Precache events.
+	*	@param type
+	*	@param psz
+	*/
+	unsigned short PrecacheEvent(int type, const char* psz);
+	unsigned short PrecacheEvent(const char* psz)
+	{
+		return PrecacheEvent(1, psz);
+	}
 
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
 	virtual CBaseEntity* GetNextTarget();
@@ -463,7 +524,6 @@ public:
 			return pEntity->MyMonsterPointer();
 		return NULL;
 	}
-
 
 	// Ugly code to lookup all functions to make sure they are exported when set.
 #ifdef _DEBUG

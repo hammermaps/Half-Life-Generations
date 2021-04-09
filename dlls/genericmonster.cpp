@@ -170,7 +170,7 @@ void CGenericMonster::Spawn()
 	
 	Precache();
 	
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	if (vecSize != g_vecZero)
 	{
@@ -221,10 +221,10 @@ void CGenericMonster::Spawn()
 //=========================================================
 void CGenericMonster::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel((char*)STRING(pev->model));
 	
 	if (m_iszGibModel)
-		PRECACHE_MODEL((char*)STRING(m_iszGibModel)); //LRC
+		PrecacheModel((char*)STRING(m_iszGibModel)); //LRC
 }
 
 void CGenericMonster::PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, BOOL bConcurrent, CBaseEntity* pListener)
@@ -348,7 +348,7 @@ void CDeadGenericMonster::Spawn(void)
 {
 	Precache();
 	
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(pev->model);
 
 	pev->effects = 0;
 	pev->yaw_speed = 8; //LRC -- what?
@@ -379,8 +379,8 @@ void CDeadGenericMonster::Spawn(void)
 
 void CDeadGenericMonster::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel((char*)STRING(pev->model));
 	
 	if (m_iszGibModel)
-		PRECACHE_MODEL((char*)STRING(m_iszGibModel)); //LRC
+		PrecacheModel((char*)STRING(m_iszGibModel)); //LRC
 }

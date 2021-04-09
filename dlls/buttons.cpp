@@ -533,12 +533,12 @@ void CBaseButton::Precache()
 
 	if (FBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF)) // this button should spark in OFF state
 	{
-		PRECACHE_SOUND("buttons/spark1.wav");
-		PRECACHE_SOUND("buttons/spark2.wav");
-		PRECACHE_SOUND("buttons/spark3.wav");
-		PRECACHE_SOUND("buttons/spark4.wav");
-		PRECACHE_SOUND("buttons/spark5.wav");
-		PRECACHE_SOUND("buttons/spark6.wav");
+		PrecacheSound("buttons/spark1.wav");
+		PrecacheSound("buttons/spark2.wav");
+		PrecacheSound("buttons/spark3.wav");
+		PrecacheSound("buttons/spark4.wav");
+		PrecacheSound("buttons/spark5.wav");
+		PrecacheSound("buttons/spark6.wav");
 	}
 
 	// get door button sounds, for doors which require buttons to open
@@ -546,14 +546,14 @@ void CBaseButton::Precache()
 	if (m_bLockedSound)
 	{
 		pszSound = ButtonSound((int)m_bLockedSound);
-		PRECACHE_SOUND(pszSound);
+		PrecacheSound(pszSound);
 		m_ls.sLockedSound = ALLOC_STRING(pszSound);
 	}
 
 	if (m_bUnlockedSound)
 	{
 		pszSound = ButtonSound((int)m_bUnlockedSound);
-		PRECACHE_SOUND(pszSound);
+		PrecacheSound(pszSound);
 		m_ls.sUnlockedSound = ALLOC_STRING(pszSound);
 	}
 
@@ -717,7 +717,7 @@ void CBaseButton::Spawn()
 		pev->noise = ALLOC_STRING(pszSound);
 	}
 
-	PRECACHE_SOUND(STRING(pev->noise));
+	PrecacheSound(STRING(pev->noise));
 
 	Precache();
 
@@ -739,7 +739,7 @@ void CBaseButton::Spawn()
 	{
 		pev->solid = SOLID_BSP;
 	}
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	//LRC
 	if (m_iStyle >= 32)
@@ -1205,7 +1205,7 @@ void CRotButton::Spawn()
 	//a sound of 0 should not make a sound
 	//----------------------------------------------------
 	pszSound = ButtonSound(m_sounds);
-	PRECACHE_SOUND(pszSound);
+	PrecacheSound(pszSound);
 	pev->noise = ALLOC_STRING(pszSound);
 
 	// set the axis of rotation
@@ -1222,7 +1222,7 @@ void CRotButton::Spawn()
 	else
 		pev->solid = SOLID_BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	if (pev->speed == 0)
 		pev->speed = 40;
@@ -1350,10 +1350,10 @@ void CMomentaryRotButton::Spawn()
 
 	pev->movetype = MOVETYPE_PUSH;
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	const char* pszSound = ButtonSound(m_sounds);
-	PRECACHE_SOUND(pszSound);
+	PrecacheSound(pszSound);
 	pev->noise = ALLOC_STRING(pszSound);
 	m_lastUsed = 0;
 }
@@ -1595,12 +1595,12 @@ void CEnvSpark::Spawn(void)
 
 void CEnvSpark::Precache()
 {
-	PRECACHE_SOUND("buttons/spark1.wav");
-	PRECACHE_SOUND("buttons/spark2.wav");
-	PRECACHE_SOUND("buttons/spark3.wav");
-	PRECACHE_SOUND("buttons/spark4.wav");
-	PRECACHE_SOUND("buttons/spark5.wav");
-	PRECACHE_SOUND("buttons/spark6.wav");
+	PrecacheSound("buttons/spark1.wav");
+	PrecacheSound("buttons/spark2.wav");
+	PrecacheSound("buttons/spark3.wav");
+	PrecacheSound("buttons/spark4.wav");
+	PrecacheSound("buttons/spark5.wav");
+	PrecacheSound("buttons/spark6.wav");
 }
 
 void CEnvSpark::KeyValue(KeyValueData* pkvd)
@@ -1686,7 +1686,7 @@ void CButtonTarget::Spawn()
 {
 	pev->movetype = MOVETYPE_PUSH;
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 	pev->takedamage = DAMAGE_YES;
 
 	if (FBitSet(pev->spawnflags, SF_BTARGET_ON))

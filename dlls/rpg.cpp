@@ -54,7 +54,7 @@ void CLaserSpot::Spawn()
 	pev->renderfx = kRenderFxNoDissipation;
 	pev->renderamt = 255;
 
-	SET_MODEL(ENT(pev), "sprites/laserdot.spr");
+	SetModel( "sprites/laserdot.spr");
 	UTIL_SetOrigin( this, pev->origin );
 };
 
@@ -81,7 +81,7 @@ void CLaserSpot::Revive()
 
 void CLaserSpot::Precache()
 {
-	PRECACHE_MODEL("sprites/laserdot.spr");
+	PrecacheModel("sprites/laserdot.spr");
 };
 
 LINK_ENTITY_TO_CLASS( rpg_rocket, CRpgRocket );
@@ -112,7 +112,7 @@ void CRpgRocket :: Spawn()
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
+	SetModel( "models/rpgrocket.mdl");
 	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin( this, pev->origin );
 
@@ -151,8 +151,8 @@ void CRpgRocket :: RocketTouch ( CBaseEntity *pOther )
 //=========================================================
 void CRpgRocket :: Precache()
 {
-	PRECACHE_MODEL("models/rpgrocket.mdl");
-	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
+	PrecacheModel("models/rpgrocket.mdl");
+	m_iTrail = PrecacheModel("sprites/smoke.spr");
 	PRECACHE_SOUND ("weapons/rocket1.wav");
 }
 
@@ -320,7 +320,7 @@ void CRpg::Spawn( )
 	Precache( );
 	m_iId = WEAPON_RPG;
 
-	SET_MODEL(ENT(pev), "models/w_rpg.mdl");
+	SetModel( "models/w_rpg.mdl");
 	m_fSpotActive = 1;
 
 #ifdef CLIENT_DLL
@@ -343,19 +343,19 @@ void CRpg::Spawn( )
 
 void CRpg::Precache()
 {
-	PRECACHE_MODEL("models/w_rpg.mdl");
-	PRECACHE_MODEL("models/v_rpg.mdl");
-	PRECACHE_MODEL("models/p_rpg.mdl");
+	PrecacheModel("models/w_rpg.mdl");
+	PrecacheModel("models/v_rpg.mdl");
+	PrecacheModel("models/p_rpg.mdl");
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip1.wav");
 
 	UTIL_PrecacheOther( "laser_spot" );
 	UTIL_PrecacheOther( "rpg_rocket" );
 
-	PRECACHE_SOUND("weapons/rocketfire1.wav");
-	PRECACHE_SOUND("weapons/glauncher.wav"); // alternative fire sound
+	PrecacheSound("weapons/rocketfire1.wav");
+	PrecacheSound("weapons/glauncher.wav"); // alternative fire sound
 
-	m_usRpg = PRECACHE_EVENT ( 1, "events/rpg.sc" );
+	m_usRpg = PrecacheEvent("events/rpg.sc" );
 }
 
 
@@ -570,13 +570,13 @@ class CRpgAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_rpgammo.mdl");
+		SetModel( "models/w_rpgammo.mdl");
 		CBasePlayerAmmo::Spawn( );
 	}
 	void Precache() override
 	{
 		PRECACHE_MODEL ("models/w_rpgammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	BOOL AddAmmo( CBaseEntity *pOther ) override
 	{ 

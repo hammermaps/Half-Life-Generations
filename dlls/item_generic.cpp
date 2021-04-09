@@ -61,7 +61,7 @@ void CGenericItem::KeyValue( KeyValueData* pkvd )
 
 void CGenericItem::Precache()
 {
-	PRECACHE_MODEL( const_cast<char*>( STRING( pev->model ) ) );
+	PrecacheModel( const_cast<char*>( STRING( pev->model ) ) );
 }
 
 void CGenericItem::Spawn()

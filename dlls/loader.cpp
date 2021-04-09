@@ -53,12 +53,12 @@ LINK_ENTITY_TO_CLASS(monster_op4loader, COFLoader);
 void COFLoader::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/loader.mdl");
+		PrecacheModel("models/loader.mdl");
 
-	PRECACHE_SOUND("ambience/loader_step1.wav");
-	PRECACHE_SOUND("ambience/loader_hydra1.wav");
+	PrecacheSound("ambience/loader_step1.wav");
+	PrecacheSound("ambience/loader_hydra1.wav");
 }
 
 void COFLoader::Spawn()

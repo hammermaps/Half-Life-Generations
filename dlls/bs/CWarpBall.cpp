@@ -68,12 +68,12 @@ void CWarpBall::KeyValue(KeyValueData* pkvd)
 
 void CWarpBall::Precache()
 {
-	PRECACHE_MODEL("sprites/Fexplo1.spr");
-	PRECACHE_MODEL("sprites/XFlare1.spr");
-	PRECACHE_MODEL("sprites/lgtning.spr");
-	PRECACHE_SOUND("debris/alien_teleport.wav");
-	PRECACHE_SOUND("debris/beamstart2.wav");
-	PRECACHE_SOUND("debris/beamstart7.wav");
+	PrecacheModel("sprites/Fexplo1.spr");
+	PrecacheModel("sprites/XFlare1.spr");
+	PrecacheModel("sprites/lgtning.spr");
+	PrecacheSound("debris/alien_teleport.wav");
+	PrecacheSound("debris/beamstart2.wav");
+	PrecacheSound("debris/beamstart7.wav");
 }
 
 void CWarpBall::Spawn()

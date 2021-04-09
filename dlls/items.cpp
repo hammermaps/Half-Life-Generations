@@ -176,7 +176,7 @@ class CItemSuit : public CItem
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_suit.mdl");
+		SetModel( "models/w_suit.mdl");
 		CItem::Spawn( );
 	}
 	void Precache() override
@@ -216,22 +216,22 @@ class CItemBattery : public CItem
 	{ 
 		Precache( );
 		if (pev->model)
-			SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+			SetModel(pev->model); //LRC
 		else
-			SET_MODEL(ENT(pev), "models/w_battery.mdl");
+			SetModel( "models/w_battery.mdl");
 		CItem::Spawn( );
 	}
 	void Precache() override
 	{
 		if (pev->model)
-			PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+			PrecacheModel((char*)STRING(pev->model)); //LRC
 		else
-			PRECACHE_MODEL ("models/w_battery.mdl");
+			PrecacheModel("models/w_battery.mdl");
 
 		if (pev->noise)
-			PRECACHE_SOUND( (char*)STRING(pev->noise) ); //LRC
+			PrecacheSound( (char*)STRING(pev->noise) ); //LRC
 		else
-			PRECACHE_SOUND( "items/gunpickup2.wav" );
+			PrecacheSound( "items/gunpickup2.wav" );
 	}
 	BOOL MyTouch( CBasePlayer *pPlayer ) override
 	{
@@ -288,7 +288,7 @@ class CItemAntidote : public CItem
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_antidote.mdl");
+		SetModel( "models/w_antidote.mdl");
 		CItem::Spawn( );
 	}
 	void Precache() override
@@ -312,7 +312,7 @@ class CItemSecurity : public CItem
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_security.mdl");
+		SetModel( "models/w_security.mdl");
 		CItem::Spawn( );
 	}
 	void Precache() override
@@ -333,7 +333,7 @@ class CItemLongJump : public CItem
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_longjump.mdl");
+		SetModel( "models/w_longjump.mdl");
 		CItem::Spawn( );
 	}
 	void Precache() override

@@ -239,7 +239,7 @@ void CAmbientGeneric::Precache(void)
 	if (!FStringNull(pev->message) && strlen(szSoundFile) > 1)
 	{
 		if (*szSoundFile != '!')
-			PRECACHE_SOUND(szSoundFile);
+			PrecacheSound(szSoundFile);
 	}
 	// init all dynamic modulation parms
 	InitModulationParms();
@@ -1162,7 +1162,7 @@ void CTriggerSound::Spawn()
 {
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SetModel( pev->model);    // set size and link into world
 	SetBits(pev->effects, EF_NODRAW);
 }
 

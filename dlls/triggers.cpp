@@ -82,7 +82,7 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 void CFrictionModifier::Spawn()
 {
 	pev->solid = SOLID_TRIGGER;
-	SET_MODEL(ENT(pev), STRING(pev->model)); // set size and link into world
+	SetModel( pev->model); // set size and link into world
 	pev->movetype = MOVETYPE_NONE;
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
@@ -1782,7 +1782,7 @@ void CEnvCustomize::Spawn()
 void CEnvCustomize::Precache()
 {
 	if (m_iszModel)
-		PRECACHE_MODEL((char*)STRING(m_iszModel));
+		PrecacheModel((char*)STRING(m_iszModel));
 }
 
 void CEnvCustomize::PostSpawn()
@@ -2266,7 +2266,7 @@ void CBaseTrigger::InitTrigger()
 		SetMovedir(pev);
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model)); // set size and link into world
+	SetModel( pev->model); // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
 }
@@ -2847,7 +2847,7 @@ public:
 	void Precache() override
 	{
 		if (!FStringNull(pev->noise))
-			PRECACHE_SOUND((char*)STRING(pev->noise));
+			PrecacheSound((char*)STRING(pev->noise));
 	}
 
 	void EXPORT MultiTouch(CBaseEntity* pOther);
@@ -3272,7 +3272,7 @@ void CTriggerVolume::Spawn()
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model)); // set size and link into world
+	SetModel( pev->model); // set size and link into world
 	pev->model = iStringNull;
 	pev->modelindex = 0;
 }
@@ -3785,7 +3785,7 @@ void CLadder::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model)); // set size and link into world
+	SetModel( pev->model); // set size and link into world
 	pev->movetype = MOVETYPE_PUSH;
 }
 
@@ -5364,7 +5364,7 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 
 	player->m_hViewEntity = this;
 
-	SET_MODEL(ENT(pev), STRING(pActivator->pev->model));
+	SetModel( pActivator->pev->model);
 
 	// follow the player down
 	SetThink(&CTriggerCamera::FollowTarget);

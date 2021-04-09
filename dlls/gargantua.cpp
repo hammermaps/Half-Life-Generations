@@ -778,9 +778,9 @@ void CGargantua :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/garg.mdl");
+		SetModel( "models/garg.mdl");
 	
 	UTIL_SetSize( pev, Vector( -32, -32, 0 ), Vector( 32, 32, 64 ) );
 
@@ -809,52 +809,30 @@ void CGargantua :: Spawn()
 //=========================================================
 void CGargantua :: Precache()
 {
-	int i;
-
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/garg.mdl");
+		PrecacheModel("models/garg.mdl");
 	
-	PRECACHE_MODEL( GARG_EYE_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE2 );
-	gStompSprite = PRECACHE_MODEL( GARG_STOMP_SPRITE_NAME );
-	gGargGibModel = PRECACHE_MODEL( GARG_GIB_MODEL );
-	PRECACHE_SOUND( GARG_STOMP_BUZZ_SOUND );
+	PrecacheModel(GARG_EYE_SPRITE_NAME);
+	PrecacheModel(GARG_BEAM_SPRITE_NAME);
+	PrecacheModel(GARG_BEAM_SPRITE2);
+	PrecacheSound(GARG_STOMP_BUZZ_SOUND);
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
+	gStompSprite = PrecacheModel(GARG_STOMP_SPRITE_NAME);
+	gGargGibModel = PrecacheModel(GARG_GIB_MODEL);
 
-	for ( i = 0; i < ARRAYSIZE( pBeamAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pBeamAttackSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackMissSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pRicSounds ); i++ )
-		PRECACHE_SOUND((char *)pRicSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pFootSounds ); i++ )
-		PRECACHE_SOUND((char *)pFootSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pIdleSounds ); i++ )
-		PRECACHE_SOUND((char *)pIdleSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PRECACHE_SOUND((char *)pAlertSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PRECACHE_SOUND((char *)pPainSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PRECACHE_SOUND((char *)pAttackSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pStompSounds ); i++ )
-		PRECACHE_SOUND((char *)pStompSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pBreatheSounds ); i++ )
-		PRECACHE_SOUND((char *)pBreatheSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pBeamAttackSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pRicSounds);
+	PRECACHE_SOUND_ARRAY(pFootSounds);
+	PRECACHE_SOUND_ARRAY(pIdleSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
+	PRECACHE_SOUND_ARRAY(pAttackSounds);
+	PRECACHE_SOUND_ARRAY(pStompSounds);
+	PRECACHE_SOUND_ARRAY(pBreatheSounds);
 }	
 
 void CGargantua::UpdateOnRemove()

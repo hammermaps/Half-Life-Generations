@@ -394,7 +394,7 @@ void CDrillSergeant::Spawn()
 	Precache();
 	
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
 		SET_MODEL( ENT( pev ), "models/drill.mdl" );
 	
@@ -580,20 +580,20 @@ int CDrillSergeant::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker,
 void CDrillSergeant::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL( "models/drill.mdl" );
+		PrecacheModel( "models/drill.mdl" );
 
-	PRECACHE_SOUND( "barney/ba_attack1.wav" );
-	PRECACHE_SOUND( "barney/ba_attack2.wav" );
+	PrecacheSound( "barney/ba_attack1.wav" );
+	PrecacheSound( "barney/ba_attack2.wav" );
 
-	PRECACHE_SOUND( "barney/ba_pain1.wav" );
-	PRECACHE_SOUND( "barney/ba_pain2.wav" );
-	PRECACHE_SOUND( "barney/ba_pain3.wav" );
+	PrecacheSound( "barney/ba_pain1.wav" );
+	PrecacheSound( "barney/ba_pain2.wav" );
+	PrecacheSound( "barney/ba_pain3.wav" );
 
-	PRECACHE_SOUND( "barney/ba_die1.wav" );
-	PRECACHE_SOUND( "barney/ba_die2.wav" );
-	PRECACHE_SOUND( "barney/ba_die3.wav" );
+	PrecacheSound( "barney/ba_die1.wav" );
+	PrecacheSound( "barney/ba_die2.wav" );
+	PrecacheSound( "barney/ba_die3.wav" );
 
 	// every new barney must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)

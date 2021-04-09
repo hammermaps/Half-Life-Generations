@@ -27,14 +27,14 @@ LINK_ENTITY_TO_CLASS(item_helmet, CItemHelmet);
 void CItemHelmet::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/Barney_Helmet.mdl");
+	SetModel( "models/Barney_Helmet.mdl");
 	CItem::Spawn();
 }
 
 void CItemHelmet::Precache()
 {
-	PRECACHE_MODEL("models/Barney_Helmet.mdl");
-	PRECACHE_SOUND("items/gunpickup2.wav");
+	PrecacheModel("models/Barney_Helmet.mdl");
+	PrecacheSound("items/gunpickup2.wav");
 }
 
 BOOL CItemHelmet::MyTouch(CBasePlayer* pPlayer)

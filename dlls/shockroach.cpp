@@ -286,9 +286,9 @@ void COFShockRoach :: Spawn()
 {
 	Precache( );
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/w_shock_rifle.mdl");
+		SetModel( "models/w_shock_rifle.mdl");
 	
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 4));
 
@@ -317,9 +317,9 @@ void COFShockRoach :: Spawn()
 void COFShockRoach :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/w_shock_rifle.mdl");
+		PrecacheModel("models/w_shock_rifle.mdl");
 	
 	PRECACHE_SOUND_ARRAY(pIdleSounds);
 	PRECACHE_SOUND_ARRAY(pAlertSounds);
@@ -328,7 +328,7 @@ void COFShockRoach :: Precache()
 	PRECACHE_SOUND_ARRAY(pDeathSounds);
 	PRECACHE_SOUND_ARRAY(pBiteSounds);
 
-	PRECACHE_SOUND( "shockroach/shock_walk.wav" );
+	PrecacheSound( "shockroach/shock_walk.wav" );
 }	
 
 

@@ -121,7 +121,7 @@ void CGMan :: Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
 		SET_MODEL( ENT(pev), "models/gman.mdl" );
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -142,9 +142,9 @@ void CGMan :: Spawn()
 void CGMan :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL( "models/gman.mdl" );
+		PrecacheModel( "models/gman.mdl" );
 }	
 
 

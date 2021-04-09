@@ -102,7 +102,7 @@ void CFuncMortarField :: KeyValue( KeyValueData *pkvd )
 void CFuncMortarField :: Spawn()
 {
 	pev->solid = SOLID_NOT;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SetModel( pev->model);    // set size and link into world
 	pev->movetype = MOVETYPE_NONE;
 	SetBits( pev->effects, EF_NODRAW );
 	SetUse( & CFuncMortarField::FieldUse );
@@ -114,7 +114,7 @@ void CFuncMortarField :: Precache()
 {
 	PRECACHE_SOUND ("weapons/mortar.wav");
 	PRECACHE_SOUND ("weapons/mortarhit.wav");
-	PRECACHE_MODEL( "sprites/lgtning.spr" );
+	PrecacheModel( "sprites/lgtning.spr" );
 }
 
 
@@ -220,7 +220,7 @@ void CMortar::Spawn( )
 
 void CMortar::Precache( )
 {
-	m_spriteTexture = PRECACHE_MODEL( "sprites/lgtning.spr" );
+	m_spriteTexture = PrecacheModel( "sprites/lgtning.spr" );
 }
 
 void CMortar::MortarExplode()

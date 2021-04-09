@@ -566,7 +566,7 @@ void CRosenberg::Spawn(void)
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/scientist.mdl");
+	SetModel( "models/scientist.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -606,12 +606,12 @@ void CRosenberg::Spawn(void)
 //=========================================================
 void CRosenberg::Precache(void)
 {
-	PRECACHE_MODEL("models/scientist.mdl");
-	PRECACHE_SOUND("rosenberg/ro_pain1.wav");
-	PRECACHE_SOUND("rosenberg/ro_pain2.wav");
-	PRECACHE_SOUND("rosenberg/ro_pain3.wav");
-	PRECACHE_SOUND("rosenberg/ro_pain4.wav");
-	PRECACHE_SOUND("rosenberg/ro_pain5.wav");
+	PrecacheModel("models/scientist.mdl");
+	PrecacheSound("rosenberg/ro_pain1.wav");
+	PrecacheSound("rosenberg/ro_pain2.wav");
+	PrecacheSound("rosenberg/ro_pain3.wav");
+	PrecacheSound("rosenberg/ro_pain4.wav");
+	PrecacheSound("rosenberg/ro_pain5.wav");
 
 	// every new scientist must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)

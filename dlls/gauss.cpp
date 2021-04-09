@@ -50,7 +50,7 @@ void CGauss::Spawn( )
 {
 	Precache( );
 	m_iId = WEAPON_GAUSS;
-	SET_MODEL(ENT(pev), "models/w_gauss.mdl");
+	SetModel( "models/w_gauss.mdl");
 
 	m_iDefaultAmmo = GAUSS_DEFAULT_GIVE;
 
@@ -60,24 +60,24 @@ void CGauss::Spawn( )
 
 void CGauss::Precache()
 {
-	PRECACHE_MODEL("models/w_gauss.mdl");
-	PRECACHE_MODEL("models/v_gauss.mdl");
-	PRECACHE_MODEL("models/p_gauss.mdl");
+	PrecacheModel("models/w_gauss.mdl");
+	PrecacheModel("models/v_gauss.mdl");
+	PrecacheModel("models/p_gauss.mdl");
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip1.wav");
 
-	PRECACHE_SOUND("weapons/gauss2.wav");
-	PRECACHE_SOUND("weapons/electro4.wav");
-	PRECACHE_SOUND("weapons/electro5.wav");
-	PRECACHE_SOUND("weapons/electro6.wav");
-	PRECACHE_SOUND("ambience/pulsemachine.wav");
+	PrecacheSound("weapons/gauss2.wav");
+	PrecacheSound("weapons/electro4.wav");
+	PrecacheSound("weapons/electro5.wav");
+	PrecacheSound("weapons/electro6.wav");
+	PrecacheSound("ambience/pulsemachine.wav");
 	
-	m_iGlow = PRECACHE_MODEL( "sprites/hotglow.spr" );
-	m_iBalls = PRECACHE_MODEL( "sprites/hotglow.spr" );
-	m_iBeam = PRECACHE_MODEL( "sprites/smoke.spr" );
+	m_iGlow = PrecacheModel( "sprites/hotglow.spr" );
+	m_iBalls = PrecacheModel( "sprites/hotglow.spr" );
+	m_iBeam = PrecacheModel( "sprites/smoke.spr" );
 
-	m_usGaussFire = PRECACHE_EVENT( 1, "events/gauss.sc" );
-	m_usGaussSpin = PRECACHE_EVENT( 1, "events/gaussspin.sc" );
+	m_usGaussFire = PrecacheEvent("events/gauss.sc" );
+	m_usGaussSpin = PrecacheEvent("events/gaussspin.sc" );
 }
 
 int CGauss::AddToPlayer( CBasePlayer *pPlayer )
@@ -597,13 +597,13 @@ class CGaussAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_gaussammo.mdl");
+		SetModel( "models/w_gaussammo.mdl");
 		CBasePlayerAmmo::Spawn( );
 	}
 	void Precache() override
 	{
 		PRECACHE_MODEL ("models/w_gaussammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	BOOL AddAmmo( CBaseEntity *pOther ) override
 	{ 

@@ -121,9 +121,10 @@ void CApache :: Spawn()
 	pev->solid = SOLID_BBOX;
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/apache.mdl");
+		SetModel("models/apache.mdl");
+	
 	UTIL_SetSize( pev, Vector( -32, -32, -64 ), Vector( 32, 32, 0 ) );
 	UTIL_SetOrigin( this, pev->origin );
 
@@ -158,25 +159,25 @@ void CApache :: Spawn()
 void CApache::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/apache.mdl");
+		PrecacheModel("models/apache.mdl");
 
-	PRECACHE_SOUND("apache/ap_rotor1.wav");
-	PRECACHE_SOUND("apache/ap_rotor2.wav");
-	PRECACHE_SOUND("apache/ap_rotor3.wav");
-	PRECACHE_SOUND("apache/ap_whine1.wav");
+	PrecacheSound("apache/ap_rotor1.wav");
+	PrecacheSound("apache/ap_rotor2.wav");
+	PrecacheSound("apache/ap_rotor3.wav");
+	PrecacheSound("apache/ap_whine1.wav");
 
-	PRECACHE_SOUND("weapons/mortarhit.wav");
+	PrecacheSound("weapons/mortarhit.wav");
 
-	m_iSpriteTexture = PRECACHE_MODEL( "sprites/white.spr" );
+	m_iSpriteTexture = PrecacheModel( "sprites/white.spr" );
 
-	PRECACHE_SOUND("turret/tu_fire1.wav");
+	PrecacheSound("turret/tu_fire1.wav");
 
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("sprites/lgtning.spr");
 
-	m_iExplode	= PRECACHE_MODEL( "sprites/fexplo.spr" );
-	m_iBodyGibs = PRECACHE_MODEL( "models/metalplategibs_green.mdl" );
+	m_iExplode	= PrecacheModel( "sprites/fexplo.spr" );
+	m_iBodyGibs = PrecacheModel( "models/metalplategibs_green.mdl" );
 
 	UTIL_PrecacheOther( "hvr_rocket" );
 }
@@ -365,7 +366,6 @@ void CApache :: DyingThink()
 		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND))
 		{
 			CBaseEntity *pWreckage = Create( "cycler_wreckage", pev->origin, pev->angles );
-			// SET_MODEL( ENT(pWreckage->pev), STRING(pev->model) );
 			UTIL_SetSize( pWreckage->pev, Vector( -200, -200, -128 ), Vector( 200, 200, -32 ) );
 			pWreckage->pev->frame = pev->frame;
 			pWreckage->pev->sequence = pev->sequence;
@@ -978,7 +978,7 @@ void CApacheHVR :: Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/HVR.mdl");
+	SetModel("models/HVR.mdl");
 	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin( this, pev->origin );
 
@@ -997,9 +997,9 @@ void CApacheHVR :: Spawn()
 
 void CApacheHVR :: Precache()
 {
-	PRECACHE_MODEL("models/HVR.mdl");
-	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
-	PRECACHE_SOUND ("weapons/rocket1.wav");
+	PrecacheModel("models/HVR.mdl");
+	m_iTrail = PrecacheModel("sprites/smoke.spr");
+	PrecacheSound ("weapons/rocket1.wav");
 }
 
 

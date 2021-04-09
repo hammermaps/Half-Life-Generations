@@ -201,7 +201,7 @@ void CBreakable::Spawn()
 		pev->playerclass = 1;
 	}
 
-	SET_MODEL(ENT(pev), STRING(pev->model) );//set size and link into world.
+	SetModel( pev->model);//set size and link into world.
 
 	SetTouch( &CBreakable::BreakTouch );
 	SetUse(&CBreakable:: BreakUse );
@@ -315,14 +315,13 @@ const char **CBreakable::MaterialSoundList( Materials precacheMaterial, int &sou
 
 void CBreakable::MaterialSoundPrecache( Materials precacheMaterial )
 {
-	const char	**pSoundList;
-	int			i, soundCount = 0;
+	int soundCount = 0;
 
-	pSoundList = MaterialSoundList( precacheMaterial, soundCount );
+	const char** pSoundList = MaterialSoundList(precacheMaterial, soundCount);
 
-	for ( i = 0; i < soundCount; i++ )
+	for ( int i = 0; i < soundCount; i++ )
 	{
-		PRECACHE_SOUND( (char *)pSoundList[i] );
+		PRECACHE_SOUND((char *)pSoundList[i]);
 	}
 }
 
@@ -347,48 +346,48 @@ void CBreakable::Precache()
 	case matWood:
 		pGibName = "models/woodgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustcrate1.wav");
-		PRECACHE_SOUND("debris/bustcrate2.wav");
+		PrecacheSound("debris/bustcrate1.wav");
+		PrecacheSound("debris/bustcrate2.wav");
 		break;
 	case matFlesh:
 		pGibName = "models/fleshgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustflesh1.wav");
-		PRECACHE_SOUND("debris/bustflesh2.wav");
+		PrecacheSound("debris/bustflesh1.wav");
+		PrecacheSound("debris/bustflesh2.wav");
 		break;
 	case matComputer:
-		PRECACHE_SOUND("buttons/spark5.wav");
-		PRECACHE_SOUND("buttons/spark6.wav");
+		PrecacheSound("buttons/spark5.wav");
+		PrecacheSound("buttons/spark6.wav");
 		pGibName = "models/computergibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustmetal1.wav");
-		PRECACHE_SOUND("debris/bustmetal2.wav");
+		PrecacheSound("debris/bustmetal1.wav");
+		PrecacheSound("debris/bustmetal2.wav");
 		break;
 
 	case matUnbreakableGlass:
 	case matGlass:
 		pGibName = "models/glassgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustglass1.wav");
-		PRECACHE_SOUND("debris/bustglass2.wav");
+		PrecacheSound("debris/bustglass1.wav");
+		PrecacheSound("debris/bustglass2.wav");
 		break;
 	case matMetal:
 		pGibName = "models/metalplategibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustmetal1.wav");
-		PRECACHE_SOUND("debris/bustmetal2.wav");
+		PrecacheSound("debris/bustmetal1.wav");
+		PrecacheSound("debris/bustmetal2.wav");
 		break;
 	case matCinderBlock:
 		pGibName = "models/cindergibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustconcrete1.wav");
-		PRECACHE_SOUND("debris/bustconcrete2.wav");
+		PrecacheSound("debris/bustconcrete1.wav");
+		PrecacheSound("debris/bustconcrete2.wav");
 		break;
 	case matRocks:
 		pGibName = "models/rockgibs.mdl";
 		
-		PRECACHE_SOUND("debris/bustconcrete1.wav");
-		PRECACHE_SOUND("debris/bustconcrete2.wav");
+		PrecacheSound("debris/bustconcrete1.wav");
+		PrecacheSound("debris/bustconcrete2.wav");
 		break;
 	case matCeilingTile:
 		pGibName = "models/ceilinggibs.mdl";
@@ -400,7 +399,7 @@ void CBreakable::Precache()
 	if ( m_iszGibModel )
 		pGibName = STRING(m_iszGibModel);
 
-	m_idShard = PRECACHE_MODEL( (char *)pGibName );
+	m_idShard = PrecacheModel( (char *)pGibName );
 
 	// Precache the spawn item's data
 	if ( m_iszSpawnObject )
@@ -1033,7 +1032,7 @@ void CPushable :: Spawn()
 void CPushable :: Precache()
 {
 	for ( int i = 0; i < 3; i++ )
-		PRECACHE_SOUND( m_soundNames[i] );
+		PrecacheSound( m_soundNames[i] );
 
 	if ( pev->spawnflags & SF_PUSH_BREAKABLE )
 		CBreakable::Precache( );

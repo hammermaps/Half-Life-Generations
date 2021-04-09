@@ -469,9 +469,9 @@ void COtis :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/otis.mdl");
+		SetModel( "models/otis.mdl");
 	
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
@@ -514,22 +514,22 @@ void COtis :: Spawn()
 void COtis :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/otis.mdl");
+		PrecacheModel("models/otis.mdl");
 
-	PRECACHE_SOUND("barney/ba_attack1.wav" );
-	PRECACHE_SOUND("barney/ba_attack2.wav" );
+	PrecacheSound("barney/ba_attack1.wav" );
+	PrecacheSound("barney/ba_attack2.wav" );
 
-	PRECACHE_SOUND( "weapons/de_shot1.wav" );
+	PrecacheSound( "weapons/de_shot1.wav" );
 
-	PRECACHE_SOUND("barney/ba_pain1.wav");
-	PRECACHE_SOUND("barney/ba_pain2.wav");
-	PRECACHE_SOUND("barney/ba_pain3.wav");
+	PrecacheSound("barney/ba_pain1.wav");
+	PrecacheSound("barney/ba_pain2.wav");
+	PrecacheSound("barney/ba_pain3.wav");
 
-	PRECACHE_SOUND("barney/ba_die1.wav");
-	PRECACHE_SOUND("barney/ba_die2.wav");
-	PRECACHE_SOUND("barney/ba_die3.wav");
+	PrecacheSound("barney/ba_die1.wav");
+	PrecacheSound("barney/ba_die2.wav");
+	PrecacheSound("barney/ba_die3.wav");
 	
 	// every new otis must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
@@ -904,8 +904,8 @@ LINK_ENTITY_TO_CLASS( monster_otis_dead, CDeadOtis );
 //=========================================================
 void CDeadOtis:: Spawn( )
 {
-	PRECACHE_MODEL("models/otis.mdl");
-	SET_MODEL(ENT(pev), "models/otis.mdl");
+	PrecacheModel("models/otis.mdl");
+	SetModel( "models/otis.mdl");
 
 	pev->effects		= 0;
 	pev->yaw_speed		= 8;

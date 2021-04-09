@@ -35,7 +35,7 @@ void CEgon::Spawn( )
 {
 	Precache( );
 	m_iId = WEAPON_EGON;
-	SET_MODEL(ENT(pev), "models/w_egon.mdl");
+	SetModel( "models/w_egon.mdl");
 
 	m_iDefaultAmmo = EGON_DEFAULT_GIVE;
 
@@ -45,23 +45,23 @@ void CEgon::Spawn( )
 
 void CEgon::Precache()
 {
-	PRECACHE_MODEL("models/w_egon.mdl");
-	PRECACHE_MODEL("models/v_egon.mdl");
-	PRECACHE_MODEL("models/p_egon.mdl");
+	PrecacheModel("models/w_egon.mdl");
+	PrecacheModel("models/v_egon.mdl");
+	PrecacheModel("models/p_egon.mdl");
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip1.wav");
 
-	PRECACHE_SOUND( EGON_SOUND_OFF );
-	PRECACHE_SOUND( EGON_SOUND_RUN );
-	PRECACHE_SOUND( EGON_SOUND_STARTUP );
+	PrecacheSound( EGON_SOUND_OFF );
+	PrecacheSound( EGON_SOUND_RUN );
+	PrecacheSound( EGON_SOUND_STARTUP );
 
-	PRECACHE_MODEL( EGON_BEAM_SPRITE );
-	PRECACHE_MODEL( EGON_FLARE_SPRITE );
+	PrecacheModel( EGON_BEAM_SPRITE );
+	PrecacheModel( EGON_FLARE_SPRITE );
 
 	PRECACHE_SOUND ("weapons/357_cock1.wav");
 
-	m_usEgonFire = PRECACHE_EVENT ( 1, "events/egon_fire.sc" );
-	m_usEgonStop = PRECACHE_EVENT ( 1, "events/egon_stop.sc" );
+	m_usEgonFire = PrecacheEvent("events/egon_fire.sc" );
+	m_usEgonStop = PrecacheEvent("events/egon_stop.sc" );
 }
 
 
@@ -537,13 +537,13 @@ class CEgonAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_chainammo.mdl");
+		SetModel( "models/w_chainammo.mdl");
 		CBasePlayerAmmo::Spawn( );
 	}
 	void Precache() override
 	{
 		PRECACHE_MODEL ("models/w_chainammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	BOOL AddAmmo( CBaseEntity *pOther ) override
 	{ 

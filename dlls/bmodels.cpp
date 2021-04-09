@@ -75,7 +75,7 @@ void CFuncWall::Spawn()
 	pev->angles = g_vecZero;
 	pev->movetype = MOVETYPE_PUSH; // so it doesn't get pushed by anything
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(pev->model);
 
 	// If it can't move/go away, it's really part of the world
 	if (!m_pMoveWith) //LRC
@@ -252,7 +252,7 @@ void CFuncIllusionary::Spawn()
 	pev->angles = g_vecZero;
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT; // always solid_not 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	// I'd rather eat the network bandwidth of this than figure out how to save/restore
 	// these entities after they have been moved to the client, or respawn them ala Quake
@@ -281,11 +281,11 @@ LINK_ENTITY_TO_CLASS(func_shine, CFuncShine);
 void CFuncShine::Spawn()
 {
 	pev->solid = SOLID_NOT; // always solid_not 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 	pev->effects |= EF_NODRAW;
 
 	// not that we actually need to precache it here, but we do need to make sure it exists
-	PRECACHE_MODEL((char*)STRING(pev->message));
+	PrecacheModel((char*)STRING(pev->message));
 }
 
 void CFuncShine::Activate()
@@ -520,7 +520,7 @@ void CFuncRotating::Spawn()
 	}
 
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	SetUse(&CFuncRotating::RotatingUse);
 	
@@ -559,7 +559,7 @@ void CFuncRotating::Precache()
 	{
 		// if a path is set for a wave, use it
 
-		PRECACHE_SOUND(szSoundFile);
+		PrecacheSound(szSoundFile);
 
 		pev->noiseRunning = ALLOC_STRING(szSoundFile);
 	}
@@ -569,23 +569,23 @@ void CFuncRotating::Precache()
 		switch (m_sounds)
 		{
 		case 1:
-			PRECACHE_SOUND("fans/fan1.wav");
+			PrecacheSound("fans/fan1.wav");
 			pev->noiseRunning = ALLOC_STRING("fans/fan1.wav");
 			break;
 		case 2:
-			PRECACHE_SOUND("fans/fan2.wav");
+			PrecacheSound("fans/fan2.wav");
 			pev->noiseRunning = ALLOC_STRING("fans/fan2.wav");
 			break;
 		case 3:
-			PRECACHE_SOUND("fans/fan3.wav");
+			PrecacheSound("fans/fan3.wav");
 			pev->noiseRunning = ALLOC_STRING("fans/fan3.wav");
 			break;
 		case 4:
-			PRECACHE_SOUND("fans/fan4.wav");
+			PrecacheSound("fans/fan4.wav");
 			pev->noiseRunning = ALLOC_STRING("fans/fan4.wav");
 			break;
 		case 5:
-			PRECACHE_SOUND("fans/fan5.wav");
+			PrecacheSound("fans/fan5.wav");
 			pev->noiseRunning = ALLOC_STRING("fans/fan5.wav");
 			break;
 
@@ -594,7 +594,7 @@ void CFuncRotating::Precache()
 			{
 				if (!FStringNull(pev->message) && strlen(szSoundFile) > 0)
 				{
-					PRECACHE_SOUND(szSoundFile);
+					PrecacheSound(szSoundFile);
 
 					pev->noiseRunning = ALLOC_STRING(szSoundFile);
 					break;
@@ -884,7 +884,7 @@ void CPendulum::Spawn()
 	pev->movetype = MOVETYPE_PUSH;
 	
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	if (!m_distance)
 		return;

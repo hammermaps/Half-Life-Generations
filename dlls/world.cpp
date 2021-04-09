@@ -45,6 +45,13 @@ DLL_GLOBAL edict_t				*g_pBodyQueueHead;
 CGlobalState					gGlobalState;
 extern DLL_GLOBAL	int			gDisplayTitle;
 
+DLL_GLOBAL	short		g_sModelIndexNullModel; //null model index
+DLL_GLOBAL	short		g_sModelIndexErrorModel;//error model index
+DLL_GLOBAL	short		g_sModelIndexNullSprite;//null sprite index
+DLL_GLOBAL	short		g_sModelIndexErrorSprite;//error sprite index
+DLL_GLOBAL	short		g_sSoundIndexNullSound;//null sound index
+DLL_GLOBAL	unsigned short	g_usEventIndexNullEvent;//null event index
+
 extern void W_Precache();
 
 //
@@ -489,6 +496,12 @@ void CWorld :: Spawn()
 
 void CWorld :: Precache()
 {
+	g_sSoundIndexNullSound = PRECACHE_SOUND("common/null.wav");
+	g_sModelIndexNullModel = PRECACHE_MODEL("models/null.mdl");
+	g_sModelIndexErrorModel = PRECACHE_MODEL("models/error.mdl");
+	g_sModelIndexNullSprite = PRECACHE_MODEL("sprites/null.spr");
+	g_sModelIndexErrorSprite = PRECACHE_MODEL("sprites/error.spr");
+	
 	//LRC - set up the world lists
 	g_pWorld = this;
 	m_pAssistLink = NULL;
@@ -549,36 +562,35 @@ void CWorld :: Precache()
 
 // sounds used from C physics code
 	PRECACHE_SOUND("common/null.wav");				// clears sound channels
-
-	PRECACHE_SOUND( "items/suitchargeok1.wav" );//!!! temporary sound for respawning weapons.
-	PRECACHE_SOUND( "items/gunpickup2.wav" );// player picks up a gun.
-
-	PRECACHE_SOUND( "common/bodydrop3.wav" );// dead bodies hitting the ground (animation events)
-	PRECACHE_SOUND( "common/bodydrop4.wav" );
-	
-	PRECACHE_MODEL( "models/hgibs.mdl" );
-	PRECACHE_MODEL( "models/agibs.mdl" );
-
-	PRECACHE_SOUND ("weapons/ric1.wav");
-	PRECACHE_SOUND ("weapons/ric2.wav");
-	PRECACHE_SOUND ("weapons/ric3.wav");
-	PRECACHE_SOUND ("weapons/ric4.wav");
-	PRECACHE_SOUND ("weapons/ric5.wav");
-
-	PRECACHE_SOUND("explosions/explode1.wav");
-	PRECACHE_SOUND("explosions/explode2.wav");
-	PRECACHE_SOUND("explosions/explode3.wav");
-	PRECACHE_SOUND("explosions/explode4.wav");
-	PRECACHE_SOUND("explosions/explode5.wav");
-
-	PRECACHE_SOUND("explosions/explode_dist1.wav");
-	PRECACHE_SOUND("explosions/explode_dist2.wav");
-	PRECACHE_SOUND("explosions/explode_dist3.wav");
-
-	PRECACHE_SOUND("explosions/underwater_explode3.wav");
-	PRECACHE_SOUND("explosions/underwater_explode4.wav");
-
 	PRECACHE_MODEL("sprites/null.spr"); //LRC
+
+	PrecacheSound( "items/suitchargeok1.wav" );//!!! temporary sound for respawning weapons.
+	PrecacheSound( "items/gunpickup2.wav" );// player picks up a gun.
+
+	PrecacheSound( "common/bodydrop3.wav" );// dead bodies hitting the ground (animation events)
+	PrecacheSound( "common/bodydrop4.wav" );
+	
+	PrecacheModel( "models/hgibs.mdl" );
+	PrecacheModel( "models/agibs.mdl" );
+
+	PrecacheSound("weapons/ric1.wav");
+	PrecacheSound("weapons/ric2.wav");
+	PrecacheSound("weapons/ric3.wav");
+	PrecacheSound("weapons/ric4.wav");
+	PrecacheSound("weapons/ric5.wav");
+
+	PrecacheSound("explosions/explode1.wav");
+	PrecacheSound("explosions/explode2.wav");
+	PrecacheSound("explosions/explode3.wav");
+	PrecacheSound("explosions/explode4.wav");
+	PrecacheSound("explosions/explode5.wav");
+
+	PrecacheSound("explosions/explode_dist1.wav");
+	PrecacheSound("explosions/explode_dist2.wav");
+	PrecacheSound("explosions/explode_dist3.wav");
+
+	PrecacheSound("explosions/underwater_explode3.wav");
+	PrecacheSound("explosions/underwater_explode4.wav");
 	
 	//
 	// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
@@ -738,6 +750,7 @@ void CWorld :: KeyValue( KeyValueData *pkvd )
 		}
 		pkvd->fHandled = TRUE;
 	}
+	
 	else if( FStrEq( pkvd->szKeyName, "defaultctf" ) )
 	{
 		if( atoi( pkvd->szValue ) )

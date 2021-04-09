@@ -17,7 +17,10 @@
 
 #include <cassert>
 
+#ifndef EFFECTS_H
 #include "effects.h"
+#endif
+
 #include "weaponinfo.h"
 
 class CBasePlayer;
@@ -481,7 +484,7 @@ typedef struct
 
 extern MULTIDAMAGE gMultiDamage;
 
-class CWeaponRegistry
+class CWeaponRegistry //solokiller
 {
 public:
 	using FactoryFn = CBasePlayerWeapon * (*)(entvars_t* pev);

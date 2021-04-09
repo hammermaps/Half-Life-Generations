@@ -526,7 +526,7 @@ void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg);
 void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
 
 #define PRECACHE_SOUND_ARRAY( a ) \
-	{ for (int i = 0; i < ARRAYSIZE( a ); i++ ) PRECACHE_SOUND((char *) a [i]); }
+	{ for (int i = 0; i < ARRAYSIZE( a ); i++ ) PrecacheSound((char *) a [i]); }
 
 #define EMIT_SOUND_ARRAY_DYN( chan, array ) \
 	EMIT_SOUND_DYN ( ENT(pev), chan , array [ RANDOM_LONG(0,ARRAYSIZE( array )-1) ], 1.0, ATTN_NORM, 0, RANDOM_LONG(95,105) ); 
@@ -747,4 +747,7 @@ inline CEntityEnumeratorWithStart<T, FindByTargetnameFunctor<T>> UTIL_FindEntiti
 {
 	return { pszName, pStartEntity };
 }
+
+char* UTIL_FileExtension(char* in);
+
 #endif // UTIL_H

@@ -308,7 +308,7 @@ void CFuncTank::Spawn()
 
 	pev->movetype = MOVETYPE_PUSH; // so it doesn't get pushed by anything
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	//	if (pev->health) pev->flags |= FL_MONSTER; //LRC - maybe?
 
@@ -348,14 +348,14 @@ void CFuncTank::PostSpawn()
 
 void CFuncTank::Precache()
 {
-	//	PRECACHE_MODEL( "sprites/mommablob.spr" );
+	//	PrecacheModel( "sprites/mommablob.spr" );
 	if (m_iszSpriteSmoke)
-		PRECACHE_MODEL((char*)STRING(m_iszSpriteSmoke));
+		PrecacheModel((char*)STRING(m_iszSpriteSmoke));
 	if (m_iszSpriteFlash)
-		PRECACHE_MODEL((char*)STRING(m_iszSpriteFlash));
+		PrecacheModel((char*)STRING(m_iszSpriteFlash));
 
 	if (pev->noise)
-		PRECACHE_SOUND((char*)STRING(pev->noise));
+		PrecacheSound((char*)STRING(pev->noise));
 }
 
 
@@ -1690,7 +1690,7 @@ void CFuncTankControls::Spawn()
 	pev->movetype = MOVETYPE_NONE;
 	if (!(pev->spawnflags & SF_TANKCONTROLS_VISIBLE))
 		pev->effects |= EF_NODRAW;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 
 	if (pev->frags == 0) //LRC- in case the level designer didn't set it.
 		pev->frags = 30;

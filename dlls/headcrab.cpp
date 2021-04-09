@@ -280,9 +280,9 @@ void CHeadCrab :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/headcrab.mdl");
+		SetModel( "models/headcrab.mdl");
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -312,9 +312,9 @@ void CHeadCrab :: Precache()
 	PRECACHE_SOUND_ARRAY(pBiteSounds);
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/headcrab.mdl");
+		PrecacheModel("models/headcrab.mdl");
 }	
 
 
@@ -506,9 +506,9 @@ void CBabyCrab :: Spawn()
 {
 	CHeadCrab::Spawn();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
+		SetModel( "models/baby_headcrab.mdl");
 	pev->rendermode = kRenderTransTexture;
 	pev->renderamt = 192;
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
@@ -519,9 +519,9 @@ void CBabyCrab :: Spawn()
 void CBabyCrab :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL( "models/baby_headcrab.mdl" );
+		PrecacheModel( "models/baby_headcrab.mdl" );
 	CHeadCrab::Precache();
 }
 

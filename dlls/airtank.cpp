@@ -54,7 +54,8 @@ void CAirtank :: Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/w_oxygen.mdl");
+	SetModel("models/w_oxygen.mdl");
+	
 	UTIL_SetSize(pev, Vector( -16, -16, 0), Vector(16, 16, 36));
 	UTIL_SetOrigin( this, pev->origin );
 
@@ -70,8 +71,8 @@ void CAirtank :: Spawn()
 
 void CAirtank::Precache()
 {
-	PRECACHE_MODEL("models/w_oxygen.mdl");
-	PRECACHE_SOUND("doors/aliendoor3.wav");
+	PrecacheModel("models/w_oxygen.mdl");
+	PrecacheSound("doors/aliendoor3.wav");
 }
 
 

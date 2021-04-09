@@ -662,9 +662,9 @@ void CScientist :: Spawn()
 	Precache( );
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/scientist.mdl");
+		SetModel( "models/scientist.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -702,14 +702,15 @@ void CScientist :: Spawn()
 void CScientist :: Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/scientist.mdl");
-	PRECACHE_SOUND("scientist/sci_pain1.wav");
-	PRECACHE_SOUND("scientist/sci_pain2.wav");
-	PRECACHE_SOUND("scientist/sci_pain3.wav");
-	PRECACHE_SOUND("scientist/sci_pain4.wav");
-	PRECACHE_SOUND("scientist/sci_pain5.wav");
+		PrecacheModel("models/scientist.mdl");
+	
+	PrecacheSound("scientist/sci_pain1.wav");
+	PrecacheSound("scientist/sci_pain2.wav");
+	PrecacheSound("scientist/sci_pain3.wav");
+	PrecacheSound("scientist/sci_pain4.wav");
+	PrecacheSound("scientist/sci_pain5.wav");
 
 	// every new scientist must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
@@ -1155,8 +1156,8 @@ LINK_ENTITY_TO_CLASS( monster_scientist_dead, CDeadScientist );
 //
 void CDeadScientist :: Spawn( )
 {
-	PRECACHE_MODEL("models/scientist.mdl");
-	SET_MODEL(ENT(pev), "models/scientist.mdl");
+	PrecacheModel("models/scientist.mdl");
+	SetModel( "models/scientist.mdl");
 	
 	pev->effects		= 0;
 	pev->sequence		= 0;
@@ -1240,13 +1241,15 @@ SITTING_ANIM_sitting3
 void CSittingScientist :: Spawn( )
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/scientist.mdl");
+		PrecacheModel("models/scientist.mdl");
+	
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/scientist.mdl");
+		SetModel( "models/scientist.mdl");
+	
 	Precache();
 	InitBoneControllers();
 

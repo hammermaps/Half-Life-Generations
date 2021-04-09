@@ -294,11 +294,11 @@ const char* COFPitWormUp::pIdleSounds[] =
 void COFPitWormUp::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL( "models/pit_worm_up.mdl" );
+		PrecacheModel( "models/pit_worm_up.mdl" );
 	
-	PRECACHE_MODEL( "sprites/tele1.spr" );
+	PrecacheModel( "sprites/tele1.spr" );
 
 	PRECACHE_SOUND_ARRAY( pAttackSounds );
 	PRECACHE_SOUND_ARRAY( pAttackVoiceSounds );
@@ -307,27 +307,27 @@ void COFPitWormUp::Precache()
 	PRECACHE_SOUND_ARRAY( pHitGroundSounds );
 	PRECACHE_SOUND_ARRAY( pIdleSounds );
 
-	PRECACHE_SOUND( "debris/beamstart7.wav" );
+	PrecacheSound( "debris/beamstart7.wav" );
 
-	PRECACHE_SOUND( "pitworm/clang1.wav" );
-	PRECACHE_SOUND( "pitworm/clang2.wav" );
-	PRECACHE_SOUND( "pitworm/clang3.wav" );
+	PrecacheSound( "pitworm/clang1.wav" );
+	PrecacheSound( "pitworm/clang2.wav" );
+	PrecacheSound( "pitworm/clang3.wav" );
 
-	PRECACHE_SOUND( "pitworm/pit_worm_alert.wav" );
+	PrecacheSound( "pitworm/pit_worm_alert.wav" );
 
-	PRECACHE_SOUND( "pitworm/pit_worm_attack_eyeblast.wav" );
-	PRECACHE_SOUND( "pitworm/pit_worm_attack_eyeblast_impact.wav" );
+	PrecacheSound( "pitworm/pit_worm_attack_eyeblast.wav" );
+	PrecacheSound( "pitworm/pit_worm_attack_eyeblast_impact.wav" );
 
-	PRECACHE_SOUND( "pitworm/pit_worm_attack_swipe1.wav" );
-	PRECACHE_SOUND( "pitworm/pit_worm_attack_swipe2.wav" );
-	PRECACHE_SOUND( "pitworm/pit_worm_attack_swipe3.wav" );
+	PrecacheSound( "pitworm/pit_worm_attack_swipe1.wav" );
+	PrecacheSound( "pitworm/pit_worm_attack_swipe2.wav" );
+	PrecacheSound( "pitworm/pit_worm_attack_swipe3.wav" );
 
-	PRECACHE_SOUND( "pitworm/pit_worm_death.wav" );
+	PrecacheSound( "pitworm/pit_worm_death.wav" );
 
-	PRECACHE_SOUND( "pitworm/pit_worm_flinch1.wav" );
-	PRECACHE_SOUND( "pitworm/pit_worm_flinch2.wav" );
+	PrecacheSound( "pitworm/pit_worm_flinch1.wav" );
+	PrecacheSound( "pitworm/pit_worm_flinch2.wav" );
 
-	PRECACHE_MODEL( "models/pit_worm_gibs.mdl" );
+	PrecacheModel( "models/pit_worm_gibs.mdl" );
 
 	UTIL_PrecacheOther( "pitworm_gib" );
 }
@@ -340,7 +340,7 @@ void COFPitWormUp::Spawn()
 	pev->solid = SOLID_BBOX;
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SetModel(pev->model); //LRC
 	else
 		SET_MODEL( edict(), "models/pit_worm_up.mdl" );
 
@@ -1497,7 +1497,7 @@ LINK_ENTITY_TO_CLASS( pitworm_gib, COFPitWormGib );
 
 void COFPitWormGib::Precache()
 {
-	PRECACHE_MODEL( "models/pit_worm_gibs.mdl" );
+	PrecacheModel( "models/pit_worm_gibs.mdl" );
 }
 
 void COFPitWormGib::Spawn()
@@ -1584,7 +1584,7 @@ LINK_ENTITY_TO_CLASS( pitworm_gibshooter, COFPitWormGibShooter );
 
 void COFPitWormGibShooter::Precache()
 {
-	m_iGibModelIndex = PRECACHE_MODEL( "models/pit_worm_gibs.mdl" );
+	m_iGibModelIndex = PrecacheModel( "models/pit_worm_gibs.mdl" );
 }
 
 void COFPitWormGibShooter::KeyValue( KeyValueData *pkvd )
@@ -2029,7 +2029,7 @@ void COFPitWorm::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/pit_worm.mdl");
+	SetModel( "models/pit_worm.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;

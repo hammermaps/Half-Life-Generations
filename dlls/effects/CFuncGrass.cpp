@@ -44,7 +44,7 @@ int CFuncGrass::ms_iNextFreeKey = 1;
 void CFuncGrass::Spawn()
 {
 	pev->solid = SOLID_NOT;// always solid_not 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel( pev->model);
 	pev->effects |= EF_NODRAW;
 
 	m_iIDNumber = ms_iNextFreeKey;

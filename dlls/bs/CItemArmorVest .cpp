@@ -28,15 +28,15 @@ void CItemArmorVest::Spawn()
 {
 	Precache();
 	
-	SET_MODEL(ENT(pev), "models/Barney_Vest.mdl");
+	SetModel( "models/Barney_Vest.mdl");
 	
 	CItem::Spawn();
 }
 
 void CItemArmorVest::Precache()
 {
-	PRECACHE_MODEL("models/Barney_Vest.mdl");
-	PRECACHE_SOUND("items/gunpickup2.wav");
+	PrecacheModel("models/Barney_Vest.mdl");
+	PrecacheSound("items/gunpickup2.wav");
 }
 
 BOOL CItemArmorVest::MyTouch(CBasePlayer* pPlayer)
