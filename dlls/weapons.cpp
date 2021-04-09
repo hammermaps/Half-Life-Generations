@@ -27,7 +27,6 @@
 #include "monsters.h"
 #include "weapons.h"
 #include "nodes.h"
-#include "soundent.h"
 #include "decals.h"
 #include "gamerules.h"
 #include "game.h"
@@ -423,8 +422,6 @@ TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 	DEFINE_FIELD( CBasePlayerWeapon, m_iSecondaryAmmoType, FIELD_INTEGER ),
 	DEFINE_FIELD( CBasePlayerWeapon, m_iClip, FIELD_INTEGER ),
 	DEFINE_FIELD( CBasePlayerWeapon, m_iDefaultAmmo, FIELD_INTEGER ),
-//	DEFINE_FIELD( CBasePlayerWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
-//  DEFINE_FIELD( CBasePlayerWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
 };
 
 IMPLEMENT_SAVERESTORE( CBasePlayerWeapon, CBasePlayerItem );
@@ -546,7 +543,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity *pNewWeapon = CBaseEntity::Create( (char *)STRING( pev->classname ), g_pGameRules->VecWeaponRespawnSpot( this ), pev->angles, pev->owner );
+	CBaseEntity *pNewWeapon = Create( (char *)STRING( pev->classname ), g_pGameRules->VecWeaponRespawnSpot( this ), pev->angles, pev->owner );
 
 	if ( pNewWeapon )
 	{

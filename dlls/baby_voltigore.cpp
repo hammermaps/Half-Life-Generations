@@ -499,8 +499,6 @@ void COFBabyVoltigore :: Spawn()
 //=========================================================
 void COFBabyVoltigore :: Precache()
 {
-	int i;
-	
 	if (pev->model)
 		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else

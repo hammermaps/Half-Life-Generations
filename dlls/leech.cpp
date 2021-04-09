@@ -297,18 +297,14 @@ void CLeech::AlertSound()
 
 void CLeech::Precache()
 {
-	int i;
-
 	//PRECACHE_MODEL("models/icky.mdl");
 	if (pev->model)
 		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
 		PrecacheModel("models/leech.mdl");
 
-	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
-		PrecacheSound((char *)pAttackSounds[i]);
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PrecacheSound((char *)pAlertSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
 }
 
 

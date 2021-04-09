@@ -717,24 +717,15 @@ void COFVoltigore :: Spawn()
 //=========================================================
 void COFVoltigore :: Precache()
 {
-	int i;
-	
 	if (pev->model)
 		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
 		PrecacheModel("models/voltigore.mdl");
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PrecacheSound((char *)pAttackHitSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PrecacheSound((char *)pAttackMissSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PrecacheSound((char *)pPainSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PrecacheSound((char *)pAlertSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
 
 	PrecacheSound( "voltigore/voltigore_attack_melee1.wav" );
 	PrecacheSound( "voltigore/voltigore_attack_melee2.wav" );

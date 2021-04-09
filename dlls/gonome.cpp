@@ -85,21 +85,10 @@ void COFGonomeGuts::Spawn()
 	pev->rendermode = kRenderTransAlpha;
 	pev->renderamt = 255;
 
-	//TODO: probably shouldn't be assinging to x every time
-	if( g_Language == LANGUAGE_GERMAN )
-	{
-		SET_MODEL( edict(), "sprites/bigspit.spr" );
-		pev->rendercolor.x = 0;
-		pev->rendercolor.x = 255;
-		pev->rendercolor.x = 0;
-	}
-	else
-	{
-		SET_MODEL( edict(), "sprites/bigspit.spr" );
-		pev->rendercolor.x = 128;
-		pev->rendercolor.x = 32;
-		pev->rendercolor.x = 128;
-	}
+	SET_MODEL(edict(), "sprites/bigspit.spr");
+	pev->rendercolor.x = 128;
+	pev->rendercolor.x = 32;
+	pev->rendercolor.x = 128;
 
 	pev->frame = 0;
 	pev->scale = 0.5;
@@ -629,8 +618,6 @@ void COFGonome :: Spawn()
 //=========================================================
 void COFGonome :: Precache()
 {
-	int i;
-	
 	if (pev->model)
 		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
@@ -638,20 +625,11 @@ void COFGonome :: Precache()
 	
 	PrecacheModel( "sprites/bigspit.spr" );
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PrecacheSound((char *)pAttackHitSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PrecacheSound((char *)pAttackMissSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pIdleSounds ); i++ )
-		PrecacheSound((char *)pIdleSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
-		PrecacheSound((char *)pAlertSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PrecacheSound((char *)pPainSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pIdleSounds);
+	PRECACHE_SOUND_ARRAY(pAlertSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
 
 	PrecacheSound( "gonome/gonome_death2.wav" );
 	PrecacheSound( "gonome/gonome_death3.wav" );

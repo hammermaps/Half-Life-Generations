@@ -152,10 +152,7 @@ void CSniperRifle::PrimaryAttack()
 	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_2DEGREES );
 
 	//TODO: 8192 constant should be defined somewhere - Solokiller
-	Vector vecShot = m_pPlayer->FireBulletsPlayer( 1,
-									vecSrc, vecAiming, g_vecZero, 
-									8192, 0, BULLET_PLAYER_762, 0, 0,
-									m_pPlayer->pev, m_pPlayer->random_seed );
+	Vector vecShot = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, g_vecZero, 8192, BULLET_PLAYER_762, 0, m_pPlayer->pev, m_pPlayer->random_seed );
 
 	PLAYBACK_EVENT_FULL(UTIL_DefaultPlaybackFlags(),
 							m_pPlayer->edict(), m_usSniper, 0, 

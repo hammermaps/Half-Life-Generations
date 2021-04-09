@@ -548,8 +548,6 @@ void CISlave :: Spawn()
 //=========================================================
 void CISlave :: Precache()
 {
-	int i;
-
 	if (pev->model)
 		PrecacheModel((char*)STRING(pev->model)); //LRC
 	else
@@ -564,17 +562,10 @@ void CISlave :: Precache()
 	PrecacheSound("headcrab/hc_headbite.wav");
 	PrecacheSound("weapons/cbar_miss1.wav");
 
-	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
-		PrecacheSound((char *)pAttackHitSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
-		PrecacheSound((char *)pAttackMissSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
-		PrecacheSound((char *)pPainSounds[i]);
-
-	for ( i = 0; i < ARRAYSIZE( pDeathSounds ); i++ )
-		PrecacheSound((char *)pDeathSounds[i]);
+	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
+	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PRECACHE_SOUND_ARRAY(pPainSounds);
+	PRECACHE_SOUND_ARRAY(pDeathSounds);
 
 	UTIL_PrecacheOther( "test_effect" );
 }	

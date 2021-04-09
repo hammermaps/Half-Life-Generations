@@ -19,6 +19,8 @@
 #include "weapons.h"
 #include "player.h"
 
+const float GLOCK_RELOAD_TIME = 1.5f;
+
 LINK_ENTITY_TO_CLASS(weapon_glock, CGlock);
 LINK_WEAPON_TO_CLASS(weapon_9mmhandgun, CGlock);
 
@@ -95,19 +97,19 @@ void CGlock::SecondaryAttack()
 {
 	if (!(m_pPlayer->pev->flags & FL_ONGROUND))
 	{
-		GlockFire(1.0 * (1 - m_flAccuracy), 0.2f, false);
+		GlockFire(2.0 * (1 - m_flAccuracy), 0.2f, false);
 	}
 	else if (m_pPlayer->pev->velocity.Length2D() > 0)
 	{
-		GlockFire(0.165 * (1 - m_flAccuracy), 0.2f, false);
+		GlockFire(0.765 * (1 - m_flAccuracy), 0.2f, false);
 	}
 	else if (m_pPlayer->pev->flags & FL_DUCKING)
 	{
-		GlockFire(0.075 * (1 - m_flAccuracy), 0.2f, false);
+		GlockFire(0.3 * (1 - m_flAccuracy), 0.2f, false);
 	}
 	else
 	{
-		GlockFire(0.1 * (1 - m_flAccuracy), 0.2f, false);
+		GlockFire(0.5 * (1 - m_flAccuracy), 0.2f, false);
 	}
 }
 
@@ -203,8 +205,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 		vecAiming = gpGlobals->v_forward;
 	}
 
-	Vector vecDir;
-	vecDir = m_pPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), 8192, 0, BULLET_PLAYER_9MM, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed);
+	Vector vecDir = m_pPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), 8192, BULLET_PLAYER_9MM, 0, m_pPlayer->pev, m_pPlayer->random_seed);
 
 	PLAYBACK_EVENT_FULL(flags, m_pPlayer->edict(), fUseAutoAim ? m_usFireGlock1 : m_usFireGlock2, 0.0, (float*)&g_vecZero, (float*)&g_vecZero, vecDir.x, vecDir.y,
 		int(m_pPlayer->pev->punchangle.x * 10000), int(m_pPlayer->pev->punchangle.y * 10000), (m_iClip == 0) ? 1 : 0, 0);
@@ -226,9 +227,9 @@ void CGlock::Reload()
 	int iResult;
 
 	if (m_iClip == 0)
-		iResult = DefaultReload(17, GLOCK_RELOAD, 1.5);
+		iResult = DefaultReload(17, GLOCK_RELOAD, GLOCK_RELOAD);
 	else
-		iResult = DefaultReload(17, GLOCK_RELOAD_NOT_EMPTY, 1.5);
+		iResult = DefaultReload(17, GLOCK_RELOAD_NOT_EMPTY, GLOCK_RELOAD);
 
 	if (iResult)
 	{
@@ -269,13 +270,6 @@ void CGlock::WeaponIdle()
 		SendWeaponAnim(iAnim, 1);
 	}
 }
-
-
-
-
-
-
-
 
 class CGlockAmmo : public CBasePlayerAmmo
 {

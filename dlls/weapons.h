@@ -356,7 +356,7 @@ class CBasePlayerWeapon : public CBasePlayerItem
 public:
 	using BaseClass = CBasePlayerItem;
 
-	virtual void Spawn() {};
+	virtual void Spawn() {}
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
 	
