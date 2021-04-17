@@ -77,5 +77,8 @@ extern int gmsgKeyedDLight; //LRC
 extern int gmsgSetSky; //LRC
 extern int gmsgAddShine; // LRC
 extern int gmsgParticle; // LRC
+extern int gmsgCamData; // for trigger_viewset
+extern int gmsgSetMirror;
+extern int gmsgResetMirror;
 
 void LinkUserMessages();

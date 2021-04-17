@@ -83,6 +83,9 @@ int gmsgKeyedDLight = 0; //LRC
 int gmsgSetSky = 0; //LRC
 int gmsgAddShine = 0; // LRC
 int gmsgParticle = 0; // LRC
+int gmsgCamData; // for trigger_viewset
+int gmsgSetMirror = 0;//set mirror
+int gmsgResetMirror = 0;
 
 void LinkUserMessages()
 {
@@ -155,4 +158,7 @@ void LinkUserMessages()
 
 	gmsgParticles = REG_USER_MSG("Particles", -1);
 	gmsgGrassParticles = REG_USER_MSG("Grass", -1);
+	gmsgCamData = REG_USER_MSG("CamData", -1);
+	gmsgSetMirror = REG_USER_MSG("SetMirror", 10);
+	gmsgResetMirror = REG_USER_MSG("ResetMirror", 0);
 }

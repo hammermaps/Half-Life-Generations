@@ -82,7 +82,7 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 void CFrictionModifier::Spawn()
 {
 	pev->solid = SOLID_TRIGGER;
-	SetModel( pev->model); // set size and link into world
+	SetModel(pev->model); // set size and link into world
 	pev->movetype = MOVETYPE_NONE;
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
@@ -2266,7 +2266,7 @@ void CBaseTrigger::InitTrigger()
 		SetMovedir(pev);
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
-	SetModel( pev->model); // set size and link into world
+	SetModel(pev->model); // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
 }
@@ -3229,7 +3229,7 @@ void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, 
 		return;
 
 	BOOL fTellActivator = m_hActivator->IsPlayer() && !FBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
-	
+
 	if (m_cTriggersLeft != 0)
 	{
 		if (fTellActivator)
@@ -3272,7 +3272,7 @@ void CTriggerVolume::Spawn()
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
-	SetModel( pev->model); // set size and link into world
+	SetModel(pev->model); // set size and link into world
 	pev->model = iStringNull;
 	pev->modelindex = 0;
 }
@@ -3525,7 +3525,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 //
 void CChangeLevel::TouchChangeLevel(CBaseEntity* pOther)
 {
-	if(!pOther->IsPlayer())
+	if (!pOther->IsPlayer())
 		return;
 
 	ChangeLevelNow(pOther);
@@ -3785,7 +3785,7 @@ void CLadder::Spawn()
 {
 	Precache();
 
-	SetModel( pev->model); // set size and link into world
+	SetModel(pev->model); // set size and link into world
 	pev->movetype = MOVETYPE_PUSH;
 }
 
@@ -5167,9 +5167,10 @@ void CTriggerChangeCVar::Think()
 }
 
 
-#define SF_CAMERA_PLAYER_POSITION	1
+#define SF_CAMERA_PLAYER_POSITION		1
 #define SF_CAMERA_PLAYER_TARGET		2
-#define SF_CAMERA_PLAYER_TAKECONTROL 4
+#define SF_CAMERA_PLAYER_TAKECONTROL 		4
+#define SF_CAMERA_NODRAWHUD			16
 
 class CTriggerCamera : public CBaseDelay
 {
@@ -5238,7 +5239,6 @@ void CTriggerCamera::Spawn()
 		m_deceleration = 500;
 }
 
-
 void CTriggerCamera::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "wait"))
@@ -5270,7 +5270,6 @@ void CTriggerCamera::KeyValue(KeyValueData* pkvd)
 		CBaseDelay::KeyValue(pkvd);
 }
 
-
 void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	if (!ShouldToggle(useType, m_state))
@@ -5288,11 +5287,13 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 		pActivator = Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
 	}
 
-	auto player = static_cast<CBasePlayer*>(pActivator);
-
 	m_hPlayer = pActivator;
 
-	m_flReturnTime = gpGlobals->time + m_flWait;
+	if (m_flWait == -1) //G-Cont. if wait time = -1, set is 1E6 for retriggered only
+		m_flReturnTime = gpGlobals->time + 1E6;
+	else
+		m_flReturnTime = gpGlobals->time + m_flWait;
+
 	pev->speed = m_initialSpeed;
 	m_targetSpeed = m_initialSpeed;
 
@@ -5308,12 +5309,15 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	// Nothing to look at!
 	if (m_hTarget == nullptr)
 	{
-		return;
+		ALERT(at_console, "Warning! Trigger Camera don't have target! Set target as player.");
+		m_hTarget = m_hPlayer; //G-Cont. if cam target don't specified - target is player.
+		//return;
 	}
+
 
 	if (FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL))
 	{
-		player->EnableControl(FALSE);
+		static_cast<CBasePlayer*>(pActivator)->EnableControl(FALSE);
 	}
 
 	if (m_sPath)
@@ -5354,17 +5358,29 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 		CBaseEntity* pEntity = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszViewEntity));
 		if (pEntity)
 		{
-			SET_VIEW(pActivator->edict(), pEntity->edict());
+			int sendflags = 0;
+			sendflags |= CAMERA_ON;
+			if (pev->spawnflags & SF_CAMERA_NODRAWHUD)
+				sendflags &= ~DRAW_HUD;
+			else sendflags |= DRAW_HUD;
+			static_cast<CBasePlayer*>(pActivator)->viewEntity = m_iszViewEntity;
+			static_cast<CBasePlayer*>(pActivator)->viewFlags = sendflags;
+			static_cast<CBasePlayer*>(pActivator)->viewNeedsUpdate = 1;
 		}
 	}
 	else
 	{
-		SET_VIEW(pActivator->edict(), edict());
+		int sendflags = 0;
+		sendflags |= CAMERA_ON;
+		if (pev->spawnflags & SF_CAMERA_NODRAWHUD)
+			sendflags &= ~DRAW_HUD;
+		else sendflags |= DRAW_HUD;
+		static_cast<CBasePlayer*>(pActivator)->viewEntity = pev->targetname;
+		static_cast<CBasePlayer*>(pActivator)->viewFlags = sendflags;
+		static_cast<CBasePlayer*>(pActivator)->viewNeedsUpdate = 1;
 	}
 
-	player->m_hViewEntity = this;
-
-	SetModel( pActivator->pev->model);
+	SET_MODEL(ENT(pev), STRING(pActivator->pev->model));
 
 	// follow the player down
 	SetThink(&CTriggerCamera::FollowTarget);
@@ -5382,16 +5398,13 @@ void CTriggerCamera::FollowTarget()
 
 	if (m_hTarget == nullptr || m_flReturnTime < gpGlobals->time)
 	{
-		auto player = static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer));
-		if (player->IsAlive())
+		if (m_hPlayer->IsAlive())
 		{
-			SET_VIEW(player->edict(), player->edict());
-			player->EnableControl(TRUE);
+			static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer))->viewEntity = 0;
+			static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer))->viewFlags = 0;
+			static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer))->viewNeedsUpdate = 1;
+			static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer))->EnableControl(TRUE);
 		}
-
-		player->m_hViewEntity = nullptr;
-		player->m_bResetViewEntity = false;
-
 		SUB_UseTargets(this, USE_TOGGLE, 0);
 		pev->avelocity = Vector(0, 0, 0);
 		m_state = 0;

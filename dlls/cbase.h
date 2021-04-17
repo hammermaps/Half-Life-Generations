@@ -201,6 +201,14 @@ public:
 	CBaseEntity* m_pAssistLink; // LRC- link to the next entity which needs to be Assisted before physics are applied.
 	Vector m_vecPostAssistVel; // LRC
 	Vector m_vecPostAssistAVel; // LRC
+	Vector m_vecPostAssistOrg; //g-cont. child postorigin
+	Vector m_vecPostAssistAng; //g-cont. child postangles
+
+	Vector m_vecOffsetOrigin; //spawn offset origin
+	Vector m_vecOffsetAngles; //spawn offset angles
+	Vector m_vecParentAngles; //temp container
+	Vector m_vecParentOrigin; //temp container
+	
 	float m_fNextThink;
 	// LRC - for SetNextThink and SetPhysThink. Marks the time when a think will be performed - not necessarily the same as pev->nextthink!
 	float m_fPevNextThink;
@@ -273,7 +281,10 @@ public:
 	}
 
 	virtual void Activate(); //LRC
-	void InitMoveWith(); //LRC - called by Activate() to set up moveWith values
+	void SetParent(int m_iNewParent, int m_iAttachment = 0); //g-cont. two version of SetParent. from xash 0.4
+	void SetParent(CBaseEntity* pParent, int m_iAttachment = 0); //g-cont. dynamiclly link parents
+	void ResetParent();
+	void ClearPointers(); //g-cont. directly clear all movewith pointer before changelevel
 	virtual void PostSpawn()
 	{
 	} //LRC - called by Activate() to handle entity-specific initialisation.

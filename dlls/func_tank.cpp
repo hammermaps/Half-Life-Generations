@@ -1681,6 +1681,11 @@ void CFuncTankControls::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 
 		m_pController = nullptr;
 		m_active = false;
+
+		((CBasePlayer*)pActivator)->m_iFOV = 0;//reset FOV
+		((CBasePlayer*)pActivator)->viewEntity = 0;
+		((CBasePlayer*)pActivator)->viewFlags = 0;
+		((CBasePlayer*)pActivator)->viewNeedsUpdate = 1;
 	}
 }
 

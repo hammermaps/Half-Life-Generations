@@ -255,7 +255,8 @@ public:
 	virtual void PreThink();
 	virtual void PostThink();
 	Vector GetGunPosition() override;
-	int TakeHealth(float flHealth, int bitsDamageType) override;
+	virtual int TakeHealth(float flHealth, int bitsDamageType);
+	virtual int TakeArmor(float flArmor);
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr,
 	                 int bitsDamageType) override;
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
@@ -378,6 +379,11 @@ public:
 	float m_flStatusBarDisappearDelay;
 	char m_SbarString0[SBAR_STRING_SIZE];
 	char m_SbarString1[SBAR_STRING_SIZE];
+
+	// for trigger_viewset
+	int	viewEntity; // string
+	int	viewFlags;	// 1-active, 2-draw hud
+	int	viewNeedsUpdate; // precache sets to 1, UpdateClientData() sets to 0	
 
 	void Player_Menu();
 

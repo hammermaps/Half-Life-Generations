@@ -62,6 +62,8 @@ extern cvar_t allow_spectators;
 
 extern int g_teamplay;
 
+int g_serveractive = 0;
+
 void LinkUserMessages();
 
 /*
@@ -796,8 +798,6 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 	g_pGameRules->ClientUserInfoChanged( player, infobuffer );
 }
 
-static int g_serveractive = 0;
-
 void ServerDeactivate()
 {
 	// It's possible that the engine will call this function more times than is necessary
@@ -1204,6 +1204,22 @@ void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pv
 	if ( pViewEntity )
 	{
 		pView = pViewEntity;
+	}
+
+	// for trigger_viewset
+	CBasePlayer* pPlayer = (CBasePlayer*)CBaseEntity::Instance((struct edict_s*)pClient);
+	if (pPlayer && pPlayer->viewFlags & 1) // custom view active
+	{
+		CBaseEntity* pViewEnt = UTIL_FindEntityByString(NULL, "targetname", STRING(pPlayer->viewEntity));
+
+		if (!FNullEnt(pViewEnt)) pView = pViewEnt->edict();
+		else
+		{	//try to find entity by classname
+			CBaseEntity* pViewEnt = UTIL_FindEntityByString(NULL, "classname", STRING(pPlayer->viewEntity));
+
+			if (!FNullEnt(pViewEnt))pView = pViewEnt->edict();
+			else pPlayer->viewFlags = 0;
+		}
 	}
 
 	if ( pClient->v.flags & FL_PROXY )

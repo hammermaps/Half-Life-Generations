@@ -341,6 +341,7 @@ public:
 	virtual Vector GetGunPosition();
 
 	virtual int TakeHealth(float flHealth, int bitsDamageType);
+	virtual int TakeArmor(float flArmor);
 	virtual int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	int DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 

@@ -375,6 +375,11 @@ extern void SetMovedir(entvars_t* pev);
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern int BuildChangeList( LEVELLIST *pLevelList, int maxList );
 
+// for trigger_viewset
+int HaveCamerasInPVS(edict_t* edict);
+Vector UTIL_MirrorVector(Vector angles);
+Vector UTIL_MirrorPos(Vector endpos);
+
 //
 // How did I ever live without ASSERT?
 //
@@ -435,6 +440,12 @@ void DBG_AssertFunction(BOOL fExpr, const char* szExpr, const char* szFile, int 
 #define SVC_WEAPONANIM		35
 #define SVC_ROOMTYPE		37
 #define	SVC_DIRECTOR		51
+
+// camera flags
+#define	CAMERA_ON		1
+#define	DRAW_HUD		2
+#define	INVERSE_X		4
+#define	MONSTER_VIEW	8
 
 // triggers
 #define	SF_TRIGGER_ALLOWMONSTERS	1// monsters allowed to fire this trigger
