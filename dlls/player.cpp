@@ -427,7 +427,7 @@ int CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 	m_lastDamageAmount = flDamage;
 
 	// Armor. 
-	if (pev->armorvalue)
+	if (pev->armorvalue && !(pev->flags & FL_GODMODE))
 	{
 		float flNew = flDamage * flRatio;
 
