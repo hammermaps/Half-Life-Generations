@@ -206,7 +206,7 @@ int CBaseAnimating :: LookupActivityHeaviest ( int activity ) { return 0; }
 void CBaseMonster :: SetEyePosition () { }
 int CBaseAnimating :: LookupSequence ( const char *label ) { return 0; }
 void CBaseAnimating :: ResetSequenceInfo ( ) { }
-BOOL CBaseAnimating :: GetSequenceFlags( ) { return FALSE; }
+BOOL CBaseAnimating :: GetSequenceFlags( ) const { return FALSE; }
 void CBaseAnimating :: DispatchAnimEvents ( float flInterval ) { }
 void CBaseMonster :: HandleAnimEvent( MonsterEvent_t *pEvent ) { }
 float CBaseAnimating :: SetBoneController ( int iController, float flValue ) { return 0.0; }
@@ -215,7 +215,6 @@ float CBaseAnimating :: SetBlending ( int iBlender, float flValue ) { return 0; 
 void CBaseAnimating :: GetBonePosition ( int iBone, Vector &origin, Vector &angles ) { }
 void CBaseAnimating :: GetAttachment ( int iAttachment, Vector &origin, Vector &angles ) { }
 int CBaseAnimating :: FindTransition( int iEndingSequence, int iGoalSequence, int *piDir ) { return -1; }
-void CBaseAnimating :: GetAutomovement( Vector &origin, Vector &angles, float flInterval ) { }
 void CBaseAnimating :: SetBodygroup( int iGroup, int iValue ) { }
 int CBaseAnimating :: GetBodygroup( int iGroup ) { return 0; }
 Vector CBaseMonster :: GetGunPosition() { return g_vecZero; }

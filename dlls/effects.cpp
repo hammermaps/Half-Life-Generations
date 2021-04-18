@@ -1821,12 +1821,6 @@ void CEnvModel::Think()
 
 		switch (iTemp)
 		{
-			//		case 1: // loop
-			//			pev->animtime = gpGlobals->time;
-			//			m_fSequenceFinished = FALSE;
-			//			m_flLastEventCheck = gpGlobals->time;
-			//			pev->frame = 0;
-			//			break;
 		case 2: // change state
 			if (pev->spawnflags & SF_ENVMODEL_OFF)
 				pev->spawnflags &= ~SF_ENVMODEL_OFF;
@@ -1869,16 +1863,16 @@ void CEnvModel::SetSequence()
 	if (pev->spawnflags & SF_ENVMODEL_OFF)
 	{
 		if (m_iAction_Off == 1)
-			m_fSequenceLoops = 1;
+			m_fSequenceLoops = true;
 		else
-			m_fSequenceLoops = 0;
+			m_fSequenceLoops = false;
 	}
 	else
 	{
 		if (m_iAction_On == 1)
-			m_fSequenceLoops = 1;
+			m_fSequenceLoops = true;
 		else
-			m_fSequenceLoops = 0;
+			m_fSequenceLoops = false;
 	}
 }
 

@@ -15,50 +15,10 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "animation.h"
 #include "effects.h"
-
 
 #define XEN_PLANT_GLOW_SPRITE		"sprites/flare3.spr"
 #define XEN_PLANT_HIDE_TIME			5
-
-
-class CActAnimating : public CBaseAnimating
-{
-public:
-	void			SetActivity( Activity act );
-	inline Activity	GetActivity() { return m_Activity; }
-
-	int	ObjectCaps() override { return CBaseAnimating :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
-private:
-	Activity	m_Activity;
-};
-
-TYPEDESCRIPTION	CActAnimating::m_SaveData[] = 
-{
-	DEFINE_FIELD( CActAnimating, m_Activity, FIELD_INTEGER ),
-};
-
-IMPLEMENT_SAVERESTORE( CActAnimating, CBaseAnimating );
-
-void CActAnimating :: SetActivity( Activity act ) 
-{ 
-	int sequence = LookupActivity( act ); 
-	if ( sequence != ACTIVITY_NOT_AVAILABLE )
-	{
-		pev->sequence = sequence;
-		m_Activity = act; 
-		pev->frame = 0;
-		ResetSequenceInfo( );
-	}
-}
-
-
 
 
 class CXenPLight : public CActAnimating

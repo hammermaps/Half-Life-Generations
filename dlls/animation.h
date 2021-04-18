@@ -15,7 +15,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#define ACTIVITY_NOT_AVAILABLE		-1
+#define ACTIVITY_NOT_AVAILABLE	-1
 
 #ifndef MONSTEREVENT_H
 #include "monsterevent.h"

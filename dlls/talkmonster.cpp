@@ -790,7 +790,6 @@ void CTalkMonster::TalkInit()
 {
 	// every new talking monster must reset this global, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
-
 	g_talkWaitTime = 0;
 
 	if (m_iszSpeakAs) //LRC: changing voice groups for monsters

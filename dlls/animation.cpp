@@ -45,9 +45,7 @@ extern globalvars_t	*gpGlobals;
 
 int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs )
 {
-	studiohdr_t *pstudiohdr;
-	
-	pstudiohdr = (studiohdr_t *)pmodel;
+	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 	if (! pstudiohdr)
 		return 0;
 
@@ -69,9 +67,7 @@ int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs )
 
 int LookupActivity( void *pmodel, entvars_t *pev, int activity )
 {
-	studiohdr_t *pstudiohdr;
-	
-	pstudiohdr = (studiohdr_t *)pmodel;
+	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 	if (! pstudiohdr)
 		return 0;
 
@@ -97,9 +93,7 @@ int LookupActivity( void *pmodel, entvars_t *pev, int activity )
 
 int LookupActivityHeaviest( void *pmodel, entvars_t *pev, int activity )
 {
-	studiohdr_t *pstudiohdr;
-	
-	pstudiohdr = (studiohdr_t *)pmodel;
+	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 	if ( !pstudiohdr )
 		return 0;
 
@@ -126,9 +120,7 @@ int LookupActivityHeaviest( void *pmodel, entvars_t *pev, int activity )
 
 void GetEyePosition ( void *pmodel, float *vecEyePosition )
 {
-	studiohdr_t *pstudiohdr;
-	
-	pstudiohdr = (studiohdr_t *)pmodel;
+	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 
 	if ( !pstudiohdr )
 	{
@@ -141,9 +133,7 @@ void GetEyePosition ( void *pmodel, float *vecEyePosition )
 
 int LookupSequence( void *pmodel, const char *label )
 {
-	studiohdr_t *pstudiohdr;
-	
-	pstudiohdr = (studiohdr_t *)pmodel;
+	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 	if (! pstudiohdr)
 		return 0;
 
@@ -174,9 +164,7 @@ void SequencePrecache( void *pmodel, const char *pSequenceName )
 	int index = LookupSequence( pmodel, pSequenceName );
 	if ( index >= 0 )
 	{
-		studiohdr_t *pstudiohdr;
-	
-		pstudiohdr = (studiohdr_t *)pmodel;
+		studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 		if ( !pstudiohdr || index >= pstudiohdr->numseq )
 			return;
 
