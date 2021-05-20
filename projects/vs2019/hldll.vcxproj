@@ -154,6 +154,7 @@
     <ClCompile Include="..\..\dlls\entities\CActAnimating.cpp" />
     <ClCompile Include="..\..\dlls\entities\CBaseAnimating.cpp" />
     <ClCompile Include="..\..\dlls\entities\CBaseSquad.cpp" />
+    <ClCompile Include="..\..\dlls\entities\CTriggerChangeKeyValue.cpp" />
     <ClCompile Include="..\..\dlls\entities\monsters\CAGrunt.cpp" />
     <ClCompile Include="..\..\dlls\entities\monsters\CBarnacle.cpp" />
     <ClCompile Include="..\..\dlls\entities\monsters\CBarney.cpp" />

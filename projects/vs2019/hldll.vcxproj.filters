@@ -624,6 +624,9 @@
     <ClCompile Include="..\..\dlls\entities\CBaseSquad.cpp">
       <Filter>Source Files\dlls\entities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\dlls\entities\CTriggerChangeKeyValue.cpp">
+      <Filter>Source Files\dlls\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\dlls\doors.h">
