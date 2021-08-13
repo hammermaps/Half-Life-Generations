@@ -71,6 +71,8 @@ public:
 	void VacateSlot();
 	bool SquadEnemySplit();
 	void SquadCopyEnemyInfo();
+	virtual void SquadMakeEnemy(CBaseEntity* pEnemy);
+	int CheckEnemy(CBaseEntity* pEnemy) override;
 };
 
 #endif //GAME_SERVER_ENTITIES_CBASESQUAD_H

@@ -72,16 +72,18 @@ BOOL CEgon::Deploy()
 	return DefaultDeploy( "models/v_egon.mdl", "models/p_egon.mdl", EGON_DRAW, "egon" );
 }
 
-int CEgon::AddToPlayer( CBasePlayer *pPlayer )
+bool CEgon::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
-		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		
+		return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 

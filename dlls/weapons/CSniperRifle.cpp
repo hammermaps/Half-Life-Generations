@@ -68,7 +68,7 @@ void CSniperRifle::Spawn()
 	FallInit(); // get ready to fall down.
 }
 
-BOOL CSniperRifle::AddToPlayer( CBasePlayer* pPlayer )
+bool CSniperRifle::AddToPlayer( CBasePlayer* pPlayer )
 {
 	if( BaseClass::AddToPlayer( pPlayer ) )
 	{

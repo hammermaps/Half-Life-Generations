@@ -214,15 +214,12 @@ TYPEDESCRIPTION	CShockTrooper::m_SaveData[] =
 {
 	DEFINE_FIELD( CShockTrooper, m_flNextGrenadeCheck, FIELD_TIME ),
 	DEFINE_FIELD( CShockTrooper, m_flNextPainTime, FIELD_TIME ),
-//	DEFINE_FIELD( CShockTrooper, m_flLastEnemySightTime, FIELD_TIME ), // don't save, go to zero
 	DEFINE_FIELD( CShockTrooper, m_vecTossVelocity, FIELD_VECTOR ),
 	DEFINE_FIELD( CShockTrooper, m_fThrowGrenade, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CShockTrooper, m_fStanding, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CShockTrooper, m_fFirstEncounter, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CShockTrooper, m_cClipSize, FIELD_INTEGER ),
 	DEFINE_FIELD( CShockTrooper, m_voicePitch, FIELD_INTEGER ),
-//  DEFINE_FIELD( CShotgun, m_iBrassShell, FIELD_INTEGER ),
-//  DEFINE_FIELD( CShotgun, m_iShotgunShell, FIELD_INTEGER ),
 	DEFINE_FIELD( CShockTrooper, m_iSentence, FIELD_INTEGER ),
 	DEFINE_FIELD( CShockTrooper, m_flLastChargeTime, FIELD_FLOAT ),
 	DEFINE_FIELD( CShockTrooper, m_flLastShot, FIELD_TIME ),
@@ -832,9 +829,6 @@ void CShockTrooper :: Shoot ()
 //=========================================================
 void CShockTrooper :: HandleAnimEvent( MonsterEvent_t *pEvent )
 {
-	Vector	vecShootDir;
-	Vector	vecShootOrigin;
-
 	switch( pEvent->event )
 	{
 		case STROOPER_AE_DROP_GUN:
@@ -953,10 +947,10 @@ void CShockTrooper :: Spawn()
 	m_bloodColor		= BLOOD_COLOR_GREEN;
 	pev->effects		= 0;
 
-	if (pev->health == 0) //LRC
+	if (!pev->health) //LRC
 		pev->health = gSkillData.shocktrooperHealth;
 	
-	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	m_flFieldOfView		= 0.2f;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_flNextGrenadeCheck = gpGlobals->time + 1;
 	m_flNextPainTime	= gpGlobals->time;

@@ -384,16 +384,17 @@ void CRpg::IncrementAmmo(CBasePlayer* pPlayer)
 	}
 }
 
-int CRpg::AddToPlayer( CBasePlayer *pPlayer )
+bool CRpg::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
-		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 BOOL CRpg::Deploy( )
@@ -422,7 +423,7 @@ void CRpg::Holster( int skiplocal /* = 0 */ )
 {
 	m_fInReload = FALSE;// cancel any reload in progress.
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5f;
 	
 	SendWeaponAnim( RPG_HOLSTER1 );
 

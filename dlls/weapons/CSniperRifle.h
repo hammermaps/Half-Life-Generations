@@ -46,7 +46,7 @@ public:
 	void Precache() override;
 	void Spawn() override;
 
-	BOOL AddToPlayer( CBasePlayer* pPlayer ) override;
+	bool AddToPlayer( CBasePlayer* pPlayer ) override;
 
 	BOOL Deploy() override;
 

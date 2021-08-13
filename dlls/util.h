@@ -168,9 +168,8 @@ inline BOOL FStringNull(int iString)			{ return iString == iStringNull; }
 #define		BLOOD_COLOR_YELLOW	(BYTE)195
 #define		BLOOD_COLOR_GREEN	BLOOD_COLOR_YELLOW
 
-typedef enum 
+enum MONSTERSTATE
 {
-
 	MONSTERSTATE_NONE = 0,
 	MONSTERSTATE_IDLE,
 	MONSTERSTATE_COMBAT,
@@ -180,11 +179,10 @@ typedef enum
 	MONSTERSTATE_SCRIPT,
 	MONSTERSTATE_PLAYDEAD,
 	MONSTERSTATE_DEAD
-
-} MONSTERSTATE;
+};
 
 //LRC- the values used for the new "global states" mechanism.
-typedef enum
+enum STATE
 {
 	STATE_OFF = 0,	// disabled, inactive, invisible, closed, or stateless. Or non-alert monster.
 	STATE_TURN_ON,  // door opening, env_fade fading in, etc.
@@ -192,7 +190,7 @@ typedef enum
 	STATE_TURN_OFF, // door closing, monster dying (?).
 	STATE_IN_USE,	// player is in control (train/tank/barney/scientist).
 					// In_Use isn't very useful, I'll probably remove it.
-} STATE;
+};
 
 extern char* GetStringForState(STATE state);
 

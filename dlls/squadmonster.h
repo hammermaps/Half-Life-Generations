@@ -57,7 +57,6 @@ public:
 	int m_afSquadSlots;
 	float m_flLastEnemySightTime; // last time anyone in the squad saw the enemy
 
-	int CheckEnemy(CBaseEntity* pEnemy) override;
 	void StartMonster() override;
 	void ScheduleChange() override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;
@@ -79,8 +78,6 @@ public:
 			return this;
 		return static_cast<CSquadMonster*>(static_cast<CBaseEntity*>(m_hSquadMember[i]));
 	}
-
-	void SquadMakeEnemy(CBaseEntity* pEnemy);
 
 	CSquadMonster* MySquadMonsterPointer() override { return this; }
 

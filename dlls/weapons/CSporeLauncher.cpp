@@ -72,7 +72,7 @@ void CSporeLauncher::Spawn()
 	pev->framerate = 1;
 }
 
-BOOL CSporeLauncher::AddToPlayer( CBasePlayer* pPlayer )
+bool CSporeLauncher::AddToPlayer( CBasePlayer* pPlayer )
 {
 	if( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{

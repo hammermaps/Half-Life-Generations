@@ -79,7 +79,7 @@ void CShockRifle::Spawn()
 	pev->framerate = 1;
 }
 
-BOOL CShockRifle::AddToPlayer( CBasePlayer* pPlayer )
+bool CShockRifle::AddToPlayer( CBasePlayer* pPlayer )
 {
 	if( BaseClass::AddToPlayer( pPlayer ) )
 	{

@@ -74,7 +74,7 @@ void CM249::Spawn()
 	FallInit(); // get ready to fall down.
 }
 
-BOOL CM249::AddToPlayer( CBasePlayer* pPlayer )
+bool CM249::AddToPlayer( CBasePlayer* pPlayer )
 {
 	if( BaseClass::AddToPlayer( pPlayer ) )
 	{

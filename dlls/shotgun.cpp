@@ -67,16 +67,18 @@ void CShotgun::Precache()
 	m_usDoubleFire = PrecacheEvent("events/shotgun2.sc" );
 }
 
-int CShotgun::AddToPlayer( CBasePlayer *pPlayer )
+bool CShotgun::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
-		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		
+		return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 

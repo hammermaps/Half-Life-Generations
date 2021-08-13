@@ -300,9 +300,6 @@
     <ClCompile Include="..\..\dlls\spectator.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dlls\squadmonster.cpp">
-      <Filter>Source Files\dlls</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\dlls\squeakgrenade.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>
@@ -635,6 +632,9 @@
     </ClCompile>
     <ClCompile Include="..\..\dlls\entities\CEyeScanner.cpp">
       <Filter>Source Files\dlls\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\CSquadMonster.cpp">
+      <Filter>Source Files\dlls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

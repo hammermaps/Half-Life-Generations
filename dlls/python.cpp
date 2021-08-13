@@ -51,16 +51,18 @@ void CPython::IncrementAmmo(CBasePlayer* pPlayer)
 	}
 }
 
-int CPython::AddToPlayer( CBasePlayer *pPlayer )
+bool CPython::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
-		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		
+		return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 void CPython::Spawn( )

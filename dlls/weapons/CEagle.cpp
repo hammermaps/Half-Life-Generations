@@ -63,9 +63,9 @@ void CEagle::Spawn()
 	FallInit();
 }
 
-BOOL CEagle::AddToPlayer( CBasePlayer* pPlayer )
+bool CEagle::AddToPlayer( CBasePlayer* pPlayer )
 {
-	if( BaseClass::AddToPlayer( pPlayer ) )
+	if(BaseClass::AddToPlayer( pPlayer ) )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->edict() );
 			WRITE_BYTE( m_iId );

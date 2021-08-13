@@ -519,6 +519,7 @@ void CHoundeye::WriteBeamColor()
 			bBlue = 255;
 			break;
 		case 4:
+		case 5:
 			bRed = 62;
 			bGreen = 33;
 			bBlue = 211;

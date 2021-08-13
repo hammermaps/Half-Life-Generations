@@ -90,6 +90,21 @@ const char* CAGrunt::pAlertSounds[] =
 	"agrunt/ag_alert5.wav",
 };
 
+const char* CAGrunt::pStepSounds[] =
+{
+	"agrunt/ag_step1.wav",
+	"agrunt/ag_step2.wav",
+	"agrunt/ag_step3.wav",
+	"agrunt/ag_step4.wav",
+};
+
+const char* CAGrunt::pFireSounds[] =
+{
+	"agrunt/ag_fire1.wav",
+	"agrunt/ag_fire2.wav",
+	"agrunt/ag_fire3.wav",
+};
+
 //=========================================================
 // IRelationship - overridden because Human Grunts are 
 // Alien Grunt's nemesis.
@@ -133,9 +148,9 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 		{
 			Vector vecTracerDir = vecDir;
 
-			vecTracerDir.x += RANDOM_FLOAT(-0.3, 0.3);
-			vecTracerDir.y += RANDOM_FLOAT(-0.3, 0.3);
-			vecTracerDir.z += RANDOM_FLOAT(-0.3, 0.3);
+			vecTracerDir.x += RANDOM_FLOAT(-0.3f, 0.3f);
+			vecTracerDir.y += RANDOM_FLOAT(-0.3f, 0.3f);
+			vecTracerDir.z += RANDOM_FLOAT(-0.3f, 0.3f);
 
 			vecTracerDir = vecTracerDir * -512;
 
@@ -144,7 +159,6 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 			WRITE_COORD(ptr->vecEndPos.x);
 			WRITE_COORD(ptr->vecEndPos.y);
 			WRITE_COORD(ptr->vecEndPos.z);
-
 			WRITE_COORD(vecTracerDir.x);
 			WRITE_COORD(vecTracerDir.y);
 			WRITE_COORD(vecTracerDir.z);
@@ -153,7 +167,7 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 
 		flDamage -= 20;
 		if (flDamage <= 0)
-			flDamage = 0.1; // don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
+			flDamage = 0.1f; // don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
 	}
 	else
 	{
@@ -297,18 +311,15 @@ int CAGrunt::Classify()
 //=========================================================
 void CAGrunt::SetYawSpeed()
 {
-	int ys;
-
-	switch (m_Activity)
+	switch (m_Activity)  // NOLINT(clang-diagnostic-switch-enum)
 	{
-	case ACT_TURN_LEFT:
-	case ACT_TURN_RIGHT:
-		ys = 110;
-		break;
-	default: ys = 100;
+		case ACT_TURN_LEFT:
+		case ACT_TURN_RIGHT:
+			pev->yaw_speed = 110;
+			break;
+		default: 
+			pev->yaw_speed = 100;
 	}
-
-	pev->yaw_speed = ys;
 }
 
 //=========================================================
@@ -384,7 +395,7 @@ void CAGrunt::HandleAnimEvent(MonsterEvent_t* pEvent)
 			UTIL_MakeVectors(pHornet->pev->angles);
 			pHornet->pev->velocity = gpGlobals->v_forward * 300;
 
-
+			// ReSharper disable once CppDefaultCaseNotHandledInSwitchStatement
 			switch (RANDOM_LONG(0, 2))
 			{
 			case 0: EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "agrunt/ag_fire1.wav", 1.0, ATTN_NORM, 0, 100);
@@ -522,9 +533,11 @@ void CAGrunt::Spawn()
 	pev->movetype = MOVETYPE_STEP;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
-	if (pev->health == 0)
+	
+	if (!pev->health)
 		pev->health = gSkillData.agruntHealth;
-	m_flFieldOfView = 0.2; // indicates the width of this monster's forward view cone ( as a dotproduct result )
+	
+	m_flFieldOfView = 0.2f; // indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState = MONSTERSTATE_NONE;
 	m_afCapability = 0;
 	m_afCapability |= bits_CAP_SQUAD;
@@ -532,7 +545,6 @@ void CAGrunt::Spawn()
 	m_HackedGunPos = Vector(24, 64, 48);
 
 	m_flNextSpeakTime = m_flNextWordTime = gpGlobals->time + 10 + RANDOM_LONG(0, 10);
-
 
 	MonsterInit();
 }
@@ -551,6 +563,8 @@ void CAGrunt::Precache()
 	PRECACHE_SOUND_ARRAY(pPainSounds);
 	PRECACHE_SOUND_ARRAY(pAttackSounds);
 	PRECACHE_SOUND_ARRAY(pAlertSounds);
+	PRECACHE_SOUND_ARRAY(pFireSounds);
+	PRECACHE_SOUND_ARRAY(pStepSounds);
 
 	PrecacheSound("hassault/hw_shoot1.wav");
 
@@ -821,6 +835,7 @@ BOOL CAGrunt::FCanCheckAttacks()
 	{
 		return TRUE;
 	}
+	
 	return FALSE;
 }
 
@@ -911,12 +926,8 @@ void CAGrunt::StartTask(Task_t* pTask)
 
 		if (pEnemyMonsterPtr)
 		{
-			Vector vecCenter;
 			TraceResult tr;
-			BOOL fSkip;
-
-			fSkip = FALSE;
-			vecCenter = Center();
+			BOOL fSkip = FALSE;
 
 			UTIL_VecToAngles(m_vecEnemyLKP - pev->origin);
 
@@ -989,8 +1000,7 @@ Schedule_t* CAGrunt::GetSchedule()
 {
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = PBestSound();
+		CSound* pSound = PBestSound();
 
 		ASSERT(pSound != NULL);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -1047,6 +1057,7 @@ Schedule_t* CAGrunt::GetSchedule()
 }
 
 //=========================================================
+// GetScheduleOfType
 //=========================================================
 Schedule_t* CAGrunt::GetScheduleOfType(int Type)
 {
@@ -1054,8 +1065,6 @@ Schedule_t* CAGrunt::GetScheduleOfType(int Type)
 	{
 	case SCHED_TAKE_COVER_FROM_ENEMY:
 		return &slAGruntTakeCoverFromEnemy[0];
-		break;
-
 	case SCHED_RANGE_ATTACK1:
 		{
 			if (HasConditions(bits_COND_SEE_ENEMY))
@@ -1067,24 +1076,14 @@ Schedule_t* CAGrunt::GetScheduleOfType(int Type)
 			// return &slAGruntHiddenRangeAttack[ 0 ];
 			return &slAGruntRangeAttack1[0];
 		}
-		break;
-
 	case SCHED_AGRUNT_THREAT_DISPLAY:
 		return &slAGruntThreatDisplay[0];
-		break;
-
 	case SCHED_AGRUNT_SUPPRESS:
 		return &slAGruntSuppress[0];
-		break;
-
 	case SCHED_STANDOFF:
 		return &slAGruntStandoff[0];
-		break;
-
 	case SCHED_VICTORY_DANCE:
 		return &slAGruntVictoryDance[0];
-		break;
-
 	case SCHED_FAIL:
 		// no fail schedule specified, so pick a good generic one.
 		{
@@ -1104,7 +1103,9 @@ Schedule_t* CAGrunt::GetScheduleOfType(int Type)
 	return BaseClass::GetScheduleOfType(Type);
 }
 
-
+//=========================================================
+// Killed
+//=========================================================
 void CAGrunt::Killed(entvars_t* pevAttacker, int iGib)
 {
 	if (pev->spawnflags & SF_MONSTER_NO_WPN_DROP)

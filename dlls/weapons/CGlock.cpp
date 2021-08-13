@@ -18,6 +18,7 @@
 #include "cbase.h"
 #include "weapons.h"
 #include "player.h"
+#include "UserMessages.h"
 
 const float GLOCK_RELOAD_TIME = 1.5f;
 
@@ -26,7 +27,7 @@ LINK_WEAPON_TO_CLASS(weapon_9mmhandgun, CGlock);
 
 void CGlock::Spawn()
 {
-	pev->classname = MAKE_STRING("weapon_9mmhandgun"); // hack to allow for old names
+	SetClassName("weapon_9mmhandgun"); // hack to allow for old names
 
 	Precache();
 
@@ -40,6 +41,20 @@ void CGlock::Spawn()
 	m_flLastFire = 0.0f;
 
 	FallInit();// get ready to fall down.
+}
+
+bool CGlock::AddToPlayer(CBasePlayer* pPlayer)
+{
+	if (BaseClass::AddToPlayer(pPlayer))
+	{
+		MESSAGE_BEGIN(MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev);
+			WRITE_BYTE(m_iId);
+		MESSAGE_END();
+		
+		return true;
+	}
+	
+	return false;
 }
 
 void CGlock::Precache()

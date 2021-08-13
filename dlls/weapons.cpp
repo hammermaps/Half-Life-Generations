@@ -603,11 +603,14 @@ void CBasePlayerItem::DestroyItem()
 	Kill( );
 }
 
-int CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer )
+bool CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer )
 {
+	if (!pPlayer->IsPlayer())
+		return false;
+	
 	m_pPlayer = pPlayer;
 
-	return TRUE;
+	return true;
 }
 
 void CBasePlayerItem::Drop()
@@ -665,9 +668,9 @@ int CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
 }
 
 
-int CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
+bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 {
-	int bResult = CBasePlayerItem::AddToPlayer( pPlayer );
+	const bool bResult = CBasePlayerItem::AddToPlayer( pPlayer );
 
 	pPlayer->pev->weapons |= (1<<m_iId);
 
@@ -680,7 +683,8 @@ int CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 
 	if (bResult)
 		return AddWeapon( );
-	return FALSE;
+	
+	return false;
 }
 
 int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )

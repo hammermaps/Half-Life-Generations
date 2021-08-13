@@ -287,7 +287,7 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return TRUE if the item you want the item added to the player inventory
+	virtual bool AddToPlayer( CBasePlayer *pPlayer );	// return TRUE if the item you want the item added to the player inventory
 	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return FALSE; }	// return TRUE if you want your duplicate removed from world
 	void EXPORT DestroyItem();
 	void EXPORT DefaultTouch( CBaseEntity *pOther );	// default weapon touch
@@ -365,13 +365,13 @@ public:
 	virtual void SetNextThink(float delay); //LRC
 
 	// generic weapon versions of CBasePlayerItem calls
-	virtual int AddToPlayer( CBasePlayer *pPlayer );
+	virtual bool AddToPlayer( CBasePlayer *pPlayer );
 	virtual int AddDuplicate( CBasePlayerItem *pItem );
 
 	virtual int ExtractAmmo( CBasePlayerWeapon *pWeapon ); //{ return TRUE; }			// Return TRUE if you can add ammo to yourself when picked up
 	virtual int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );// { return TRUE; }			// Return TRUE if you can add ammo to yourself when picked up
 
-	virtual int AddWeapon() { ExtractAmmo( this ); return TRUE; }	// Return TRUE if you want to add yourself to the player
+	virtual bool AddWeapon() { ExtractAmmo( this ); return true; }	// Return TRUE if you want to add yourself to the player
 	void DrainClip(CBasePlayer* pPlayer, BOOL keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium,
 		int iSatchel, int iSnark, int iTrip, int iGren, int i556, int iPenguins, int iShock, int i762, int iSpores);
 	
@@ -644,6 +644,7 @@ public:
 	void Precache() override;
 	int iItemSlot() override { return 2; }
 	int GetItemInfo(ItemInfo *p) override;
+	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
 
@@ -736,7 +737,7 @@ public:
 	int iItemSlot() override { return 2; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
 	BOOL Deploy() override;
@@ -779,7 +780,7 @@ public:
 	int iItemSlot() override { return 3; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -835,7 +836,7 @@ public:
 	void FireSniperBolt();
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 	BOOL Deploy( ) override;
 	void Holster( int skiplocal = 0 ) override;
 	void Reload() override;
@@ -886,7 +887,7 @@ public:
 	int iItemSlot( ) override { return 3; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -958,7 +959,7 @@ public:
 	int iItemSlot() override { return 4; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	BOOL Deploy() override;
 	BOOL CanHolster() override;
@@ -1041,7 +1042,7 @@ public:
 	int iItemSlot() override { return 4; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	BOOL Deploy() override;
 	void Holster( int skiplocal = 0  ) override;
@@ -1123,7 +1124,7 @@ public:
 	int iItemSlot() override { return 4; }
 	int GetItemInfo(ItemInfo *p) override;
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	BOOL Deploy() override;
 	void Holster( int skiplocal = 0 ) override;
@@ -1192,7 +1193,7 @@ public:
 	void Precache() override;
 	int iItemSlot() override { return 4; }
 	int GetItemInfo(ItemInfo *p) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -1288,7 +1289,7 @@ public:
 	void Precache() override;
 	int iItemSlot() override { return 5; }
 	int GetItemInfo(ItemInfo *p) override;
-	int AddToPlayer( CBasePlayer *pPlayer ) override;
+	bool AddToPlayer( CBasePlayer *pPlayer ) override;
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
 	int AddDuplicate( CBasePlayerItem *pOriginal ) override;

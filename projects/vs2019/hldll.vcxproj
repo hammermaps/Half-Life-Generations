@@ -252,7 +252,7 @@
     <ClCompile Include="..\..\dlls\sound.cpp" />
     <ClCompile Include="..\..\dlls\soundent.cpp" />
     <ClCompile Include="..\..\dlls\spectator.cpp" />
-    <ClCompile Include="..\..\dlls\squadmonster.cpp" />
+    <ClCompile Include="..\..\dlls\CSquadMonster.cpp" />
     <ClCompile Include="..\..\dlls\squeakgrenade.cpp" />
     <ClCompile Include="..\..\dlls\subs.cpp" />
     <ClCompile Include="..\..\dlls\talkmonster.cpp" />

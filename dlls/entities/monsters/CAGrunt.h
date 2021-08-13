@@ -80,7 +80,8 @@ public:
 			pev->absmin = pev->origin + Vector(-98, -98, 0);
 			pev->absmax = pev->origin + Vector(98, 98, 80);
 		}
-		else {
+		else 
+		{
 			pev->absmin = pev->origin + Vector(-32, -32, 0);
 			pev->absmax = pev->origin + Vector(32, 32, 85);
 		}
@@ -116,7 +117,9 @@ public:
 	static const char* pPainSounds[];
 	static const char* pIdleSounds[];
 	static const char* pAlertSounds[];
-
+	static const char* pStepSounds[];
+	static const char* pFireSounds[];
+	
 	bool	m_fCanHornetAttack;
 	float	m_flNextHornetAttackCheck;
 	float	m_flNextPainTime;

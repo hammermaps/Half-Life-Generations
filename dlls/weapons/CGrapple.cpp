@@ -85,7 +85,7 @@ void CGrapple::Spawn()
 	FallInit();
 }
 
-BOOL CGrapple::AddToPlayer( CBasePlayer* pPlayer )
+bool CGrapple::AddToPlayer( CBasePlayer* pPlayer )
 {
 	if( BaseClass::AddToPlayer( pPlayer ) )
 	{

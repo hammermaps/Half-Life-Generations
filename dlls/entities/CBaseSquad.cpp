@@ -16,6 +16,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
+#include "monsters.h"
 
 #include "CBaseSquad.h"
 
@@ -84,7 +85,7 @@ void CBaseSquad::SquadRemove(CBaseSquad* pRemove)
 		{
 			for (int i = 0; i < MAX_SQUAD_MEMBERS - 1; i++)
 			{
-				if (pSquadLeader->m_hSquadMember[i] == this)
+				if (pSquadLeader->m_hSquadMember[i] == pRemove)
 				{
 					pSquadLeader->m_hSquadMember[i] = nullptr;
 					break;
@@ -158,6 +159,7 @@ int CBaseSquad::SquadRecruit(float searchRadius, int maxMembers)
 	int squadCount = 1;
 
 	CBaseEntity* pEntity = nullptr;
+	
 	if (!FStringNull(pev->netname))
 	{
 		// I have a netname, so unconditionally recruit everyone else with that name.
@@ -322,4 +324,72 @@ void CBaseSquad::SquadCopyEnemyInfo()
 	CBaseSquad* pSquadLeader = MySquadLeader();
 	if (pSquadLeader)
 		m_vecEnemyLKP = pSquadLeader->m_vecEnemyLKP;
+}
+
+//=========================================================
+// 
+// SquadMakeEnemy - makes everyone in the squad angry at
+// the same entity.
+//
+//=========================================================
+void CBaseSquad::SquadMakeEnemy(CBaseEntity* pEnemy)
+{
+	if (!InSquad())
+		return;
+
+	if (!pEnemy)
+	{
+		ALERT(at_console, "ERROR: SquadMakeEnemy() - pEnemy is NULL!\n");
+		return;
+	}
+
+	CBaseSquad* pSquadLeader = MySquadLeader();
+	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
+	{
+		CBaseSquad* pMember = pSquadLeader->MySquadMember(i);
+		if (pMember)
+		{
+			// reset members who aren't activly engaged in fighting
+			if (pMember->m_hEnemy != pEnemy && !pMember->HasConditions(bits_COND_SEE_ENEMY)
+				&& (pMember->m_pSchedule && (pMember->m_pSchedule->iInterruptMask & bits_COND_NEW_ENEMY))
+				// My enemy might be not an enemy for member of my squad, e.g. if I was provoked by player.
+				&& pMember->IRelationship(pEnemy) >= R_DL)
+			{
+				if (pMember->m_hEnemy != nullptr)
+				{
+					// remember their current enemy
+					pMember->PushEnemy(pMember->m_hEnemy, pMember->m_vecEnemyLKP);
+				}
+				// give them a new enemy
+				pMember->m_hEnemy = pEnemy;
+				pMember->m_vecEnemyLKP = pEnemy->pev->origin;
+				pMember->SetConditions(bits_COND_NEW_ENEMY);
+			}
+		}
+	}
+}
+
+//=========================================================
+// CheckEnemy
+//=========================================================
+int CBaseSquad::CheckEnemy(CBaseEntity* pEnemy)
+{
+	const int iUpdatedLKP = CBaseMonster::CheckEnemy(m_hEnemy);
+
+	// communicate with squad members about the enemy IF this individual has the same enemy as the squad leader.
+	if (InSquad() && (CBaseEntity*)m_hEnemy == MySquadLeader()->m_hEnemy)
+	{
+		if (iUpdatedLKP)
+		{
+			// have new enemy information, so paste to the squad.
+			SquadPasteEnemyInfo();
+		}
+		else
+		{
+			// enemy unseen, copy from the squad knowledge.
+			SquadCopyEnemyInfo();
+		}
+	}
+
+	return iUpdatedLKP;
 }

@@ -374,6 +374,24 @@ public:
 	virtual const char* TeamID() { return ""; }
 
 	/**
+	*	Sets the classname.
+	*	@param name Name of the class.
+	*/
+	void SetClassName(string_t name) const
+	{
+		pev->classname = name;
+	}
+	
+	/**
+	*	Sets the classname.
+	*	@param name Name of the class.
+	*/
+	void SetClassName(const char* name) const
+	{
+		SetClassName(MAKE_STRING(name));
+	}
+
+	/**
 	*	Sets the model.
 	*	@param pszModelName Name of the model.
 	*/

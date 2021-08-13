@@ -40,7 +40,7 @@ public:
 
 	void Spawn() override;
 
-	BOOL AddToPlayer( CBasePlayer* pPlayer ) override;
+	bool AddToPlayer( CBasePlayer* pPlayer ) override;
 
 	void AttachToPlayer( CBasePlayer* pPlayer ) override;
 

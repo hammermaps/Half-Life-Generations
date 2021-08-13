@@ -155,7 +155,7 @@ void COFSquadTalkMonster::SquadRemove(COFSquadTalkMonster* pRemove)
 		{
 			for (int i = 0; i < MAX_SQUAD_MEMBERS - 1; i++)
 			{
-				if (pSquadLeader->m_hSquadMember[i] == this)
+				if (pSquadLeader->m_hSquadMember[i] == pRemove)
 				{
 					pSquadLeader->m_hSquadMember[i] = nullptr;
 					break;

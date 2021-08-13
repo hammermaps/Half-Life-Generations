@@ -216,16 +216,17 @@ void CCrossbow::Spawn( )
 	FallInit();// get ready to fall down.
 }
 
-int CCrossbow::AddToPlayer( CBasePlayer *pPlayer )
+bool CCrossbow::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
-		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 void CCrossbow::Precache()
