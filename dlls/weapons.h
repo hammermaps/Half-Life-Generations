@@ -136,18 +136,18 @@ enum ClipMaxCarry
 	_9MM_MAX_CARRY = 250,
 	_357_MAX_CARRY = 36,
 	BUCKSHOT_MAX_CARRY = 125,
-	BOLT_MAX_CARRY = 50,
-	ROCKET_MAX_CARRY = 5,
+	BOLT_MAX_CARRY = 60,
+	ROCKET_MAX_CARRY = 8,
 	HANDGRENADE_MAX_CARRY = 10,
-	SATCHEL_MAX_CARRY = 5,
-	TRIPMINE_MAX_CARRY = 5,
-	SNARK_MAX_CARRY = 15,
+	SATCHEL_MAX_CARRY = 10,
+	TRIPMINE_MAX_CARRY = 10,
+	SNARK_MAX_CARRY = 20,
 	HORNET_MAX_CARRY = 8,
 	M203_GRENADE_MAX_CARRY = 10,
-	M249_MAX_CARRY = 200,
-	SPORELAUNCHER_MAX_CARRY = 20,
-	SNIPERRIFLE_MAX_CARRY = 15,
-	PENGUIN_MAX_CARRY = 9,
+	M249_MAX_CARRY = 400,
+	SPORELAUNCHER_MAX_CARRY = 35,
+	SNIPERRIFLE_MAX_CARRY = 20,
+	PENGUIN_MAX_CARRY = 10,
 };
 
 enum ClipMaxSize
@@ -320,7 +320,7 @@ public:
 
 	virtual int UpdateClientData( CBasePlayer *pPlayer ) { return 0; }
 
-	virtual CBasePlayerItem *GetWeaponPtr() { return NULL; }
+	virtual CBasePlayerItem *GetWeaponPtr() { return nullptr; }
 
 	virtual void GetWeaponData( weapon_data_t& data ) {}
 
@@ -333,8 +333,15 @@ public:
 	CBasePlayerItem *m_pNext;
 	int		m_iId;												// WEAPON_???
 
-	virtual int iItemSlot() { return 0; }			// return 0 to MAX_ITEMS_SLOTS, used in hud
-
+	virtual int iItemSlot()
+	{
+		ItemInfo II;
+		if (GetItemInfo(&II))
+			return II.iSlot + 1;
+		
+		return 0;// return 0 to MAX_ITEMS_SLOTS, used in hud
+	}
+	
 	int			iItemPosition() { return ItemInfoArray[ m_iId ].iPosition; }
 	const char	*pszAmmo1()	{ return ItemInfoArray[ m_iId ].pszAmmo1; }
 	int			iMaxAmmo1()	{ return ItemInfoArray[ m_iId ].iMaxAmmo1; }
@@ -646,6 +653,8 @@ public:
 	int GetItemInfo(ItemInfo *p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
+	void Holster(int skiplocal) override;
+	
 	void IncrementAmmo(CBasePlayer* pPlayer) override;
 
 	void PrimaryAttack() override;

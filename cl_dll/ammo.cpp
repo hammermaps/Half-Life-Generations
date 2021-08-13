@@ -400,14 +400,15 @@ HSPRITE* WeaponsResource :: GetAmmoPicFromWeapon( int iAmmoId, wrect_t& rect )
 			rect = rgWeapons[i].rcAmmo;
 			return &rgWeapons[i].hAmmo;
 		}
-		else if ( rgWeapons[i].iAmmo2Type == iAmmoId )
+
+		if ( rgWeapons[i].iAmmo2Type == iAmmoId )
 		{
 			rect = rgWeapons[i].rcAmmo2;
 			return &rgWeapons[i].hAmmo2;
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -433,10 +434,10 @@ void WeaponsResource :: SelectSlot( int iSlot, int fAdvance, int iDirection )
 	if ( ! ( gHUD.m_iWeaponBits & ~(1<<(ITEM_SUIT)) ))
 		return;
 
-	WEAPON *p = NULL;
+	WEAPON *p = nullptr;
 	bool fastSwitch = CVAR_GET_FLOAT( "hud_fastswitch" ) != 0;
 
-	if ( (gpActiveSel == NULL) || (gpActiveSel == (WEAPON *)1) || (iSlot != gpActiveSel->iSlot) )
+	if ( (gpActiveSel == nullptr) || (gpActiveSel == (WEAPON *)1) || (iSlot != gpActiveSel->iSlot) )
 	{
 		PlaySound( "common/wpn_hudon.wav", 1 );
 		p = GetFirstPos( iSlot );

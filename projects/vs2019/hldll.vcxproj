@@ -266,6 +266,7 @@
     <ClCompile Include="..\..\dlls\util.cpp" />
     <ClCompile Include="..\..\dlls\voltigore.cpp" />
     <ClCompile Include="..\..\dlls\weapons.cpp" />
+    <ClCompile Include="..\..\dlls\weapons\ammo\CGlockAmmo.cpp" />
     <ClCompile Include="..\..\dlls\weapons\CGlock.cpp" />
     <ClCompile Include="..\..\dlls\weapons\CGrapple.cpp" />
     <ClCompile Include="..\..\dlls\weapons\CGrappleTip.cpp" />

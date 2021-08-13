@@ -67,6 +67,9 @@
     <Filter Include="Source Files\dlls\entities\monsters">
       <UniqueIdentifier>{657de691-5966-4811-99a6-54e626edd58f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\dlls\weapons\ammo">
+      <UniqueIdentifier>{d590103f-1a67-47f9-a879-8b12003c227b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dlls\airtank.cpp">
@@ -635,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="..\..\dlls\CSquadMonster.cpp">
       <Filter>Source Files\dlls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\weapons\ammo\CGlockAmmo.cpp">
+      <Filter>Source Files\dlls\weapons\ammo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

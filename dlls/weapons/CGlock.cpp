@@ -57,6 +57,12 @@ bool CGlock::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
+void CGlock::Holster(int skiplocal)
+{
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	SendWeaponAnim(GLOCK_HOLSTER);
+}
+
 void CGlock::Precache()
 {
 	PrecacheModel("models/v_9mmhandgun.mdl");
@@ -242,9 +248,9 @@ void CGlock::Reload()
 	int iResult;
 
 	if (m_iClip == 0)
-		iResult = DefaultReload(17, GLOCK_RELOAD, GLOCK_RELOAD);
+		iResult = DefaultReload(17, GLOCK_RELOAD, GLOCK_RELOAD_TIME);
 	else
-		iResult = DefaultReload(17, GLOCK_RELOAD_NOT_EMPTY, GLOCK_RELOAD);
+		iResult = DefaultReload(17, GLOCK_RELOAD_NOT_EMPTY, GLOCK_RELOAD_TIME);
 
 	if (iResult)
 	{
@@ -265,9 +271,9 @@ void CGlock::WeaponIdle()
 	if (m_iClip != 0)
 	{
 		int iAnim;
-		float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0.0, 1.0);
+		const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0.0, 1.0);
 
-		if (flRand <= 0.3 + 0 * 0.75)
+		if (flRand <= static_cast<float>(0.3 + 0 * 0.75))
 		{
 			iAnim = GLOCK_IDLE3;
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 49.0 / 16;
@@ -282,47 +288,7 @@ void CGlock::WeaponIdle()
 			iAnim = GLOCK_IDLE2;
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 40.0 / 16.0;
 		}
+		
 		SendWeaponAnim(iAnim, 1);
 	}
 }
-
-class CGlockAmmo : public CBasePlayerAmmo
-{
-	void Spawn() override
-	{
-		Precache();
-		SetModel( "models/w_9mmclip.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PrecacheModel("models/w_9mmclip.mdl");
-		PrecacheSound("items/9mmclip1.wav");
-	}
-	BOOL AddAmmo(CBaseEntity* pOther) override
-	{
-		if (pOther->GiveAmmo(AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
-		{
-			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
-		}
-		return FALSE;
-	}
-};
-LINK_ENTITY_TO_CLASS(ammo_glockclip, CGlockAmmo);
-LINK_ENTITY_TO_CLASS(ammo_9mmclip, CGlockAmmo);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
