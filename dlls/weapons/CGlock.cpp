@@ -156,7 +156,7 @@ void CGlock::PrimaryAttack()
 
 void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 {
-	ALERT(at_console, "GlockFire: \"%f\"\n", flSpread);
+	//ALERT(at_console, "GlockFire: \"%f\"\n", flSpread);
 	
 	if (m_iClip <= 0)
 	{

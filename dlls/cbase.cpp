@@ -1042,20 +1042,17 @@ int CBaseEntity :: IsDormant()
 
 BOOL CBaseEntity :: IsInWorld()
 {
-	// position 
-	if (pev->origin.x >= 4096) return FALSE;
-	if (pev->origin.y >= 4096) return FALSE;
-	if (pev->origin.z >= 4096) return FALSE;
-	if (pev->origin.x <= -4096) return FALSE;
-	if (pev->origin.y <= -4096) return FALSE;
-	if (pev->origin.z <= -4096) return FALSE;
-	// speed
-	if (pev->velocity.x >= 2000) return FALSE;
-	if (pev->velocity.y >= 2000) return FALSE;
-	if (pev->velocity.z >= 2000) return FALSE;
-	if (pev->velocity.x <= -2000) return FALSE;
-	if (pev->velocity.y <= -2000) return FALSE;
-	if (pev->velocity.z <= -2000) return FALSE;
+	if (pev->origin.x >= 4096 || pev->origin.y >= 4096 || pev->origin.z >= 4096)
+		return FALSE;
+
+	if (pev->origin.x <= -4096 || pev->origin.y <= -4096 || pev->origin.z <= -4096)
+		return FALSE;
+
+	if (pev->velocity.x >= 2000 || pev->velocity.y >= 2000 || pev->velocity.z >= 2000)
+		return FALSE;
+
+	if (pev->velocity.x <= -2000 || pev->velocity.y <= -2000 || pev->velocity.z <= -2000)
+		return FALSE;
 
 	return TRUE;
 }
@@ -1236,6 +1233,7 @@ unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
 CBaseEntity * CBaseEntity::Create( const char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner )
 {
 	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
+	
 	if ( FNullEnt( pent ) )
 	{
 		ALERT ( at_console, "NULL Ent in Create!\n" );

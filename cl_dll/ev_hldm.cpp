@@ -365,9 +365,9 @@ void EV_HLDM_SmokePuff(pmtrace_t* pTrace, float* vecSrc, float* vecEnd)
 
 		/*	switch (gEngfuncs.pfnRandomLong(0, 2))
 			{
-			case 0:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/glass1.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
-			case 1:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/glass2.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
-			case 2:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/glass3.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
+			case 0:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/snow1.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
+			case 1:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/snow2.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
+			case 2:gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "bulletimpact/snow3.wav", 1.5, ATTN_NORM, 0, PITCH_NORM); break;
 			}
 			*/
 			EV_WallGib(pTrace->endpos, gEngfuncs.pfnRandomFloat(200, 400), gEngfuncs.pfnRandomFloat(1.5, 4), cl_wallgib_life->value, cl_gibs_cvar->value, GIB_SNOW, 0);
