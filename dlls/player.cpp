@@ -4053,6 +4053,11 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 				ALERT(at_console, "Texture: %s\n", pTextureName);
 		}
 		break;
+	case 108:
+	{
+		printEntities();
+	}
+	break;
 	case 195: // show shortest paths for entire level to nearest node
 		{
 			Create("node_viewer_fly", pev->origin, pev->angles);

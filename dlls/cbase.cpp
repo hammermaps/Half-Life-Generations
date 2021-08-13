@@ -22,7 +22,6 @@
 #include	"game.h"
 #include	"movewith.h"
 #include	"skill.h"
-#include	"FileSystem.h"
 
 void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd );
 
@@ -37,6 +36,228 @@ extern int g_serveractive;
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
+
+CUtlVector<hash_item_t> stringsHashTable;
+CMemoryPool hashItemMemPool(sizeof(hash_item_t), 64);
+
+int CaseInsensitiveHash(const char* string, int iBounds)
+{
+	unsigned int hash = 0;
+
+	if (!*string)
+		return 0;
+
+	while (*string)
+	{
+		if (*string < 'A' || *string > 'Z')
+			hash = *string + 2 * hash;
+		else
+			hash = *string + 2 * hash + ' ';
+
+		string++;
+	}
+
+	return (hash % iBounds);
+}
+
+void EmptyEntityHashTable()
+{
+	for (int i = 0; i < stringsHashTable.Count(); i++)
+	{
+		hash_item_t* item = &stringsHashTable[i];
+		hash_item_t* temp = item->next;
+
+		item->pev = nullptr;
+		item->pevIndex = 0;
+		item->lastHash = 0;
+		item->next = nullptr;
+
+		while (temp)
+		{
+			hash_item_t* free = temp;
+			temp = temp->next;
+			hashItemMemPool.Free(free);
+		}
+	}
+}
+
+void AddEntityHashValue(entvars_t* pev, const char* value, hash_types_e fieldType)
+{
+	if (fieldType != CLASSNAME)
+		return;
+
+	if (FStringNull(pev->classname))
+		return;
+
+	int count = stringsHashTable.Count();
+	int hash = CaseInsensitiveHash(value, count);
+	int pevIndex = ENTINDEX(ENT(pev));
+	hash_item_t* item = &stringsHashTable[hash];
+
+	while (item->pev)
+	{
+		if (!strcmp(STRING(item->pev->classname), STRING(pev->classname)))
+			break;
+
+		hash = (hash + 1) % count;
+		item = &stringsHashTable[hash];
+	}
+	
+	if (item->pev)
+	{
+		hash_item_t * next;
+		entvars_t * pevtemp;
+		next = item->next;
+		while (next)
+		{
+			if (item->pev == pev || item->pevIndex >= pevIndex)
+				break;
+
+			item = next;
+			next = next->next;
+		}
+		
+		if (pevIndex < item->pevIndex)
+		{
+			pevtemp = item->pev;
+			item->pev = pev;
+			item->lastHash = nullptr;
+			item->pevIndex = pevIndex;
+
+			pevIndex = ENTINDEX(ENT(pevtemp));
+		}
+		else
+			pevtemp = pev;
+
+		if (item->pev != pevtemp)
+		{
+			hash_item_t * newp;
+			hash_item_t * temp;
+			temp = item->next;
+			newp = (hash_item_t*)hashItemMemPool.Alloc(sizeof(hash_item_t));
+
+			item->next = newp;
+			newp->pev = pevtemp;
+			newp->lastHash = nullptr;
+			newp->pevIndex = pevIndex;
+
+			if (next)
+				newp->next = temp;
+			else
+				newp->next = nullptr;
+		}
+	}
+	else
+	{
+		item->pev = pev;
+		item->lastHash = nullptr;
+		item->pevIndex = ENTINDEX(ENT(pev));
+	}
+}
+
+void RemoveEntityHashValue(entvars_t* pev, const char* value, hash_types_e fieldType)
+{
+	int count = stringsHashTable.Count();
+	int hash = CaseInsensitiveHash(value, count);
+
+	if (fieldType != CLASSNAME)
+		return;
+
+	hash = hash % count;
+	hash_item_t* item = &stringsHashTable[hash];
+
+	while (item->pev)
+	{
+		if (!strcmp(STRING(item->pev->classname), STRING(pev->classname)))
+			break;
+
+		hash = (hash + 1) % count;
+		item = &stringsHashTable[hash];
+	}
+	if (item->pev)
+	{
+		hash_item_t * last;
+		last = item;
+		while (item->next)
+		{
+			if (item->pev == pev)
+				break;
+
+			last = item;
+			item = item->next;
+		}
+		if (item->pev == pev)
+		{
+			if (last == item)
+			{
+				if (item->next)
+				{
+					item->pev = item->next->pev;
+					item->pevIndex = item->next->pevIndex;
+					item->lastHash = nullptr;
+					item->next = item->next->next;
+				}
+				else
+				{
+					item->pev = nullptr;
+					item->lastHash = nullptr;
+					item->pevIndex = 0;
+				}
+			}
+			else
+			{
+				if (stringsHashTable[hash].lastHash == item)
+					stringsHashTable[hash].lastHash = nullptr;
+
+				last->next = item->next;
+				hashItemMemPool.Free(item);
+			}
+		}
+	}
+}
+
+void printEntities()
+{
+	for (int i = 0; i < stringsHashTable.Count(); i++)
+	{
+		hash_item_t* item = &stringsHashTable[i];
+
+		if (item->pev)
+			CONSOLE_ECHO_LOGGED("Print: %s %i %p\n", STRING(stringsHashTable[i].pev->classname), ENTINDEX(ENT(item->pev)), item->pev);
+
+		for (item = stringsHashTable[i].next; item; item = item->next)
+			CONSOLE_ECHO_LOGGED("Print: %s %i %p\n", STRING(item->pev->classname), ENTINDEX(ENT(item->pev)), item->pev);
+	}
+}
+
+edict_t* CREATE_NAMED_ENTITY(int iClass)
+{
+	edict_t* named = g_engfuncs.pfnCreateNamedEntity(iClass);
+
+	if (named)
+		AddEntityHashValue(&named->v, STRING(iClass), CLASSNAME);
+
+	return named;
+}
+
+void REMOVE_ENTITY(edict_t* e)
+{
+	if (e)
+		g_engfuncs.pfnRemoveEntity(e);
+}
+
+void CONSOLE_ECHO_LOGGED(char* pszMsg, ...)
+{
+	va_list argptr;
+	static char szStr[1024];
+
+	va_start(argptr, pszMsg);
+	vsprintf(szStr, pszMsg, argptr);
+	va_end(argptr);
+
+	g_engfuncs.pfnServerPrint(szStr);
+	UTIL_LogPrintf(szStr);
+}
 
 static DLL_FUNCTIONS gFunctionTable = 
 {
@@ -104,8 +325,8 @@ static DLL_FUNCTIONS gFunctionTable =
 
 NEW_DLL_FUNCTIONS gNewDLLFunctions =
 {
-	&OnFreeEntPrivateData,
-	&OnGameShutdown,
+	OnFreeEntPrivateData,
+	OnGameShutdown,
 	nullptr,
 	nullptr,
 	nullptr
@@ -115,7 +336,7 @@ static void SetObjectCollisionBox( entvars_t *pev );
 
 extern "C" {
 
-	int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
+int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion )
 {
 	if ( !pFunctionTable || interfaceVersion != INTERFACE_VERSION )
 	{
@@ -123,19 +344,35 @@ extern "C" {
 	}
 	
 	memcpy( pFunctionTable, &gFunctionTable, sizeof( DLL_FUNCTIONS ) );
+
+	stringsHashTable.SetSize(2048);
+
+	for (int i = 0; i < stringsHashTable.Count(); i++)
+		stringsHashTable[i].next = NULL;
+
+	EmptyEntityHashTable();
+	
 	return TRUE;
 }
 
-int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
+int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 {
-	if ( !pFunctionTable || *interfaceVersion != INTERFACE_VERSION )
+	if (!pFunctionTable || *interfaceVersion != INTERFACE_VERSION)
 	{
 		// Tell engine what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;
 		return FALSE;
 	}
-	
-	memcpy( pFunctionTable, &gFunctionTable, sizeof( DLL_FUNCTIONS ) );
+
+	memcpy(pFunctionTable, &gFunctionTable, sizeof(DLL_FUNCTIONS));
+
+	stringsHashTable.SetSize(2048);
+
+	for (int i = 0; i < stringsHashTable.Count(); i++)
+		stringsHashTable[i].next = NULL;
+
+	EmptyEntityHashTable();
+
 	return TRUE;
 }
 
@@ -146,8 +383,11 @@ int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
 		return FALSE;
 	}
-
-	memcpy(pFunctionTable, &gNewDLLFunctions, sizeof(gNewDLLFunctions));
+	
+	pFunctionTable->pfnOnFreeEntPrivateData = gNewDLLFunctions.pfnOnFreeEntPrivateData;
+	pFunctionTable->pfnGameShutdown = gNewDLLFunctions.pfnGameShutdown;
+	pFunctionTable->pfnShouldCollide = gNewDLLFunctions.pfnShouldCollide;
+	
 	return TRUE;
 }
 }
@@ -325,10 +565,14 @@ void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData )
 
 void OnFreeEntPrivateData(edict_s* pEdict)
 {
-	if (pEdict && pEdict->pvPrivateData)
-	{
-		((CBaseEntity*)pEdict->pvPrivateData)->~CBaseEntity();
-	}
+	CBaseEntity* pEntity = CBaseEntity::Instance(pEdict);
+
+	if (!pEntity)
+		return;
+
+	pEntity->UpdateOnRemove();
+	RemoveEntityHashValue(pEntity->pev, STRING(pEntity->pev->classname), CLASSNAME);
+	pEntity->~CBaseEntity();
 }
 
 // Find the matching global entity.  Spit out an error if the designer made entities of

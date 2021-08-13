@@ -79,13 +79,53 @@ CBaseEntity
 #include "Platform.h"
 #endif
 
+#include "FileSystem.h"
+
+#ifndef MEMPOOL_H
+#include "MemPool.h"
+#endif
+
+#ifndef UTLVECTOR_H
+#include "UtlVector.h"
+#endif
+
 // C functions for external declarations that call the appropriate C++ methods
 
 #define EXPORT DLLEXPORT
 
+#undef CREATE_NAMED_ENTITY
+#undef REMOVE_ENTITY
+
+edict_t* CREATE_NAMED_ENTITY(int iClass);
+void REMOVE_ENTITY(edict_t* e);
+void CONSOLE_ECHO_LOGGED(char* pszMsg, ...);
+
 extern "C" DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion);
 extern "C" DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 extern "C" DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
+
+typedef enum
+{
+	CLASSNAME
+}
+hash_types_e;
+
+typedef struct hash_item_s
+{
+	entvars_t* pev;
+	struct hash_item_s* next;
+	struct hash_item_s* lastHash;
+	int pevIndex;
+}
+hash_item_t;
+
+extern CUtlVector<hash_item_t> stringsHashTable;
+
+int CaseInsensitiveHash(const char* string, int iBounds);
+void EmptyEntityHashTable(void);
+void AddEntityHashValue(entvars_t* pev, const char* value, hash_types_e fieldType);
+void RemoveEntityHashValue(entvars_t* pev, const char* value, hash_types_e fieldType);
+void printEntities(void);
 
 extern void OnGameShutdown();
 

@@ -1136,5 +1136,11 @@
     <ClInclude Include="..\..\public\pman_triangleffect.h">
       <Filter>Header Files\public</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\public\UtlVector.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\UtlMemory.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -583,8 +583,96 @@ CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& ve
 	return NULL;
 }
 
-
 CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue)
+{
+	edict_t* pentEntity;
+	int startEntityIndex;
+	CBaseEntity* pEntity;
+
+	if (pStartEntity)
+		pentEntity = pStartEntity->edict();
+	else
+		pentEntity = NULL;
+
+	for (;;)
+	{
+		startEntityIndex = ENTINDEX(pentEntity);
+
+		//it best each entity list
+		if (*szKeyword == 'c')
+		{
+			int hash;
+			hash_item_t* item;
+			int count;
+
+			hash = CaseInsensitiveHash(szValue, stringsHashTable.Count());
+			count = stringsHashTable.Count();
+			item = &stringsHashTable[hash];
+
+			if (!item->pev)
+			{
+				item->lastHash = NULL;
+				return UTIL_FindEntityByStringSlow(pStartEntity, szKeyword, szValue);
+			}
+
+			while (item->pev != NULL)
+			{
+				if (!strcmp(STRING(item->pev->classname), szValue))
+					break;
+
+				hash = (hash + 1) % count;
+				item = &stringsHashTable[hash];
+			}
+
+			if (!item->pev)
+			{
+				item->lastHash = NULL;
+				return UTIL_FindEntityByStringSlow(pStartEntity, szKeyword, szValue);
+			}
+
+			if (pStartEntity != NULL)
+			{
+				if (item->lastHash && item->lastHash->pevIndex <= startEntityIndex)
+					item = item->lastHash;
+
+				if (item->pevIndex <= startEntityIndex)
+				{
+					while (item->pevIndex <= startEntityIndex)
+					{
+						if (!item->next)
+							break;
+
+						item = item->next;
+					}
+
+					if (item->pevIndex == startEntityIndex)
+					{
+						stringsHashTable[hash].lastHash = NULL;
+						return UTIL_FindEntityByStringSlow(pStartEntity,szKeyword,szValue);
+					}
+				}
+			}
+
+			stringsHashTable[hash].lastHash = item;
+			pentEntity = ENT(item->pev);
+
+			// if pentEntity (the edict) is null, we're at the end of the entities. Give up.
+			if (!FNullEnt(pentEntity))
+			{
+				// ...but if only pEntity (the classptr) is null, we've just got one dud, so we try again.
+				pEntity = CBaseEntity::Instance(pentEntity);
+				if (pEntity)
+					return pEntity;
+			}
+		}
+		else
+		{
+			return UTIL_FindEntityByStringSlow(pStartEntity, szKeyword, szValue);
+		}
+	}
+}
+
+CBaseEntity* UTIL_FindEntityByStringSlow(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue)
 {
 	edict_t* pentEntity;
 	CBaseEntity* pEntity;

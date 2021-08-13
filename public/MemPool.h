@@ -26,8 +26,13 @@
 *
 */
 
+#ifndef MEMPOOL_H
+#define MEMPOOL_H
+#ifdef _WIN32
 #pragma once
+#endif
 
+/* <2cab3d> ../public/MemPool.h:18 */
 class CMemoryPool
 {
 public:
@@ -39,7 +44,6 @@ public:
 	int Count() { return _blocksAllocated; }
 	void AddNewBlob();
 
-public:
 	enum { MAX_BLOBS = 16 };
 
 	int _blockSize;
@@ -51,3 +55,5 @@ public:
 	int _peakAlloc;
 	int _blocksAllocated;
 };
+
+#endif	// MEMPOOL_H

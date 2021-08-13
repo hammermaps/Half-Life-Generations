@@ -27,6 +27,13 @@
 #ifndef ENGINECALLBACK_H
 #include "enginecallback.h"
 #endif
+
+#ifdef CLIENT_DLL
+#include <UtlVector.h>
+#else
+#include <vector>
+#endif
+
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 
 extern globalvars_t				*gpGlobals;
@@ -68,6 +75,8 @@ inline edict_t *FIND_ENTITY_BY_TARGET(edict_t *entStart, const char *pszName)
 // Makes these more explicit, and easier to find
 #define FILE_GLOBAL static
 #define DLL_GLOBAL
+
+template<class T> class CUtlVector;
 
 // Until we figure out why "const" gives the compiler problems, we'll just have to use
 // this bogus "empty" define to mark things as constant.
@@ -229,6 +238,7 @@ extern void			UTIL_AddToAliasList(CBaseAlias* pAlias);
 extern void			UTIL_FlushAliases(void);
 
 extern CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
+extern CBaseEntity* UTIL_FindEntityByStringSlow(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
 extern CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
 extern CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName);
 extern CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName);

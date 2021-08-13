@@ -458,6 +458,8 @@
     <ClInclude Include="..\..\public\particleman.h" />
     <ClInclude Include="..\..\public\pman_particlemem.h" />
     <ClInclude Include="..\..\public\pman_triangleffect.h" />
+    <ClInclude Include="..\..\public\UtlMemory.h" />
+    <ClInclude Include="..\..\public\UtlVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
