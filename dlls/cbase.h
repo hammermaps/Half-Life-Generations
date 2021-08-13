@@ -87,6 +87,8 @@ extern "C" DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfa
 extern "C" DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 extern "C" DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 
+extern void OnGameShutdown();
+
 extern DLL_GLOBAL	short	g_sModelIndexNullModel; //null model index
 extern DLL_GLOBAL	short	g_sModelIndexErrorModel;//error model index
 extern DLL_GLOBAL	short	g_sModelIndexNullSprite;//null sprite index

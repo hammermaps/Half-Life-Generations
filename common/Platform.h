@@ -27,12 +27,28 @@
 #define DEBUG 1
 #endif
 
-// Silence certain warnings
-#pragma warning(disable : 4244)		// int or float down-conversion
-#pragma warning(disable : 4305)		// int or float data truncation
-#pragma warning(disable : 4201)		// nameless struct/union
-#pragma warning(disable : 4514)		// unreferenced inline function removed
-#pragma warning(disable : 4100)		// unreferenced formal parameter
+#ifdef _WIN32
+	// Remove warnings from warning level 4.
+#pragma warning(disable:4514) // warning C4514: 'acosl' : unreferenced inline function has been removed
+#pragma warning(disable:4100) // warning C4100: 'hwnd' : unreferenced formal parameter
+#pragma warning(disable:4127) // warning C4127: conditional expression is constant
+#pragma warning(disable:4512) // warning C4512: 'InFileRIFF' : assignment operator could not be generated
+#pragma warning(disable:4611) // warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
+#pragma warning(disable:4706) // warning C4706: assignment within conditional expression
+#pragma warning(disable:4710) // warning C4710: function 'x' not inlined
+#pragma warning(disable:4702) // warning C4702: unreachable code
+#pragma warning(disable:4505) // unreferenced local function has been removed
+#pragma warning(disable:4239) // nonstandard extension used : 'argument' ( conversion from class Vector to class Vector& )
+#pragma warning(disable:4097) // typedef-name 'BaseClass' used as synonym for class-name 'CFlexCycler::CBaseFlex'
+#pragma warning(disable:4324) // Padding was added at the end of a structure
+#pragma warning(disable:4244) // type conversion warning.
+#pragma warning(disable:4305) // truncation from 'const double ' to 'float '
+#pragma warning(disable:4786) // Disable warnings about long symbol names
+
+#if _MSC_VER >= 1300
+#pragma warning(disable:4511) // Disable warnings about private copy constructors
+#endif
+#endif
 
 #include "archtypes.h"     // DAL
 
@@ -108,5 +124,28 @@ typedef int BOOL;
 #define V_max(a,b)  (((a) > (b)) ? (a) : (b))
 
 #define clamp( val, min, max ) ( ((val) > (max)) ? (max) : ( ((val) < (min)) ? (min) : (val) ) )
+
+// Methods to invoke the constructor, copy constructor, and destructor
+template <class T>
+inline void Construct(T* pMemory)
+{
+	new(pMemory) T;
+}
+
+template <class T>
+inline void CopyConstruct(T* pMemory, T const& src)
+{
+	new(pMemory) T(src);
+}
+
+template <class T>
+inline void Destruct(T* pMemory)
+{
+	pMemory->~T();
+
+#ifdef _DEBUG
+	memset(pMemory, 0xDD, sizeof(T));
+#endif
+}
 
 #endif //PLATFORM_H

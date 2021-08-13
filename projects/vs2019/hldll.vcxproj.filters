@@ -70,6 +70,12 @@
     <Filter Include="Source Files\dlls\weapons\ammo">
       <UniqueIdentifier>{d590103f-1a67-47f9-a879-8b12003c227b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\public">
+      <UniqueIdentifier>{ba8e0d8c-171f-4586-aa9e-7c34e259dad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\public">
+      <UniqueIdentifier>{f098a2a1-7ff1-48fb-ae69-36e6bc939f82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dlls\airtank.cpp">
@@ -642,6 +648,15 @@
     <ClCompile Include="..\..\dlls\weapons\ammo\CGlockAmmo.cpp">
       <Filter>Source Files\dlls\weapons\ammo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\public\FileSystem.cpp">
+      <Filter>Source Files\public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\MemPool.cpp">
+      <Filter>Source Files\public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\interface.cpp">
+      <Filter>Source Files\public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\dlls\doors.h">
@@ -1096,6 +1111,30 @@
     </ClInclude>
     <ClInclude Include="..\..\dlls\entities\CEyeScanner.h">
       <Filter>Source Files\dlls\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\archtypes.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\FileSystem.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\interface.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\keydefs.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\MemPool.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\particleman.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\pman_particlemem.h">
+      <Filter>Header Files\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\pman_triangleffect.h">
+      <Filter>Header Files\public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

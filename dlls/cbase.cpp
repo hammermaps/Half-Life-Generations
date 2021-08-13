@@ -22,6 +22,7 @@
 #include	"game.h"
 #include	"movewith.h"
 #include	"skill.h"
+#include	"FileSystem.h"
 
 void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd );
 
@@ -103,7 +104,11 @@ static DLL_FUNCTIONS gFunctionTable =
 
 NEW_DLL_FUNCTIONS gNewDLLFunctions =
 {
-	OnFreeEntPrivateData,		//pfnOnFreeEntPrivateData
+	&OnFreeEntPrivateData,
+	&OnGameShutdown,
+	nullptr,
+	nullptr,
+	nullptr
 };
 
 static void SetObjectCollisionBox( entvars_t *pev );
@@ -147,6 +152,10 @@ int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 }
 }
 
+void OnGameShutdown()
+{
+	ShutdownFileSystem();
+}
 
 int DispatchSpawn( edict_t *pent )
 {
@@ -1098,8 +1107,6 @@ int	CBaseEntity :: DamageDecal(int bitsDamageType )
 	return DECAL_GUNSHOT1 + RANDOM_LONG(0,4);
 }
 
-
-
 void CBaseEntity::SetModel(edict_t* pev, const char* const pszModelName)
 {
 	if (!pszModelName || !(*pszModelName))
@@ -1116,10 +1123,8 @@ void CBaseEntity::SetModel(edict_t* pev, const char* const pszModelName)
 	}
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(const_cast<char*>(pszModelName), NULL);
-	if (data)
+	if (g_pFileSystem->FileExists(pszModelName))
 	{
-		FREE_FILE(data);
 		SET_MODEL(pev, pszModelName);
 		return;
 	}
@@ -1149,17 +1154,14 @@ int CBaseEntity::PrecacheModel(const char* const pszModelName)
 		ALERT(at_console, "Warning: modelname not specified\n");
 		return g_sModelIndexNullModel; //set null model
 	}
+	
 	//no need to precacahe brush
 	if (pszModelName[0] == '*')
 		return 0;
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(pszModelName, NULL);
-	if (data)
-	{
-		FREE_FILE(data);
+	if (g_pFileSystem->FileExists(pszModelName))
 		return PRECACHE_MODEL(pszModelName);
-	}
 
 	char* ext = UTIL_FileExtension(const_cast<char*>(pszModelName));
 
@@ -1192,15 +1194,12 @@ int CBaseEntity::PrecacheSound(const char* const pszSoundName)
 				//remove this for sucessfully loading a sound	
 	if (sound[0] == '*')
 		sound++;	//only for fake path, engine needs this prefix!
+	
 	sprintf(path, "sound/%s", sound);
 
 	//verify file exists
-	byte* data = LOAD_FILE_FOR_ME(path, NULL);
-	if (data)
-	{
-		FREE_FILE(data);
+	if (g_pFileSystem->FileExists(path))
 		return PRECACHE_SOUND(pszSoundName);
-	}
 
 	char* ext = UTIL_FileExtension(const_cast<char*>(pszSoundName));
 	if (FStrEq(ext, "wav"))
@@ -1217,12 +1216,8 @@ int CBaseEntity::PrecacheSound(const char* const pszSoundName)
 
 unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz)
 {
-	byte* data = LOAD_FILE_FOR_ME((char*)psz, NULL);
-	if (data)
-	{
-		FREE_FILE(data);
+	if(g_pFileSystem->FileExists(psz))
 		return PRECACHE_EVENT(type, psz);
-	}
 
 	ALERT(at_console, "Warning: event \"%s\" not found!\n", psz);
 	return PRECACHE_EVENT(type, "events/null.sc");

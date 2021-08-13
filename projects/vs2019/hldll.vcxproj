@@ -68,6 +68,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>$(ProjectDir)..\..\dlls\hl.def</ModuleDefinitionFile>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -293,6 +294,9 @@
     <ClCompile Include="..\..\pm_shared\pm_debug.cpp" />
     <ClCompile Include="..\..\pm_shared\pm_math.cpp" />
     <ClCompile Include="..\..\pm_shared\pm_shared.cpp" />
+    <ClCompile Include="..\..\public\FileSystem.cpp" />
+    <ClCompile Include="..\..\public\interface.cpp" />
+    <ClCompile Include="..\..\public\MemPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\common\beamdef.h" />
@@ -446,6 +450,14 @@
     <ClInclude Include="..\..\pm_shared\pm_materials.h" />
     <ClInclude Include="..\..\pm_shared\pm_movevars.h" />
     <ClInclude Include="..\..\pm_shared\pm_shared.h" />
+    <ClInclude Include="..\..\public\archtypes.h" />
+    <ClInclude Include="..\..\public\FileSystem.h" />
+    <ClInclude Include="..\..\public\interface.h" />
+    <ClInclude Include="..\..\public\keydefs.h" />
+    <ClInclude Include="..\..\public\MemPool.h" />
+    <ClInclude Include="..\..\public\particleman.h" />
+    <ClInclude Include="..\..\public\pman_particlemem.h" />
+    <ClInclude Include="..\..\public\pman_triangleffect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

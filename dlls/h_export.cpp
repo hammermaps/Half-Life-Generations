@@ -24,6 +24,7 @@
 #include "util.h"
 
 #include "cbase.h"
+#include "FileSystem.h"
 
 // Holds engine functionality callbacks
 enginefuncs_t g_engfuncs;
@@ -58,6 +59,7 @@ extern "C" void DLLEXPORT GiveFnptrsToDll(	enginefuncs_t* pengfuncsFromEngine, g
 {
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
 	gpGlobals = pGlobals;
+	LoadFileSystem();
 }
 
 
