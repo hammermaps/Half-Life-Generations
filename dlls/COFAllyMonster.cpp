@@ -57,7 +57,7 @@ char* COFAllyMonster::m_szFriends[TLK_CFRIENDS] =
 // AI Schedules Specific to talking monsters
 //=========================================================
 
-Task_t tlOFAllyIdleResponse[] =
+Task_t tlBaseAllyIdleResponse[] =
 {
 	{TASK_SET_ACTIVITY, static_cast<float>(ACT_IDLE)}, // Stop and listen
 	{TASK_WAIT, static_cast<float>(0.5)}, // Wait until sure it's me they are talking to
@@ -68,11 +68,11 @@ Task_t tlOFAllyIdleResponse[] =
 	{TASK_TLK_EYECONTACT, static_cast<float>(0)}, // Wait until speaker is done
 };
 
-Schedule_t slOFAllyIdleResponse[] =
+Schedule_t slBaseAllyIdleResponse[] =
 {
 	{
-		tlOFAllyIdleResponse,
-		ARRAYSIZE(tlOFAllyIdleResponse),
+		tlBaseAllyIdleResponse,
+		ARRAYSIZE(tlBaseAllyIdleResponse),
 		bits_COND_NEW_ENEMY |
 		bits_COND_LIGHT_DAMAGE |
 		bits_COND_HEAVY_DAMAGE,
@@ -82,7 +82,7 @@ Schedule_t slOFAllyIdleResponse[] =
 	},
 };
 
-Task_t tlOFAllyIdleSpeak[] =
+Task_t tlBaseAllyIdleSpeak[] =
 {
 	{TASK_TLK_SPEAK, static_cast<float>(0)}, // question or remark
 	{TASK_TLK_IDEALYAW, static_cast<float>(0)}, // look at who I'm talking to
@@ -91,11 +91,11 @@ Task_t tlOFAllyIdleSpeak[] =
 	{TASK_WAIT_RANDOM, static_cast<float>(0.5)},
 };
 
-Schedule_t slOFAllyIdleSpeak[] =
+Schedule_t slBaseAllyIdleSpeak[] =
 {
 	{
-		tlOFAllyIdleSpeak,
-		ARRAYSIZE(tlOFAllyIdleSpeak),
+		tlBaseAllyIdleSpeak,
+		ARRAYSIZE(tlBaseAllyIdleSpeak),
 		bits_COND_NEW_ENEMY |
 		bits_COND_CLIENT_PUSH |
 		bits_COND_LIGHT_DAMAGE |
@@ -105,18 +105,18 @@ Schedule_t slOFAllyIdleSpeak[] =
 	},
 };
 
-Task_t tlOFAllyIdleSpeakWait[] =
+Task_t tlBaseAllyIdleSpeakWait[] =
 {
 	{TASK_TLK_SPEAK, static_cast<float>(0)}, // question or remark
 	{TASK_TLK_EYECONTACT, static_cast<float>(0)}, // 
 	{TASK_WAIT, static_cast<float>(2)}, // wait - used when sci is in 'use' mode to keep head turned
 };
 
-Schedule_t slOFAllyIdleSpeakWait[] =
+Schedule_t slBaseAllyIdleSpeakWait[] =
 {
 	{
-		tlOFAllyIdleSpeakWait,
-		ARRAYSIZE(tlOFAllyIdleSpeakWait),
+		tlBaseAllyIdleSpeakWait,
+		ARRAYSIZE(tlBaseAllyIdleSpeakWait),
 		bits_COND_NEW_ENEMY |
 		bits_COND_CLIENT_PUSH |
 		bits_COND_LIGHT_DAMAGE |
@@ -126,7 +126,7 @@ Schedule_t slOFAllyIdleSpeakWait[] =
 	},
 };
 
-Task_t tlOFAllyIdleHello[] =
+Task_t tlBaseAllyIdleHello[] =
 {
 	{TASK_TLK_HELLO, static_cast<float>(0)}, // Try to say hello to player
 	{TASK_TLK_EYECONTACT, static_cast<float>(0)},
@@ -143,11 +143,11 @@ Task_t tlOFAllyIdleHello[] =
 
 };
 
-Schedule_t slOFAllyIdleHello[] =
+Schedule_t slBaseAllyIdleHello[] =
 {
 	{
-		tlOFAllyIdleHello,
-		ARRAYSIZE(tlOFAllyIdleHello),
+		tlBaseAllyIdleHello,
+		ARRAYSIZE(tlBaseAllyIdleHello),
 		bits_COND_NEW_ENEMY |
 		bits_COND_CLIENT_PUSH |
 		bits_COND_LIGHT_DAMAGE |
@@ -160,17 +160,17 @@ Schedule_t slOFAllyIdleHello[] =
 	},
 };
 
-Task_t tlOFAllyIdleStopShooting[] =
+Task_t tlBaseAllyIdleStopShooting[] =
 {
 	{TASK_TLK_STOPSHOOTING, static_cast<float>(0)}, // tell player to stop shooting friend
 	// { TASK_TLK_EYECONTACT,		(float)0		},// look at the player
 };
 
-Schedule_t slOFAllyIdleStopShooting[] =
+Schedule_t slBaseAllyIdleStopShooting[] =
 {
 	{
-		tlOFAllyIdleStopShooting,
-		ARRAYSIZE(tlOFAllyIdleStopShooting),
+		tlBaseAllyIdleStopShooting,
+		ARRAYSIZE(tlBaseAllyIdleStopShooting),
 		bits_COND_NEW_ENEMY |
 		bits_COND_LIGHT_DAMAGE |
 		bits_COND_HEAVY_DAMAGE |
@@ -180,7 +180,7 @@ Schedule_t slOFAllyIdleStopShooting[] =
 	},
 };
 
-Task_t tlOFAllyMoveAway[] =
+Task_t tlBaseAllyMoveAway[] =
 {
 	{TASK_SET_FAIL_SCHEDULE, static_cast<float>(SCHED_MOVE_AWAY_FAIL)},
 	{TASK_STORE_LASTPOSITION, static_cast<float>(0)},
@@ -190,35 +190,35 @@ Task_t tlOFAllyMoveAway[] =
 	{TASK_FACE_PLAYER, static_cast<float>(0.5)},
 };
 
-Schedule_t slOFAllyMoveAway[] =
+Schedule_t slBaseAllyMoveAway[] =
 {
 	{
-		tlOFAllyMoveAway,
-		ARRAYSIZE(tlOFAllyMoveAway),
+		tlBaseAllyMoveAway,
+		ARRAYSIZE(tlBaseAllyMoveAway),
 		0,
 		0,
 		"MoveAway"
 	},
 };
 
-Task_t tlOFAllyMoveAwayFail[] =
+Task_t tlBaseAllyMoveAwayFail[] =
 {
 	{TASK_STOP_MOVING, static_cast<float>(0)},
 	{TASK_FACE_PLAYER, static_cast<float>(0.5)},
 };
 
-Schedule_t slOFAllyMoveAwayFail[] =
+Schedule_t slBaseAllyMoveAwayFail[] =
 {
 	{
-		tlOFAllyMoveAwayFail,
-		ARRAYSIZE(tlOFAllyMoveAwayFail),
+		tlBaseAllyMoveAwayFail,
+		ARRAYSIZE(tlBaseAllyMoveAwayFail),
 		0,
 		0,
 		"MoveAwayFail"
 	},
 };
 
-Task_t tlOFAllyMoveAwayFollow[] =
+Task_t tlBaseAllyMoveAwayFollow[] =
 {
 	{TASK_SET_FAIL_SCHEDULE, static_cast<float>(SCHED_TARGET_FACE)},
 	{TASK_STORE_LASTPOSITION, static_cast<float>(0)},
@@ -228,25 +228,25 @@ Task_t tlOFAllyMoveAwayFollow[] =
 	{TASK_SET_SCHEDULE, static_cast<float>(SCHED_TARGET_FACE)},
 };
 
-Schedule_t slOFAllyMoveAwayFollow[] =
+Schedule_t slBaseAllyMoveAwayFollow[] =
 {
 	{
-		tlOFAllyMoveAwayFollow,
-		ARRAYSIZE(tlOFAllyMoveAwayFollow),
+		tlBaseAllyMoveAwayFollow,
+		ARRAYSIZE(tlBaseAllyMoveAwayFollow),
 		0,
 		0,
 		"MoveAwayFollow"
 	},
 };
 
-Task_t tlOFAllyTlkIdleWatchClient[] =
+Task_t tlBaseAllyTlkIdleWatchClient[] =
 {
 	{TASK_STOP_MOVING, 0},
 	{TASK_SET_ACTIVITY, static_cast<float>(ACT_IDLE)},
 	{TASK_TLK_LOOK_AT_CLIENT, static_cast<float>(6)},
 };
 
-Task_t tlOFAllyTlkIdleWatchClientStare[] =
+Task_t tlBaseAllyTlkIdleWatchClientStare[] =
 {
 	{TASK_STOP_MOVING, 0},
 	{TASK_SET_ACTIVITY, static_cast<float>(ACT_IDLE)},
@@ -257,11 +257,11 @@ Task_t tlOFAllyTlkIdleWatchClientStare[] =
 	{TASK_TLK_EYECONTACT, static_cast<float>(0)},
 };
 
-Schedule_t slOFAllyTlkIdleWatchClient[] =
+Schedule_t slBaseAllyTlkIdleWatchClient[] =
 {
 	{
-		tlOFAllyTlkIdleWatchClient,
-		ARRAYSIZE(tlOFAllyTlkIdleWatchClient),
+		tlBaseAllyTlkIdleWatchClient,
+		ARRAYSIZE(tlBaseAllyTlkIdleWatchClient),
 		bits_COND_NEW_ENEMY |
 		bits_COND_LIGHT_DAMAGE |
 		bits_COND_HEAVY_DAMAGE |
@@ -281,8 +281,8 @@ Schedule_t slOFAllyTlkIdleWatchClient[] =
 	},
 
 	{
-		tlOFAllyTlkIdleWatchClientStare,
-		ARRAYSIZE(tlOFAllyTlkIdleWatchClientStare),
+		tlBaseAllyTlkIdleWatchClientStare,
+		ARRAYSIZE(tlBaseAllyTlkIdleWatchClientStare),
 		bits_COND_NEW_ENEMY |
 		bits_COND_LIGHT_DAMAGE |
 		bits_COND_HEAVY_DAMAGE |
@@ -302,18 +302,18 @@ Schedule_t slOFAllyTlkIdleWatchClient[] =
 	},
 };
 
-Task_t tlOFAllyTlkIdleEyecontact[] =
+Task_t tlBaseAllyTlkIdleEyecontact[] =
 {
 	{TASK_TLK_IDEALYAW, static_cast<float>(0)}, // look at who I'm talking to
 	{TASK_FACE_IDEAL, static_cast<float>(0)},
 	{TASK_TLK_EYECONTACT, static_cast<float>(0)}, // Wait until speaker is done
 };
 
-Schedule_t slOFAllyTlkIdleEyecontact[] =
+Schedule_t slBaseAllyTlkIdleEyecontact[] =
 {
 	{
-		tlOFAllyTlkIdleEyecontact,
-		ARRAYSIZE(tlOFAllyTlkIdleEyecontact),
+		tlBaseAllyTlkIdleEyecontact,
+		ARRAYSIZE(tlBaseAllyTlkIdleEyecontact),
 		bits_COND_NEW_ENEMY |
 		bits_COND_CLIENT_PUSH |
 		bits_COND_LIGHT_DAMAGE |
@@ -325,17 +325,17 @@ Schedule_t slOFAllyTlkIdleEyecontact[] =
 
 DEFINE_CUSTOM_SCHEDULES(COFAllyMonster)
 {
-	slOFAllyIdleResponse,
-	slOFAllyIdleSpeak,
-	slOFAllyIdleHello,
-	slOFAllyIdleSpeakWait,
-	slOFAllyIdleStopShooting,
-	slOFAllyMoveAway,
-	slOFAllyMoveAwayFollow,
-	slOFAllyMoveAwayFail,
-	slOFAllyTlkIdleWatchClient,
-	&slOFAllyTlkIdleWatchClient[1],
-	slOFAllyTlkIdleEyecontact,
+	slBaseAllyIdleResponse,
+	slBaseAllyIdleSpeak,
+	slBaseAllyIdleHello,
+	slBaseAllyIdleSpeakWait,
+	slBaseAllyIdleStopShooting,
+	slBaseAllyMoveAway,
+	slBaseAllyMoveAwayFollow,
+	slBaseAllyMoveAwayFail,
+	slBaseAllyTlkIdleWatchClient,
+	&slBaseAllyTlkIdleWatchClient[1],
+	slBaseAllyTlkIdleEyecontact,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(COFAllyMonster, CBaseMonster);
@@ -1144,7 +1144,7 @@ void COFAllyMonster::Talk(float flDuration)
 void COFAllyMonster::SetAnswerQuestion(COFAllyMonster* pSpeaker)
 {
 	if (!m_pCine)
-		ChangeSchedule(slOFAllyIdleResponse);
+		ChangeSchedule(slBaseAllyIdleResponse);
 
 	m_hTalkTarget = pSpeaker;
 }
@@ -1163,7 +1163,7 @@ int COFAllyMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, 
 			{
 				// only if not dead or dying!
 				COFAllyMonster* pTalkMonster = static_cast<COFAllyMonster*>(pFriend);
-				pTalkMonster->ChangeSchedule(slOFAllyIdleStopShooting);
+				pTalkMonster->ChangeSchedule(slBaseAllyIdleStopShooting);
 			}
 		}
 	}
@@ -1176,13 +1176,13 @@ Schedule_t* COFAllyMonster::GetScheduleOfType(int Type)
 	switch (Type)
 	{
 	case SCHED_MOVE_AWAY:
-		return slOFAllyMoveAway;
+		return slBaseAllyMoveAway;
 
 	case SCHED_MOVE_AWAY_FOLLOW:
-		return slOFAllyMoveAwayFollow;
+		return slBaseAllyMoveAwayFollow;
 
 	case SCHED_MOVE_AWAY_FAIL:
-		return slOFAllyMoveAwayFail;
+		return slBaseAllyMoveAwayFail;
 
 	case SCHED_TARGET_FACE:
 		// speak during 'use'
@@ -1190,7 +1190,7 @@ Schedule_t* COFAllyMonster::GetScheduleOfType(int Type)
 			// speak during 'use'
 			if (RANDOM_LONG(0, 99) < 2)
 				//ALERT ( at_console, "target chase speak\n" );
-				return slOFAllyIdleSpeakWait;
+				return slBaseAllyIdleSpeakWait;
 			return slIdleStand;
 		}
 
@@ -1199,7 +1199,7 @@ Schedule_t* COFAllyMonster::GetScheduleOfType(int Type)
 			// if never seen player, try to greet him
 			if (!FBitSet(m_bitsSaid, bit_saidHelloPlayer))
 			{
-				return slOFAllyIdleHello;
+				return slBaseAllyIdleHello;
 			}
 
 			// sustained light wounds?
@@ -1221,7 +1221,7 @@ Schedule_t* COFAllyMonster::GetScheduleOfType(int Type)
 			if (FOkToSpeak() && RANDOM_LONG(0, m_nSpeak * 2) == 0)
 			{
 				//ALERT ( at_console, "standing idle speak\n" );
-				return slOFAllyIdleSpeak;
+				return slBaseAllyIdleSpeak;
 			}
 
 			if (!IsTalking() && HasConditions(bits_COND_SEE_CLIENT) && RANDOM_LONG(0, 6) == 0)
@@ -1236,17 +1236,17 @@ Schedule_t* COFAllyMonster::GetScheduleOfType(int Type)
 						UTIL_DotPoints(pPlayer->v.origin, pev->origin, gpGlobals->v_forward) >= m_flFieldOfView)
 					{
 						// go into the special STARE schedule if the player is close, and looking at me too.
-						return &slOFAllyTlkIdleWatchClient[1];
+						return &slBaseAllyTlkIdleWatchClient[1];
 					}
 
-					return slOFAllyTlkIdleWatchClient;
+					return slBaseAllyTlkIdleWatchClient;
 				}
 			}
 			else
 			{
 				if (IsTalking())
 					// look at who we're talking to
-					return slOFAllyTlkIdleEyecontact;
+					return slBaseAllyTlkIdleEyecontact;
 				// regular standing idle
 				return slIdleStand;
 			}

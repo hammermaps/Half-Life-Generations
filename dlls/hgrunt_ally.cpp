@@ -2692,14 +2692,7 @@ Schedule_t* CHGruntAlly :: GetScheduleOfType ( int Type )
 			}
 			else
 			{
-				//if ( RANDOM_LONG(0,1) )
-				//{
-					return &slGruntAllyTakeCover[ 0 ];
-				//}
-				//else
-				//{
-				//	return &slGruntAllyGrenadeCover[ 0 ];
-				//}
+				return &slGruntAllyTakeCover[ 0 ];
 			}
 		}
 	case SCHED_TAKE_COVER_FROM_BEST_SOUND:

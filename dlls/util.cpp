@@ -1796,12 +1796,12 @@ BOOL UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2)
 //LRC - randomized vectors of the form "0 0 0 .. 1 0 0"
 void UTIL_StringToRandomVector(float* pVector, const char* pString)
 {
-	char *pstr, *pfront, tempString[128];
+	char *pfront, tempString[128];
 	int j;
 	float pAltVec[3];
 
 	strcpy(tempString, pString);
-	pstr = pfront = tempString;
+	char* pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++) // lifted from pr_edict.c
 	{
@@ -1839,11 +1839,11 @@ void UTIL_StringToRandomVector(float* pVector, const char* pString)
 
 void UTIL_StringToVector(float* pVector, const char* pString)
 {
-	char *pstr, *pfront, tempString[128];
+	char *pfront, tempString[128];
 	int j;
 
 	strcpy(tempString, pString);
-	pstr = pfront = tempString;
+	char* pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++) // lifted from pr_edict.c
 	{
@@ -1869,11 +1869,11 @@ void UTIL_StringToVector(float* pVector, const char* pString)
 
 void UTIL_StringToIntArray(int* pVector, int count, const char* pString)
 {
-	char *pstr, *pfront, tempString[128];
+	char *pfront, tempString[128];
 	int j;
 
 	strcpy(tempString, pString);
-	pstr = pfront = tempString;
+	char* pstr = pfront = tempString;
 
 	for (j = 0; j < count; j++) // lifted from pr_edict.c
 	{
@@ -2031,9 +2031,7 @@ BOOL UTIL_IsValidEntity(edict_t* pent)
 
 void UTIL_PrecacheOther(const char* szClassname)
 {
-	edict_t* pent;
-
-	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
+	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
 	if (FNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
@@ -2069,9 +2067,7 @@ void UTIL_LogPrintf(const char* fmt, ...)
 //=========================================================
 float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir)
 {
-	Vector2D vec2LOS;
-
-	vec2LOS = (vecCheck - vecSrc).Make2D();
+	Vector2D vec2LOS = (vecCheck - vecSrc).Make2D();
 	vec2LOS = vec2LOS.Normalize();
 
 	return DotProduct(vec2LOS, (vecDir.Make2D()));
