@@ -31,6 +31,7 @@
 #else
 //TODO: this is a real mess
 #define PC_RANDOM 7
+#define PC_FIRSTCLASS 1
 #define PC_LASTCLASS 7
 #define PC_UNDEFINED 0
 #define PC_MAX_TEAMS 2
@@ -488,7 +489,7 @@ public:
 };
 
 //==============================================================================
-//TODO: rename to CTFViewport
+//NOTE/ called CTFViewport in Op4
 class TeamFortressViewport : public Panel
 {
 private:
@@ -651,7 +652,7 @@ public:
 	CStatsMenuPanel* m_pStatsMenu;
 	ScorePanel		*m_pScoreBoard;
 	SpectatorPanel *		m_pSpectatorPanel;
-	int m_iCTFTeamNumber; //TODO: add all references
+	int m_iCTFTeamNumber;
 	char			m_szServerName[ MAX_SERVERNAME_LENGTH ];
 };
 
