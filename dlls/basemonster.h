@@ -181,9 +181,9 @@ public:
 	virtual BOOL CheckMeleeAttack2(float flDot, float flDist);
 
 	BOOL FHaveSchedule();
-	BOOL FScheduleValid();
+	bool FScheduleValid();
 	void ClearSchedule();
-	BOOL FScheduleDone();
+	bool FScheduleDone() const;
 	void ChangeSchedule(Schedule_t* pNewSchedule);
 	void NextScheduledTask();
 	Schedule_t* ScheduleInList(const char* pName, Schedule_t** pList, int listCount);
@@ -201,7 +201,7 @@ public:
 	{
 	}
 
-	virtual int CanPlaySequence(int interruptFlags);
+	virtual bool CanPlaySequence(int interruptFlags);
 	virtual int CanPlaySentence(BOOL fDisregardState) { return IsAlive(); }
 	virtual void PlaySentence(const char* pszSentence, float duration, float volume, float attenuation);
 	virtual void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation,
@@ -221,7 +221,7 @@ public:
 	void PushEnemy(CBaseEntity* pEnemy, Vector& vecLastKnownPos);
 	BOOL PopEnemy();
 
-	BOOL FGetNodeRoute(Vector vecDest);
+	bool FGetNodeRoute(Vector vecDest);
 
 	inline void TaskComplete() { if (!HasConditions(bits_COND_TASK_FAILED)) m_iTaskStatus = TASKSTATUS_COMPLETE; }
 	void MovementComplete();
@@ -231,8 +231,8 @@ public:
 	inline int TaskIsComplete() { return (m_iTaskStatus == TASKSTATUS_COMPLETE); }
 	inline int MovementIsComplete() { return (m_movementGoal == MOVEGOAL_NONE); }
 
-	int IScheduleFlags();
-	BOOL FRefreshRoute();
+	int IScheduleFlags() const;
+	bool FRefreshRoute();
 	BOOL FRouteClear();
 	void RouteSimplify(CBaseEntity* pTargetEnt);
 	void AdvanceRoute(float distance);
@@ -243,7 +243,7 @@ public:
 	virtual void SetYawSpeed()
 	{
 	} // allows different yaw_speeds for each activity
-	BOOL BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity* pTarget);
+	bool BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity* pTarget);
 	virtual BOOL BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist);
 	int RouteClassify(int iMoveFlag);
 	void InsertWaypoint(Vector vecLocation, int afMoveFlags);
@@ -282,10 +282,8 @@ public:
 	virtual void SetTurnActivity();
 	float FLSoundVolume(CSound* pSound);
 
-	BOOL MoveToNode(Activity movementAct, float waitTime, const Vector& goal);
-	BOOL MoveToTarget(Activity movementAct, float waitTime);
-	BOOL MoveToLocation(Activity movementAct, float waitTime, const Vector& goal);
-	BOOL MoveToEnemy(Activity movementAct, float waitTime);
+	bool MoveToTarget(Activity movementAct, float waitTime);
+	bool MoveToLocation(Activity movementAct, float waitTime, const Vector& goal);
 
 	// Returns the time when the door will be open
 	float OpenDoorAndWait(entvars_t* pevDoor);
@@ -307,7 +305,7 @@ public:
 	CBaseEntity* CheckTraceHullAttack(float flDist, int iDamage, int iDmgType);
 	BOOL FacingIdeal();
 
-	BOOL FCheckAITrigger(); // checks and, if necessary, fires the monster's trigger target. 
+	void FCheckAITrigger(); // checks and, if necessary, fires the monster's trigger target. 
 	virtual bool NoFriendlyFire() { return false; };
 	BOOL BBoxFlat();
 

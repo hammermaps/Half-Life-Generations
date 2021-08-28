@@ -3065,7 +3065,7 @@ Vector UTIL_GetMirrorOrigin(CBaseEntity* pMirror, Vector pos)
 {
 	Vector result = pos;
 
-	switch ((int)pMirror->pev->frags)
+	switch (static_cast<int>(pMirror->pev->frags))
 	{
 	case 0:
 		result[0] = pMirror->pev->origin[0] * 2 - pos[0];

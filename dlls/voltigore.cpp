@@ -1042,7 +1042,7 @@ void COFVoltigore :: StartTask ( Task_t *pTask )
 			ClearBeams();
 
 			UTIL_MakeVectors( pev->angles );
-			if ( BuildRoute ( m_vecEnemyLKP - gpGlobals->v_forward * 50, bits_MF_TO_LOCATION, NULL ) )
+			if ( BuildRoute ( m_vecEnemyLKP - gpGlobals->v_forward * 50, bits_MF_TO_LOCATION, nullptr) )
 			{
 				TaskComplete();
 			}

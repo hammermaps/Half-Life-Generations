@@ -135,7 +135,7 @@ void CPitdroneSpike::Shoot( entvars_t *pevOwner, Vector vecStart, Vector vecVelo
 void CPitdroneSpike::SpikeTouch( CBaseEntity *pOther )
 {
 	// splat sound
-	int iPitch = RANDOM_FLOAT( 120, 140 );
+	const int iPitch = RANDOM_FLOAT( 120, 140 );
 
 	if( !pOther->pev->takedamage )
 	{
@@ -171,13 +171,13 @@ void CPitdroneSpike::SpikeTouch( CBaseEntity *pOther )
 		pev->avelocity = g_vecZero;
 
 		SetThink( &CBaseEntity::SUB_FadeOut );
-		SetNextThink(90.0);
+		SetNextThink(90.0f);
 	}
 	else
 	{
 		//Hit something else, remove
 		SetThink( &CBaseEntity::SUB_Remove );
-		SetNextThink(0.1);
+		SetNextThink(0.1f);
 	}
 }
 
@@ -347,7 +347,7 @@ BOOL CPitdrone :: CheckRangeAttack1 ( float flDot, float flDist )
 
 BOOL CPitdrone :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
-	if ( flDist <= 64 && flDot >= 0.7 )
+	if ( flDist <= 64 && flDot >= 0.7f )
 	{
 		return RANDOM_LONG( 0, 3 ) == 0;
 	}
@@ -356,7 +356,7 @@ BOOL CPitdrone :: CheckMeleeAttack1 ( float flDot, float flDist )
 
 BOOL CPitdrone :: CheckMeleeAttack2 ( float flDot, float flDist )
 {
-	if ( flDist <= 64 && flDot >= 0.7 && !HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
+	if ( flDist <= 64 && flDot >= 0.7f && !HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
 	{
 		return TRUE;
 	}
@@ -368,14 +368,12 @@ BOOL CPitdrone :: CheckMeleeAttack2 ( float flDot, float flDist )
 //=========================================================
 BOOL CPitdrone :: FValidateHintType ( short sHint )
 {
-	int i;
-
 	static short sSquidHints[] =
 	{
 		HINT_WORLD_HUMAN_BLOOD,
 	};
 
-	for ( i = 0 ; i < ARRAYSIZE ( sSquidHints ) ; i++ )
+	for ( int i = 0 ; i < ARRAYSIZE ( sSquidHints ) ; i++ )
 	{
 		if ( sSquidHints[ i ] == sHint )
 		{
@@ -423,7 +421,7 @@ void CPitdrone :: IdleSound ()
 //=========================================================
 void CPitdrone :: PainSound ()
 {
-	int iPitch = RANDOM_LONG( 85, 120 );
+	const int iPitch = RANDOM_LONG( 85, 120 );
 
 	switch ( RANDOM_LONG(0,3) )
 	{
@@ -447,7 +445,7 @@ void CPitdrone :: PainSound ()
 //=========================================================
 void CPitdrone :: AlertSound ()
 {
-	int iPitch = RANDOM_LONG( 140, 160 );
+	const int iPitch = RANDOM_LONG( 140, 160 );
 
 	switch ( RANDOM_LONG ( 0, 2  ) )
 	{

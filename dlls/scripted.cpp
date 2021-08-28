@@ -891,9 +891,6 @@ BOOL CBaseMonster :: CineCleanup( )
 	return TRUE;
 }
 
-
-
-
 class CScriptedSentence : public CBaseToggle
 {
 public:

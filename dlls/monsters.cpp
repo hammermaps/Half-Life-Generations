@@ -649,23 +649,19 @@ BOOL CBaseMonster::FRouteClear()
 // target, this function copies as many waypoints as possible
 // from that path to the monster's Route array
 //=========================================================
-BOOL CBaseMonster::FRefreshRoute()
+auto CBaseMonster::FRefreshRoute() -> bool
 {
-	CBaseEntity* pPathCorner;
-	int i;
-	BOOL returnCode;
-
 	RouteNew();
 
-	returnCode = FALSE;
+	bool returnCode = false;
 
 	switch (m_movementGoal)
 	{
 	case MOVEGOAL_PATHCORNER:
 		{
 			// monster is on a path_corner loop
-			pPathCorner = m_pGoalEnt;
-			i = 0;
+			CBaseEntity* pPathCorner = m_pGoalEnt;
+			int i = 0;
 
 			while (pPathCorner && i < ROUTE_SIZE)
 			{
@@ -681,7 +677,7 @@ BOOL CBaseMonster::FRefreshRoute()
 				i++;
 			}
 		}
-		returnCode = TRUE;
+		returnCode = true;
 		break;
 
 	case MOVEGOAL_ENEMY:
@@ -701,26 +697,13 @@ BOOL CBaseMonster::FRefreshRoute()
 
 	case MOVEGOAL_NODE:
 		returnCode = FGetNodeRoute(m_vecMoveGoal);
-		//			if ( returnCode )
-		//				RouteSimplify( NULL );
 		break;
 	}
 
 	return returnCode;
 }
 
-
-BOOL CBaseMonster::MoveToEnemy(Activity movementAct, float waitTime)
-{
-	m_movementActivity = movementAct;
-	m_moveWaitTime = waitTime;
-
-	m_movementGoal = MOVEGOAL_ENEMY;
-	return FRefreshRoute();
-}
-
-
-BOOL CBaseMonster::MoveToLocation(Activity movementAct, float waitTime, const Vector& goal)
+auto CBaseMonster::MoveToLocation(Activity movementAct, float waitTime, const Vector& goal) -> bool
 {
 	m_movementActivity = movementAct;
 	m_moveWaitTime = waitTime;
@@ -730,8 +713,7 @@ BOOL CBaseMonster::MoveToLocation(Activity movementAct, float waitTime, const Ve
 	return FRefreshRoute();
 }
 
-
-BOOL CBaseMonster::MoveToTarget(Activity movementAct, float waitTime)
+auto CBaseMonster::MoveToTarget(Activity movementAct, float waitTime) -> bool
 {
 	m_movementActivity = movementAct;
 	m_moveWaitTime = waitTime;
@@ -740,23 +722,9 @@ BOOL CBaseMonster::MoveToTarget(Activity movementAct, float waitTime)
 	return FRefreshRoute();
 }
 
-
-BOOL CBaseMonster::MoveToNode(Activity movementAct, float waitTime, const Vector& goal)
-{
-	m_movementActivity = movementAct;
-	m_moveWaitTime = waitTime;
-
-	m_movementGoal = MOVEGOAL_NODE;
-	m_vecMoveGoal = goal;
-	return FRefreshRoute();
-}
-
-
 #ifdef _DEBUG
 void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b)
 {
-	int i;
-
 	if (m_Route[m_iRouteIndex].iType == 0)
 	{
 		ALERT(at_aiconsole, "Can't draw route!\n");
@@ -787,7 +755,7 @@ void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, in
 	WRITE_BYTE(10); // speed
 	MESSAGE_END();
 
-	for (i = m_iRouteIndex; i < ROUTE_SIZE - 1; i++)
+	for (int i = m_iRouteIndex; i < ROUTE_SIZE - 1; i++)
 	{
 		if ((m_Route[i].iType & bits_MF_IS_GOAL) || (m_Route[i + 1].iType == 0))
 			break;
@@ -1538,11 +1506,10 @@ int CBaseMonster::RouteClassify(int iMoveFlag)
 //=========================================================
 // BuildRoute
 //=========================================================
-BOOL CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity* pTarget)
+auto CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity* pTarget) -> bool
 {
 	float flDist;
 	Vector vecApex;
-	int iLocalMove;
 
 	RouteNew();
 	m_movementGoal = RouteClassify(iMoveFlag);
@@ -1552,7 +1519,7 @@ BOOL CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity*
 	m_Route[0].iType = iMoveFlag | bits_MF_IS_GOAL;
 
 	// check simple local move
-	iLocalMove = CheckLocalMove(pev->origin, vecGoal, pTarget, &flDist);
+	const int iLocalMove = CheckLocalMove(pev->origin, vecGoal, pTarget, &flDist);
 
 	if (iLocalMove == LOCALMOVE_VALID)
 	{
@@ -2098,6 +2065,7 @@ void CBaseMonster::StartPatrol(CBaseEntity* path)
 		{
 			ALERT(at_aiconsole, "Can't Create Route!\n");
 		}
+
 		SetState(MONSTERSTATE_IDLE);
 		ChangeSchedule(GetScheduleOfType(SCHED_IDLE_WALK));
 	}
@@ -2804,16 +2772,13 @@ Vector CBaseMonster::GetGunPosition()
 // succeeds (path is valid) or FALSE if failed (no path 
 // exists )
 //=========================================================
-BOOL CBaseMonster::FGetNodeRoute(Vector vecDest)
+auto CBaseMonster::FGetNodeRoute(Vector vecDest) -> bool
 {
 	int iPath[MAX_PATH_SIZE];
-	int iSrcNode, iDestNode;
-	int iResult;
-	int i;
 	int iNumToCopy;
 
-	iSrcNode = WorldGraph.FindNearestNode(pev->origin, this);
-	iDestNode = WorldGraph.FindNearestNode(vecDest, this);
+	int iSrcNode = WorldGraph.FindNearestNode(pev->origin, this);
+	int iDestNode = WorldGraph.FindNearestNode(vecDest, this);
 
 	if (iSrcNode == -1)
 	{
@@ -2830,15 +2795,11 @@ BOOL CBaseMonster::FGetNodeRoute(Vector vecDest)
 
 	// valid src and dest nodes were found, so it's safe to proceed with
 	// find shortest path
-	int iNodeHull = WorldGraph.HullIndex(this); // make this a monster virtual function
-	iResult = WorldGraph.FindShortestPath(iPath, iSrcNode, iDestNode, iNodeHull, m_afCapability);
+	const int iNodeHull = WorldGraph.HullIndex(this); // make this a monster virtual function
+	int iResult = WorldGraph.FindShortestPath(iPath, iSrcNode, iDestNode, iNodeHull, m_afCapability);
 
 	if (!iResult)
 	{
-#if 1
-		ALERT(at_aiconsole, "No Path from %d to %d!\n", iSrcNode, iDestNode);
-		return FALSE;
-#else
 		BOOL bRoutingSave = WorldGraph.m_fRoutingComplete;
 		WorldGraph.m_fRoutingComplete = FALSE;
 		iResult = WorldGraph.FindShortestPath(iPath, iSrcNode, iDestNode, iNodeHull, m_afCapability);
@@ -2852,7 +2813,6 @@ BOOL CBaseMonster::FGetNodeRoute(Vector vecDest)
 		{
 			ALERT ( at_aiconsole, "Routing is inconsistent!" );
 		}
-#endif
 	}
 
 	// there's a valid path within iPath now, so now we will fill the route array
@@ -2869,7 +2829,7 @@ BOOL CBaseMonster::FGetNodeRoute(Vector vecDest)
 		iNumToCopy = ROUTE_SIZE;
 	}
 
-	for (i = 0; i < iNumToCopy; i++)
+	for (int i = 0; i < iNumToCopy; i++)
 	{
 		m_Route[i].vecLocation = WorldGraph.m_pNodes[iPath[i]].m_vecOrigin;
 		m_Route[i].iType = bits_MF_TO_NODE;
@@ -2889,7 +2849,6 @@ BOOL CBaseMonster::FGetNodeRoute(Vector vecDest)
 //=========================================================
 int CBaseMonster::FindHintNode()
 {
-	int i;
 	TraceResult tr;
 
 	if (!WorldGraph.m_fGraphPresent)
@@ -2903,7 +2862,7 @@ int CBaseMonster::FindHintNode()
 		WorldGraph.m_iLastActiveIdleSearch = 0;
 	}
 
-	for (i = 0; i < WorldGraph.m_cNodes; i++)
+	for (int i = 0; i < WorldGraph.m_cNodes; i++)
 	{
 		int nodeNumber = (i + WorldGraph.m_iLastActiveIdleSearch) % WorldGraph.m_cNodes;
 		CNode& node = WorldGraph.Node(nodeNumber);
@@ -3048,33 +3007,25 @@ void CBaseMonster::KeyValue(KeyValueData* pkvd)
 // FCheckAITrigger - checks the monster's AI Trigger Conditions,
 // if there is a condition, then checks to see if condition is 
 // met. If yes, the monster's TriggerTarget is fired.
-//
-// Returns TRUE if the target is fired.
 //=========================================================
-BOOL CBaseMonster::FCheckAITrigger()
+void CBaseMonster::FCheckAITrigger()
 {
-	BOOL fFireTarget;
-
 	if (m_iTriggerCondition == AITRIGGER_NONE)
-	{
-		// no conditions, so this trigger is never fired.
-		return FALSE;
-	}
+		return; // no conditions, so this trigger is never fired.
 
-	fFireTarget = FALSE;
-
+	bool fFireTarget = false;
 	switch (m_iTriggerCondition)
 	{
 	case AITRIGGER_SEEPLAYER_ANGRY_AT_PLAYER:
 		if (m_hEnemy != nullptr && m_hEnemy->IsPlayer() && HasConditions(bits_COND_SEE_ENEMY))
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_SEEPLAYER_UNCONDITIONAL:
 		if (HasConditions(bits_COND_SEE_CLIENT))
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_SEEPLAYER_NOT_IN_COMBAT:
@@ -3083,52 +3034,43 @@ BOOL CBaseMonster::FCheckAITrigger()
 			m_MonsterState != MONSTERSTATE_PRONE &&
 			m_MonsterState != MONSTERSTATE_SCRIPT)
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_TAKEDAMAGE:
 		if (m_afConditions & (bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_DEATH:
 		if (pev->deadflag != DEAD_NO)
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_HALFHEALTH:
 		if (IsAlive() && pev->health <= (pev->max_health / 2))
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
-		/*
-		
-		  // !!!UNDONE - no persistant game state that allows us to track these two. 
-		
-			case AITRIGGER_SQUADMEMBERDIE:
-				break;
-			case AITRIGGER_SQUADLEADERDIE:
-				break;
-		*/
 	case AITRIGGER_HEARWORLD:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_WORLD)
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_HEARPLAYER:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_PLAYER)
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	case AITRIGGER_HEARCOMBAT:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_COMBAT)
 		{
-			fFireTarget = TRUE;
+			fFireTarget = true;
 		}
 		break;
 	}
@@ -3139,10 +3081,7 @@ BOOL CBaseMonster::FCheckAITrigger()
 		ALERT(at_aiconsole, "AI Trigger Fire Target\n");
 		FireTargets(STRING(m_iszTriggerTarget), this, this, USE_TOGGLE, 0);
 		m_iTriggerCondition = AITRIGGER_NONE;
-		return TRUE;
 	}
-
-	return FALSE;
 }
 
 //=========================================================	
@@ -3156,7 +3095,7 @@ BOOL CBaseMonster::FCheckAITrigger()
 //LRC - to help debug when sequences won't play...
 #define DEBUG_CANTPLAY
 
-int CBaseMonster::CanPlaySequence(int interruptFlags)
+bool CBaseMonster::CanPlaySequence(int interruptFlags)
 {
 	if (m_pCine)
 	{
@@ -3176,30 +3115,30 @@ int CBaseMonster::CanPlaySequence(int interruptFlags)
 		ALERT(at_console, "CANTPLAY: Dead/Barnacled!\n");
 #endif
 		// monster is already running a scripted sequence or dead!
-		return FALSE;
+		return false;
 	}
 
 	if (interruptFlags & SS_INTERRUPT_ANYSTATE)
 	{
 		// ok to go, no matter what the monster state. (scripted AI)
-		return TRUE;
+		return true;
 	}
 
 	if (m_MonsterState == MONSTERSTATE_NONE || m_MonsterState == MONSTERSTATE_IDLE || m_IdealMonsterState ==
 		MONSTERSTATE_IDLE)
 	{
 		// ok to go, but only in these states
-		return TRUE;
+		return true;
 	}
 
 	if (m_MonsterState == MONSTERSTATE_ALERT && interruptFlags & SS_INTERRUPT_ALERT)
-		return TRUE;
+		return true;
 
 	// unknown situation
 #ifdef DEBUG_CANTPLAY
 	ALERT(at_console, "CANTPLAY: non-interruptable state.\n");
 #endif
-	return FALSE;
+	return false;
 }
 
 

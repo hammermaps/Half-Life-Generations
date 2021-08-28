@@ -1264,9 +1264,7 @@ void CBullsquid :: RunTask ( Task_t *pTask )
 //=========================================================
 MONSTERSTATE CBullsquid :: GetIdealState ()
 {
-	int	iConditions;
-
-	iConditions = IScheduleFlags();
+	int iConditions = IScheduleFlags();
 	
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch ( m_MonsterState )

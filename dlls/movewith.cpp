@@ -166,7 +166,8 @@ int TryAssistEntity(CBaseEntity* pEnt)
 	}
 
 	// not flagged as needing assistance?
-	//if (!(pEnt->m_iLFlags & LF_DOASSIST)) return 0;
+	if (!(pEnt->m_iLFlags & LF_DOASSIST))
+		return 0;
 
 //	ALERT(at_console, "AssistList: %s\n", STRING(pEnt->pev->classname));
 

@@ -155,11 +155,9 @@ int CBaseMonster :: IgnoreConditions () { return 0; }
 void CBaseMonster :: RouteClear () { }
 void CBaseMonster :: RouteNew () { }
 BOOL CBaseMonster :: FRouteClear () { return FALSE; }
-BOOL CBaseMonster :: FRefreshRoute () { return 0; }
-BOOL CBaseMonster::MoveToEnemy( Activity movementAct, float waitTime ) { return FALSE; }
-BOOL CBaseMonster::MoveToLocation( Activity movementAct, float waitTime, const Vector &goal ) { return FALSE; }
-BOOL CBaseMonster::MoveToTarget( Activity movementAct, float waitTime ) { return FALSE; }
-BOOL CBaseMonster::MoveToNode( Activity movementAct, float waitTime, const Vector &goal ) { return FALSE; }
+auto CBaseMonster :: FRefreshRoute () -> bool { return false; }
+auto CBaseMonster::MoveToLocation( Activity movementAct, float waitTime, const Vector &goal ) -> bool { return false; }
+auto CBaseMonster::MoveToTarget( Activity movementAct, float waitTime ) -> bool { return false; }
 int ShouldSimplify( int routeType ) { return TRUE; }
 void CBaseMonster :: RouteSimplify( CBaseEntity *pTargetEnt ) { }
 BOOL CBaseMonster :: FBecomeProne () { return TRUE; }
@@ -178,7 +176,7 @@ int CBaseMonster :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEn
 float CBaseMonster :: OpenDoorAndWait( entvars_t *pevDoor ) { return 0.0; }
 void CBaseMonster :: AdvanceRoute ( float distance ) { }
 int CBaseMonster :: RouteClassify( int iMoveFlag ) { return 0; }
-BOOL CBaseMonster :: BuildRoute ( const Vector &vecGoal, int iMoveFlag, CBaseEntity *pTarget ) { return FALSE; }
+auto CBaseMonster :: BuildRoute ( const Vector &vecGoal, int iMoveFlag, CBaseEntity *pTarget ) -> bool { return false; }
 void CBaseMonster :: InsertWaypoint ( Vector vecLocation, int afMoveFlags ) { }
 BOOL CBaseMonster :: FTriangulate ( const Vector &vecStart , const Vector &vecEnd, float flDist, CBaseEntity *pTargetEnt, Vector *pApex ) { return FALSE; }
 void CBaseMonster :: Move ( float flInterval ) { }
@@ -222,12 +220,12 @@ void CBaseEntity::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vec
 void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker ) { }
 void CBaseEntity :: TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) { }
 void CBaseMonster :: MakeDamageBloodDecal ( int cCount, float flNoise, TraceResult *ptr, const Vector &vecDir ) { }
-BOOL CBaseMonster :: FGetNodeRoute ( Vector vecDest ) { return TRUE; }
+auto CBaseMonster :: FGetNodeRoute ( Vector vecDest ) -> bool { return true; }
 int CBaseMonster :: FindHintNode () { return NO_NODE; }
 void CBaseMonster::ReportAIState() { }
 void CBaseMonster :: KeyValue( KeyValueData *pkvd ) { }
-BOOL CBaseMonster :: FCheckAITrigger () { return FALSE; }
-int CBaseMonster::CanPlaySequence(int interruptLevel) { return FALSE; } //LRC - prototype changed
+void CBaseMonster :: FCheckAITrigger () { }
+auto CBaseMonster::CanPlaySequence(int interruptLevel) -> bool { return false; } //LRC - prototype changed
 BOOL CBaseMonster :: FindLateralCover ( const Vector &vecThreat, const Vector &vecViewOffset ) { return FALSE; }
 Vector CBaseMonster :: ShootAtEnemy( const Vector &shootOrigin ) { return g_vecZero; }
 BOOL CBaseMonster :: FacingIdeal() { return FALSE; }

@@ -71,7 +71,7 @@ public:
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
 	MONSTERSTATE GetIdealState () override { return MONSTERSTATE_IDLE; }
-	int CanPlaySequence(int interruptFlags) override { return TRUE; }
+	auto CanPlaySequence(int interruptFlags) -> bool override { return true; }
 
 	int Classify() override;
 

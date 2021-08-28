@@ -118,9 +118,7 @@ void CBaseMonster :: RunAI ()
 //=========================================================
 MONSTERSTATE CBaseMonster :: GetIdealState ()
 {
-	int	iConditions;
-
-	iConditions = IScheduleFlags();
+	int iConditions = IScheduleFlags();
 	
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch ( m_MonsterState )
