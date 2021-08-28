@@ -243,14 +243,14 @@ public:
 	void Precache() override;
 	void UpdateOnRemove() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist ) override;		// Swipe
-	BOOL CheckMeleeAttack2( float flDot, float flDist ) override;		// Flames
-	BOOL CheckRangeAttack1( float flDot, float flDist ) override;		// Stomp attack
+	bool CheckMeleeAttack1( float flDot, float flDist ) override;		// Swipe
+	bool CheckMeleeAttack2( float flDot, float flDist ) override;		// Flames
+	bool CheckRangeAttack1( float flDot, float flDist ) override;		// Stomp attack
 	void SetObjectCollisionBox() override
 	{
 		pev->absmin = pev->origin + Vector( -80, -80, 0 );
@@ -760,7 +760,7 @@ void CGargantua :: PrescheduleThink()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CGargantua :: Classify ()
+Class_T	CGargantua :: Classify ()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }
@@ -959,7 +959,7 @@ void CGargantua::Killed( entvars_t *pevAttacker, int iGib )
 {
 	EyeOff();
 	UTIL_Remove( m_pEyeGlow );
-	m_pEyeGlow = NULL;
+	m_pEyeGlow = nullptr;
 	CBaseMonster::Killed( pevAttacker, GIB_NEVER );
 }
 
@@ -968,33 +968,35 @@ void CGargantua::Killed( entvars_t *pevAttacker, int iGib )
 // Garg swipe attack
 // 
 //=========================================================
-BOOL CGargantua::CheckMeleeAttack1( float flDot, float flDist )
+auto CGargantua::CheckMeleeAttack1( float flDot, float flDist ) -> bool
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
-	if (flDot >= 0.7)
+	if (flDot >= 0.7f)
 	{
 		if (flDist <= GARG_ATTACKDIST)
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+
+	return false;
 }
 
 
 // Flame thrower madness!
-BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
+auto CGargantua::CheckMeleeAttack2( float flDot, float flDist ) -> bool
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
 	if ( gpGlobals->time > m_flameTime )
 	{
-		if (flDot >= 0.8 && flDist > GARG_ATTACKDIST)
+		if (flDot >= 0.8f && flDist > GARG_ATTACKDIST)
 		{
 			if ( flDist <= GARG_FLAME_LENGTH )
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+
+	return false;
 }
 
 
@@ -1007,20 +1009,16 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 // Stomp attack
 //
 //=========================================================
-BOOL CGargantua::CheckRangeAttack1( float flDot, float flDist )
+auto CGargantua::CheckRangeAttack1( float flDot, float flDist ) -> bool
 {
 	if ( gpGlobals->time > m_seeTime )
 	{
-		if (flDot >= 0.7 && flDist > GARG_ATTACKDIST)
-		{
-				return TRUE;
-		}
+		if (flDot >= 0.7f && flDist > GARG_ATTACKDIST)
+			return true;
 	}
-	return FALSE;
+
+	return false;
 }
-
-
-
 
 //=========================================================
 // HandleAnimEvent - catches the monster-specific messages

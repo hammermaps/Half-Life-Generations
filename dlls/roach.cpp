@@ -48,7 +48,7 @@ public:
 
 	float	m_flLastLightLevel;
 	float	m_flNextSmellTime;
-	int		Classify () override;
+	Class_T	Classify () override;
 	void	Look ( int iDistance ) override;
 	int		ISoundMask () override;
 	
@@ -73,7 +73,7 @@ int CRoach :: ISoundMask ()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CRoach :: Classify ()
+Class_T	CRoach :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_INSECT;
 }

@@ -200,7 +200,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	int IgnoreConditions () override;
 
@@ -215,11 +215,11 @@ public:
 	static const char *pAttackMissSounds[];
 
 	// No range attacks
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override { return false; }
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override { return false; }
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist ) override;
+	bool CheckMeleeAttack1( float flDot, float flDist ) override;
 
 	Schedule_t* GetScheduleOfType( int Type ) override;
 
@@ -327,7 +327,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( COFGonome, CBaseMonster );
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	COFGonome :: Classify ()
+Class_T	COFGonome :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }
@@ -683,9 +683,9 @@ int COFGonome::IgnoreConditions ()
 	
 }
 
-BOOL COFGonome::CheckMeleeAttack1( float flDot, float flDist )
+auto COFGonome::CheckMeleeAttack1( float flDot, float flDist ) -> bool
 {
-	if( flDist <= 64.0 && flDot >= 0.7 && m_hEnemy )
+	if( flDist <= 64.0f && flDot >= 0.7f && m_hEnemy )
 	{
 		return ( m_hEnemy->pev->flags & FL_ONGROUND ) != 0;
 	}
@@ -693,7 +693,7 @@ BOOL COFGonome::CheckMeleeAttack1( float flDot, float flDist )
 	return false;
 }
 
-BOOL COFGonome::CheckRangeAttack1( float flDot, float flDist )
+auto COFGonome::CheckRangeAttack1( float flDot, float flDist ) -> bool
 {
 	if( flDist < 256.0 )
 		return false;
@@ -880,7 +880,7 @@ class CDeadGonome : public CBaseMonster
 {
 public:
 	void Spawn() override;
-	int	Classify() override { return	CLASS_ALIEN_PASSIVE; }
+	Class_T	Classify() override { return m_iClass ? m_iClass : CLASS_ALIEN_PASSIVE; }
 
 	void KeyValue( KeyValueData *pkvd ) override;
 

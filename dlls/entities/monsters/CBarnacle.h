@@ -29,7 +29,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	CBaseEntity* TongueTouchEnt(float* pflLength);
-	int  Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 	void EXPORT BarnacleThink();
 	void EXPORT WaitTillDead();

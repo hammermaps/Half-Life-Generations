@@ -20,7 +20,7 @@
 class CItemAcceleratorCTF : public CItemCTF
 {
 public:
-	int Classify() override { return CLASS_CTFITEM; }
+	Class_T Classify() override { return CLASS_CTFITEM; }
 
 	void Precache() override;
 

@@ -49,13 +49,13 @@ public:
 	void Precache() override;
 	void UpdateOnRemove() override;
 	void SetYawSpeed() override;
-	int Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 
 	void RunAI() override;
-	BOOL CheckRangeAttack1(float flDot, float flDist) override; // balls
-	BOOL CheckRangeAttack2(float flDot, float flDist) override; // head
-	BOOL CheckMeleeAttack1(float flDot, float flDist) override; // block, throw
+	bool CheckRangeAttack1(float flDot, float flDist) override; // balls
+	bool CheckRangeAttack2(float flDot, float flDist) override; // head
+	bool CheckMeleeAttack1(float flDot, float flDist) override { return false; }; // block, throw
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
 	void StartTask(Task_t* pTask) override;
@@ -154,7 +154,7 @@ const char* CController::pDeathSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int CController::Classify()
+Class_T CController::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MILITARY;
 }
@@ -830,25 +830,20 @@ Schedule_t* CController::GetScheduleOfType(int Type)
 // CheckRangeAttack1  - shoot a bigass energy ball out of their head
 //
 //=========================================================
-BOOL CController::CheckRangeAttack1(float flDot, float flDist)
+auto CController::CheckRangeAttack1(float flDot, float flDist) -> bool
 {
 	if (flDot > 0.5f && flDist > 256 && flDist <= 2048)
-		return TRUE;
+		return true;
 	
-	return FALSE;
+	return false;
 }
 
-BOOL CController::CheckRangeAttack2(float flDot, float flDist)
+auto CController::CheckRangeAttack2(float flDot, float flDist)-> bool
 {
 	if (flDot > 0.5f && flDist > 64 && flDist <= 2048)
-		return TRUE;
+		return true;
 	
-	return FALSE;
-}
-
-BOOL CController::CheckMeleeAttack1(float flDot, float flDist)
-{
-	return FALSE;
+	return false;
 }
 
 void CController::SetActivity(Activity NewActivity)

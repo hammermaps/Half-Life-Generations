@@ -36,7 +36,7 @@ public:
 	int Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void Precache() override;
 	void Spawn() override;
@@ -558,7 +558,7 @@ public:
 	int Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	int Classify() override { return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER; }
+	Class_T Classify() override { return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER; }
 
 	int BloodColor() override { return BLOOD_COLOR_GREEN; }
 

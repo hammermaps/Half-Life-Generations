@@ -142,7 +142,7 @@ public:
 	CBaseEntity* BestVisibleEnemy();
 	int IRelationship(CBaseEntity* pTarget);
 
-	int Classify() override { return m_iTankClass; }
+	Class_T Classify() override { return m_iTankClass; }
 
 	void TryFire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker);
 	virtual void Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker);
@@ -249,7 +249,7 @@ protected:
 	int m_iszMaster; // Master entity
 	int m_iszFireMaster; //LRC - Fire-Master entity (prevents firing when inactive)
 
-	int m_iTankClass; // Behave As
+	Class_T m_iTankClass; // Behave As
 
 	void CFuncTank::UpdateSpot();
 	//	CLaserSpot*  m_pViewTarg;	// Player view indicator
@@ -324,7 +324,7 @@ void CFuncTank::Spawn()
 
 	if (!m_iTankClass)
 	{
-		m_iTankClass = 0;
+		m_iTankClass = CLASS_NONE;
 	}
 
 	if ((m_maxRange == 0) || (FStringNull(m_maxRange)))
@@ -488,7 +488,13 @@ void CFuncTank::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass"))
 	{
-		m_iTankClass = atoi(pkvd->szValue);
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == atoi(pkvd->szValue))
+			{
+				m_iTankClass = static_cast<Class_T>(i);
+			}
+		}
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszLocusFire"))
@@ -736,7 +742,7 @@ CBaseEntity* CFuncTank::BestVisibleEnemy()
 
 int CFuncTank::IRelationship(CBaseEntity* pTarget)
 {
-	int iOtherClass = pTarget->Classify();
+	Class_T iOtherClass = pTarget->Classify();
 	if (iOtherClass == CLASS_NONE) return R_NO;
 
 	if (!m_iTankClass)

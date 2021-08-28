@@ -35,7 +35,7 @@ public:
 
 	void Spawn() override;
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void EXPORT FlyThink();
 

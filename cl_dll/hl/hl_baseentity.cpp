@@ -161,10 +161,10 @@ auto CBaseMonster::MoveToTarget( Activity movementAct, float waitTime ) -> bool 
 auto ShouldSimplify( int routeType ) -> bool { return true; }
 void CBaseMonster :: RouteSimplify( CBaseEntity *pTargetEnt ) { }
 auto CBaseMonster :: FBecomeProne () -> bool { return true; }
-BOOL CBaseMonster :: CheckRangeAttack1 ( float flDot, float flDist ) { return FALSE; }
-BOOL CBaseMonster :: CheckRangeAttack2 ( float flDot, float flDist ) { return FALSE; }
-BOOL CBaseMonster :: CheckMeleeAttack1 ( float flDot, float flDist ) { return FALSE; }
-BOOL CBaseMonster :: CheckMeleeAttack2 ( float flDot, float flDist ) { return FALSE; }
+auto CBaseMonster :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool { return false; }
+auto CBaseMonster :: CheckRangeAttack2 ( float flDot, float flDist ) -> bool { return false; }
+auto CBaseMonster :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool { return false; }
+auto CBaseMonster :: CheckMeleeAttack2 ( float flDot, float flDist ) -> bool { return false; }
 void CBaseMonster :: CheckAttacks ( CBaseEntity *pTarget, float flDist ) { }
 BOOL CBaseMonster :: FCanCheckAttacks () { return FALSE; }
 int CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy ) { return 0; }
@@ -278,7 +278,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle ) { }
 void CBasePlayer::PlayerUse () { }
 void CBasePlayer::Jump() { }
 void CBasePlayer::Duck( ) { }
-int  CBasePlayer::Classify () { return 0; }
+Class_T CBasePlayer::Classify () { return CLASS_PLAYER; }
 void CBasePlayer::PreThink() { }
 void CBasePlayer::CheckTimeBasedDamage()  { }
 void CBasePlayer :: UpdateGeigerCounter() { }

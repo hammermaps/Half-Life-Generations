@@ -77,7 +77,7 @@ public:
 
 	int BloodColor() override { return BLOOD_COLOR_GREEN; }
 
-	int Classify() override { return m_iClass ? m_iClass : CLASS_ALIEN_MILITARY; }
+	Class_T Classify() override { return m_iClass ? m_iClass : CLASS_ALIEN_MILITARY; }
 
 	int ObjectCaps() override { return 0; }
 
@@ -1695,7 +1695,7 @@ public:
 	int Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int Classify() override
+	Class_T Classify() override
 	{
 		return CLASS_ALIEN_MONSTER;
 	}
@@ -1712,7 +1712,7 @@ public:
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void Precache() override;
 
-	BOOL CheckMeleeAttack1(float flDot, float flDist) override
+	auto CheckMeleeAttack1(float flDot, float flDist) -> bool override
 	{
 		return flDot >= 0.7 && flDist <= 192.0;
 	}
@@ -1732,7 +1732,7 @@ public:
 		CBaseMonster::KeyValue(pkvd);
 	}
 
-	BOOL CheckRangeAttack1(float flDot, float flDist) override
+	auto CheckRangeAttack1(float flDot, float flDist) -> bool override
 	{
 		if (flDist <= 1024.0 && gpGlobals->time > m_spikeTime)
 		{

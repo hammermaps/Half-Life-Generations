@@ -1847,7 +1847,7 @@ void CBasePlayer::Duck()
 //
 // ID's player as such.
 //
-int CBasePlayer::Classify()
+Class_T CBasePlayer::Classify()
 {
 	return CLASS_PLAYER;
 }
@@ -5620,7 +5620,7 @@ class CDeadHEV : public CBaseMonster
 {
 public:
 	void Spawn() override;
-	int Classify() override { return CLASS_HUMAN_MILITARY; }
+	Class_T Classify() override { return CLASS_HUMAN_MILITARY; }
 
 	void KeyValue(KeyValueData* pkvd) override;
 

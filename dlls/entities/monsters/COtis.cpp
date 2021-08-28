@@ -96,7 +96,7 @@ int COtis::ISoundMask()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int COtis::Classify()
+Class_T COtis::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 }
@@ -147,30 +147,31 @@ void COtis::SetYawSpeed()
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL COtis::CheckRangeAttack1(float flDot, float flDist)
+auto COtis::CheckRangeAttack1(float flDot, float flDist) -> bool
 {
-	if (flDist <= 1024 && flDot >= 0.5)
+	if (flDist <= 1024 && flDot >= 0.5f)
 	{
 		if (gpGlobals->time > m_checkAttackTime)
 		{
 			TraceResult tr;
 
-			Vector shootOrigin = pev->origin + Vector(0, 0, 55);
+			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
 			CBaseEntity* pEnemy = m_hEnemy;
-			Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
+			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
 			UTIL_TraceLine(shootOrigin, shootTarget, dont_ignore_monsters, ENT(pev), &tr);
 			m_checkAttackTime = gpGlobals->time + 1;
-			if (tr.flFraction == 1.0 || (tr.pHit != nullptr && Instance(tr.pHit) == pEnemy))
-				m_lastAttackCheck = TRUE;
+			if (tr.flFraction == 1.0f || (tr.pHit != nullptr && Instance(tr.pHit) == pEnemy))
+				m_lastAttackCheck = true;
 			else
-				m_lastAttackCheck = FALSE;
-			m_checkAttackTime = gpGlobals->time + 1.5;
+				m_lastAttackCheck = false;
+
+			m_checkAttackTime = gpGlobals->time + 1.5f;
 		}
 		
 		return m_lastAttackCheck;
 	}
 	
-	return FALSE;
+	return false;
 }
 
 

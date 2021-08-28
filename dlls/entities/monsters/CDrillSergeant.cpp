@@ -40,7 +40,7 @@ int CDrillSergeant::ISoundMask()
 	return bits_SOUND_NONE;
 }
 
-int CDrillSergeant::Classify()
+Class_T CDrillSergeant::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_HUMAN_MILITARY_FRIENDLY;
 }

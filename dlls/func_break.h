@@ -34,7 +34,7 @@ public:
 	void EXPORT RespawnThink(void);
 	void EXPORT RespawnFadeThink(void);
 	void DamageSound(void);
-	virtual int Classify(void) { return m_iClass; }
+	virtual Class_T Classify() { return m_iClass; }
 
 	// breakables use an overridden takedamage
 	virtual int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
@@ -81,7 +81,7 @@ public:
 	int			m_iInitialHealth;
 	int			m_iInitialRenderAmt;
 	int			m_iInitialRenderMode;
-	int			m_iClass; //so that monsters will attack it
+	Class_T		m_iClass; //so that monsters will attack it
 	int			m_iszWhenHit; // locus trigger
 	CPointEntity* m_pHitProxy;
 };

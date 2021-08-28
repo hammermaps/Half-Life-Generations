@@ -924,50 +924,46 @@ auto CBaseMonster::FBecomeProne() -> bool
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBaseMonster::CheckRangeAttack1(float flDot, float flDist)
+auto CBaseMonster::CheckRangeAttack1(float flDot, float flDist)-> bool
 {
-	if (flDist > 64 && flDist <= 784 && flDot >= 0.5)
-	{
-		return TRUE;
-	}
-	return FALSE;
+	if (flDist > 64 && flDist <= 784 && flDot >= 0.5f)
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2
 //=========================================================
-BOOL CBaseMonster::CheckRangeAttack2(float flDot, float flDist)
+auto CBaseMonster::CheckRangeAttack2(float flDot, float flDist) -> bool
 {
-	if (flDist > 64 && flDist <= 512 && flDot >= 0.5)
-	{
-		return TRUE;
-	}
-	return FALSE;
+	if (flDist > 64 && flDist <= 512 && flDot >= 0.5f)
+		return true;
+	
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CBaseMonster::CheckMeleeAttack1(float flDot, float flDist)
+auto CBaseMonster::CheckMeleeAttack1(float flDot, float flDist) -> bool
 {
 	// Decent fix to keep folks from kicking/punching hornets and snarks is to check the onground flag(sjb)
 	if (flDist <= 64 && flDot >= 0.7 && HasEnemy() && FBitSet(m_hEnemy->pev->flags, FL_ONGROUND))
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack2
 //=========================================================
-BOOL CBaseMonster::CheckMeleeAttack2(float flDot, float flDist)
+auto CBaseMonster::CheckMeleeAttack2(float flDot, float flDist) -> bool
 {
-	if (flDist <= 64 && flDot >= 0.7)
-	{
-		return TRUE;
-	}
-	return FALSE;
+	if (flDist <= 64 && flDot >= 0.7f)
+		return true;
+	
+	return false;
 }
 
 //=========================================================
@@ -2973,7 +2969,13 @@ void CBaseMonster::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass")) //LRC
 	{
-		m_iClass = atoi(pkvd->szValue);
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == atoi(pkvd->szValue))
+			{
+				m_iClass = static_cast<Class_T>(i);
+			}
+		}
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPlayerReact")) //LRC
@@ -3542,7 +3544,18 @@ class CMonsterTarget : public CBaseEntity
 public:
 	void Spawn() override;
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
-	int Classify() override { return pev->frags; };
+	Class_T Classify() override
+	{
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == pev->frags)
+			{
+				return static_cast<Class_T>(i);
+			}
+		}
+
+		return CLASS_NONE;
+	}
 
 	STATE GetState() override
 	{

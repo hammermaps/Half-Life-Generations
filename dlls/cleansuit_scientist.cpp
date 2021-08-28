@@ -70,7 +70,7 @@ public:
 	void Precache() override;
 
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void RunTask( Task_t *pTask ) override;
 	void StartTask( Task_t *pTask ) override;
@@ -586,7 +586,7 @@ void CCleansuitScientist :: RunTask( Task_t *pTask )
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CCleansuitScientist :: Classify ()
+Class_T	CCleansuitScientist :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_HUMAN_PASSIVE;
 }
@@ -1111,7 +1111,7 @@ class CDeadCleansuitScientist : public CBaseMonster
 {
 public:
 	void Spawn() override;
-	int	Classify () override { return	CLASS_HUMAN_PASSIVE; }
+	Class_T	Classify () override { return m_iClass ? m_iClass : CLASS_HUMAN_PASSIVE; }
 
 	void KeyValue( KeyValueData *pkvd ) override;
 	int	m_iPose;// which sequence to display
@@ -1178,7 +1178,7 @@ public:
 	void  Precache() override;
 
 	void EXPORT SittingThink();
-	int	Classify () override;
+	Class_T	Classify () override;
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -1264,9 +1264,9 @@ void CSittingCleansuitScientist :: Precache()
 //=========================================================
 // ID as a passive human
 //=========================================================
-int	CSittingCleansuitScientist :: Classify ()
+Class_T	CSittingCleansuitScientist :: Classify ()
 {
-	return	CLASS_HUMAN_PASSIVE;
+	return	m_iClass ? m_iClass : CLASS_HUMAN_PASSIVE;
 }
 
 

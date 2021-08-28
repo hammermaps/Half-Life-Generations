@@ -114,7 +114,7 @@ void CDisplacerBall::Spawn()
 	InitBeams();
 }
 
-int CDisplacerBall::Classify()
+Class_T CDisplacerBall::Classify()
 {
 	return CLASS_NONE;
 }

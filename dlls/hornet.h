@@ -35,7 +35,7 @@ class CHornet : public CBaseMonster
 public:
 	void Spawn() override;
 	void Precache() override;
-	int	 Classify () override;
+	Class_T Classify () override;
 	int  IRelationship ( CBaseEntity *pTarget ) override;
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;

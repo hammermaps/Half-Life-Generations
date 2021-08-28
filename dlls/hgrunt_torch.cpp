@@ -148,13 +148,13 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed () override;
-	int  Classify () override;
+	Class_T Classify () override;
 	int ISoundMask () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	BOOL FCanCheckAttacks () override;
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override;
 	void CheckAmmo () override;
 	void SetActivity ( Activity NewActivity ) override;
 	void StartTask ( Task_t *pTask ) override;
@@ -214,7 +214,7 @@ public:
 
 	Vector m_vecTossVelocity;
 
-	BOOL m_fThrowGrenade;
+	bool m_fThrowGrenade;
 	BOOL m_fStanding;
 	BOOL m_fFirstEncounter;// only put on the handsign show in the squad's first encounter.
 	int m_cClipSize;
@@ -434,7 +434,7 @@ BOOL COFTorchAlly :: FCanCheckAttacks ()
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL COFTorchAlly :: CheckMeleeAttack1 ( float flDot, float flDist )
+auto COFTorchAlly :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool
 {
 	CBaseMonster *pEnemy;
 
@@ -465,7 +465,7 @@ BOOL COFTorchAlly :: CheckMeleeAttack1 ( float flDot, float flDist )
 // occluded (throw grenade over wall, etc). We must 
 // disqualify the machine gun attack if the enemy is occluded.
 //=========================================================
-BOOL COFTorchAlly :: CheckRangeAttack1 ( float flDot, float flDist )
+auto COFTorchAlly :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	//Only if we have a weapon
 	if( !m_fGunHolstered && flDist <= 1024 && flDot >= 0.5 /*&& NoFriendlyFire()*/ )
@@ -473,12 +473,6 @@ BOOL COFTorchAlly :: CheckRangeAttack1 ( float flDot, float flDist )
 		TraceResult	tr;
 
 		auto pEnemy = m_hEnemy.Entity<CBaseEntity>();
-
-		//if( !pEnemy->IsPlayer() && flDist <= 64 )
-		//{
-		//	// kick nonclients, but don't shoot at them.
-		//	return FALSE;
-		//}
 
 		//TODO: kinda odd that this doesn't use GetGunPosition like the original
 		Vector vecSrc = pev->origin + Vector( 0, 0, 55 );
@@ -496,24 +490,24 @@ BOOL COFTorchAlly :: CheckRangeAttack1 ( float flDot, float flDist )
 		return m_lastAttackCheck;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2 - this checks the Grunt's grenade
 // attack. 
 //=========================================================
-BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
+auto COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist ) -> bool
 {
 	if ( m_fGunHolstered || !FBitSet( pev->weapons, TorchAllyWeaponFlag::HandGrenade ) )
 	{
-		return FALSE;
+		return false;
 	}
 	
 	// if the grunt isn't moving, it's ok to check.
 	if ( m_flGroundSpeed != 0 )
 	{
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 
@@ -528,7 +522,7 @@ BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
 		//!!!BUGBUG - we should make this check movetype and make sure it isn't FLY? Players who jump a lot are unlikely to 
 		// be grenaded.
 		// don't throw grenades at anything that isn't on the ground!
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 	
@@ -568,7 +562,7 @@ BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
 		{
 			// crap, I might blow my own guy up. Don't throw a grenade and don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 		}
 	}
 	
@@ -576,7 +570,7 @@ BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
 	{
 		// crap, I don't want to blow myself up
 		m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 
@@ -590,14 +584,14 @@ BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time; // 1/3 second.
 		}
 		else
 		{
 			// don't throw
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 		}
@@ -611,14 +605,14 @@ BOOL COFTorchAlly :: CheckRangeAttack2 ( float flDot, float flDist )
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 0.3; // 1/3 second.
 		}
 		else
 		{
 			// don't throw
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 		}
@@ -833,7 +827,7 @@ void COFTorchAlly :: CheckAmmo ()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	COFTorchAlly :: Classify ()
+Class_T	COFTorchAlly :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_HUMAN_MILITARY_FRIENDLY;
 }

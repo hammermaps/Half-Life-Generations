@@ -126,9 +126,9 @@ public:
 	void EXPORT MonsterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
 	// LRC- to allow level-designers to change monster allegiances
-	int m_iClass;
+	Class_T m_iClass = CLASS_NONE;
 	int m_iPlayerReact;
-	virtual int Classify() { return m_iClass ? m_iClass : CLASS_NONE; }
+	virtual Class_T Classify() { return m_iClass ? m_iClass : CLASS_NONE; }
 
 	// overrideable Monster member functions
 
@@ -178,10 +178,10 @@ public:
 	inline void StopAnimation() { pev->framerate = 0; }
 
 	// these functions will survey conditions and set appropriate conditions bits for attack types.
-	virtual BOOL CheckRangeAttack1(float flDot, float flDist);
-	virtual BOOL CheckRangeAttack2(float flDot, float flDist);
-	virtual BOOL CheckMeleeAttack1(float flDot, float flDist);
-	virtual BOOL CheckMeleeAttack2(float flDot, float flDist);
+	virtual bool CheckRangeAttack1(float flDot, float flDist);
+	virtual bool CheckRangeAttack2(float flDot, float flDist);
+	virtual bool CheckMeleeAttack1(float flDot, float flDist);
+	virtual bool CheckMeleeAttack2(float flDot, float flDist);
 
 	BOOL FHaveSchedule();
 	bool FScheduleValid();

@@ -62,7 +62,7 @@ public:
 	
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
 	int	 TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
-	int	 Classify() override;
+	Class_T Classify() override;
 
 	int BloodColor() override { return DONT_BLEED; }
 	void GibMonster() override {}	// UNDONE: Throw turret gibs?
@@ -1169,7 +1169,7 @@ int CBaseTurret::MoveTurret()
 //
 // ID as a machine
 //
-int	CBaseTurret::Classify ()
+Class_T	CBaseTurret::Classify ()
 {
 	if (m_iClass) return m_iClass;
 	if (m_iOn || m_iAutoStart)

@@ -141,7 +141,7 @@ void CEyeScanner::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 	}
 }
 
-int CEyeScanner::Classify()
+Class_T CEyeScanner::Classify()
 {
 	return CLASS_NONE;
 }

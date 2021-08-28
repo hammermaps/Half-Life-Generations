@@ -33,7 +33,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	int ISoundMask () override;
 
@@ -67,7 +67,7 @@ IMPLEMENT_SAVERESTORE( CGMan, CBaseMonster );
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CGMan :: Classify ()
+Class_T	CGMan :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_NONE;
 }

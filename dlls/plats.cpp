@@ -3407,7 +3407,7 @@ public:
 	void			Stop() override;
 
 	int				BloodColor() override { return DONT_BLEED; }
-	int				Classify() override { return CLASS_MACHINE; }
+	Class_T			Classify() override { return CLASS_MACHINE; }
 	int				TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	void			Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	Vector			BodyTarget( const Vector &posSrc ) override { return pev->origin; }

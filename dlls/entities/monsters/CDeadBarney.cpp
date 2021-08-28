@@ -33,7 +33,7 @@ void CDeadBarney::KeyValue(KeyValueData* pkvd)
 
 LINK_ENTITY_TO_CLASS(monster_barney_dead, CDeadBarney);
 
-int	CDeadBarney::Classify()
+Class_T	CDeadBarney::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 }

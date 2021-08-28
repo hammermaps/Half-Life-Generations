@@ -46,7 +46,7 @@ public:
 	void EXPORT SuperBounceTouch(CBaseEntity* pOther);
 	void Spawn() override;
 
-	int Classify() override;
+	Class_T Classify() override;
 	int IRelationship(CBaseEntity* pTarget) override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;
 	void EXPORT HuntThink();
@@ -268,10 +268,18 @@ void CPenguinGrenade::Spawn()
 	ResetSequenceInfo();
 }
 
-int CPenguinGrenade::Classify()
+Class_T CPenguinGrenade::Classify()
 {
 	if (m_iMyClass != 0)
-		return m_iMyClass; // protect against recursion
+	{
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == m_iMyClass)
+			{
+				return static_cast<Class_T>(i);
+			}
+		}
+	}
 
 	if (HasEnemy())
 	{

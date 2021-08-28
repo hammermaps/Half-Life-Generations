@@ -56,7 +56,7 @@ public:
 
 	void DisplayFlagStatus(CBasePlayer* pPlayer);
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void SetObjectCollisionBox() override;
 

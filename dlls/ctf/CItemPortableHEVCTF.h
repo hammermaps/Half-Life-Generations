@@ -28,7 +28,7 @@ public:
 
 	void CItemPortableHEVCTF::Spawn() override;
 
-	int Classify() override;
+	Class_T Classify() override;
 };
 
 #endif

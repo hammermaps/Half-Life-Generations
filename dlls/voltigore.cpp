@@ -70,7 +70,7 @@ public:
 	void Precache() override;
 	void Spawn() override;
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void InitBeams();
 	void ClearBeams();
@@ -332,7 +332,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed () override;
-	int  Classify () override;
+	Class_T Classify () override;
 	int  ISoundMask () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void SetObjectCollisionBox() override
@@ -344,8 +344,8 @@ public:
 	Schedule_t* GetSchedule () override;
 	Schedule_t* GetScheduleOfType ( int Type ) override;
 	BOOL FCanCheckAttacks () override;
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
 	void StartTask ( Task_t *pTask ) override;
 	void RunTask( Task_t* pTask ) override;
 	void AlertSound() override;
@@ -544,7 +544,7 @@ void COFVoltigore :: PainSound ()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	COFVoltigore :: Classify ()
+Class_T	COFVoltigore :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_ALIEN_MILITARY;
 }
@@ -983,13 +983,12 @@ BOOL COFVoltigore :: FCanCheckAttacks ()
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL COFVoltigore :: CheckMeleeAttack1 ( float flDot, float flDist )
+auto COFVoltigore :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( HasConditions ( bits_COND_SEE_ENEMY ) && flDist <= VOLTIGORE_MELEE_DIST && flDot >= 0.6 && HasEnemy())
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
@@ -999,7 +998,7 @@ BOOL COFVoltigore :: CheckMeleeAttack1 ( float flDot, float flDist )
 // tracelines are done, so we may not want to do this every
 // server frame. Definitely not while firing. 
 //=========================================================
-BOOL COFVoltigore :: CheckRangeAttack1 ( float flDot, float flDist )
+auto COFVoltigore :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( IsMoving() && flDist >= 512 )
 	{

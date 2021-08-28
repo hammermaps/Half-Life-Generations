@@ -95,7 +95,7 @@ void CItemPortableHEVCTF::Spawn()
 	m_pszItemName = "Shield";
 }
 
-int CItemPortableHEVCTF::Classify()
+Class_T CItemPortableHEVCTF::Classify()
 {
 	return CLASS_CTFITEM;
 }

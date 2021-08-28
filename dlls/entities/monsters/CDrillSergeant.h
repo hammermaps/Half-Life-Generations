@@ -26,7 +26,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int ISoundMask() override;
-	int Classify() override;
+	Class_T Classify() override;
 	void SetYawSpeed() override;
 	Schedule_t* GetSchedule() override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;

@@ -38,7 +38,7 @@ int CRecruit::ISoundMask()
 	return bits_SOUND_NONE;
 }
 
-int CRecruit::Classify()
+Class_T CRecruit::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_HUMAN_MILITARY_FRIENDLY;
 }

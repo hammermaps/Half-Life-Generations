@@ -102,7 +102,7 @@ void CItemRegenerationCTF::Spawn()
 	m_pszItemName = "Health";
 }
 
-int CItemRegenerationCTF::Classify()
+Class_T CItemRegenerationCTF::Classify()
 {
 	return CLASS_CTFITEM;
 }

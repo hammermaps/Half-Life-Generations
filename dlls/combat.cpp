@@ -258,7 +258,7 @@ void CGib::SpawnRandomGibs(entvars_t* pevVictim, int cGibs, int human)
 
 BOOL CBaseMonster :: HasHumanGibs( void )
 {
-	int myClass = Classify();
+	Class_T myClass = Classify();
 
 	// these types of monster don't use gibs
 	if (myClass == CLASS_HUMAN_MILITARY ||
@@ -276,7 +276,7 @@ BOOL CBaseMonster :: HasHumanGibs( void )
 //LRC - work out gibs from blood colour, instead.
 BOOL CBaseMonster::HasAlienGibs()
 {
-	int myClass = Classify();
+	Class_T myClass = Classify();
 
 	if (myClass == CLASS_ALIEN_MILITARY ||
 		myClass == CLASS_ALIEN_MONSTER ||
@@ -308,8 +308,7 @@ void CBaseMonster::FadeMonster( void )
 //=========================================================
 void CBaseMonster::GibMonster()
 {
-	TraceResult	tr;
-	BOOL		gibbed = FALSE;
+	BOOL gibbed = FALSE;
 
 	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/bodysplat.wav", 1, ATTN_NORM);
 

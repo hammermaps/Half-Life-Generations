@@ -75,7 +75,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
-	int  Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 	void SetYawSpeed() override;
 	void WarmUpSound();
@@ -90,7 +90,7 @@ public:
 	void PrescheduleThink() override;
 	void SetActivity(Activity NewActivity) override;
 	void WriteBeamColor();
-	BOOL CheckRangeAttack1(float flDot, float flDist) override;
+	bool CheckRangeAttack1(float flDot, float flDist) override;
 	BOOL FValidateHintType(short sHint) override;
 	BOOL FCanActiveIdle() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
@@ -124,7 +124,7 @@ IMPLEMENT_SAVERESTORE(CHoundeye, CSquadMonster);
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CHoundeye::Classify()
+Class_T	CHoundeye::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }
@@ -185,12 +185,12 @@ BOOL CHoundeye::FCanActiveIdle()
 // try to get within half of their max attack radius before
 // attacking, so as to increase their chances of doing damage.
 //=========================================================
-BOOL CHoundeye::CheckRangeAttack1(float flDot, float flDist)
+auto CHoundeye::CheckRangeAttack1(float flDot, float flDist) -> bool
 {
 	if (flDist <= (HOUNDEYE_MAX_ATTACK_RADIUS * 0.5) && flDot >= 0.3)
-		return TRUE;
+		return true;
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
@@ -1310,7 +1310,7 @@ public:
 	
 	void Spawn() override;
 	void Precache() override;
-	int	Classify() override;
+	Class_T	Classify() override;
 	
 	void KeyValue(KeyValueData* pkvd) override;
 
@@ -1367,7 +1367,7 @@ void CDeadHoundeye::Spawn()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CDeadHoundeye::Classify()
+Class_T	CDeadHoundeye::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_PASSIVE;
 }

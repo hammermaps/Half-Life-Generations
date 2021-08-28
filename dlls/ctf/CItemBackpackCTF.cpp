@@ -104,7 +104,7 @@ void CItemBackpackCTF::Spawn()
 	m_pszItemName = "Ammo";
 }
 
-int CItemBackpackCTF::Classify()
+Class_T CItemBackpackCTF::Classify()
 {
 	return CLASS_CTFITEM;
 }

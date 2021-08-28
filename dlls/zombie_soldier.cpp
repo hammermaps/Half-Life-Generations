@@ -36,11 +36,13 @@
 
 class CZombieSoldier : public CBaseMonster
 {
+	DECLARE_CLASS(CZombieSoldier, CBaseMonster)
+
 public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	int IgnoreConditions () override;
 
@@ -59,8 +61,9 @@ public:
 	static const char *pAttackMissSounds[];
 
 	// No range attacks
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override { return FALSE; }
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override { return FALSE; }
+	bool CheckRangeAttack1(float flDot, float flDist) override { return false; }
+	bool CheckRangeAttack2(float flDot, float flDist) override { return false; }
+
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 };
 
@@ -110,7 +113,7 @@ const char *CZombieSoldier::pPainSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CZombieSoldier :: Classify ()
+Class_T	CZombieSoldier :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }
@@ -348,7 +351,7 @@ class CDeadZombieSoldier : public CBaseMonster
 {
 public:
 	void Spawn() override;
-	int	Classify() override { return	CLASS_ALIEN_MONSTER; }
+	Class_T	Classify() override { return CLASS_ALIEN_MONSTER; }
 
 	void KeyValue( KeyValueData *pkvd ) override;
 

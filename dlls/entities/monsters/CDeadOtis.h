@@ -22,7 +22,7 @@ public:
 	
 	void Spawn() override;
 	void Precache() override;
-	int Classify() override;
+	Class_T Classify() override;
 
 	void KeyValue(KeyValueData* pkvd) override;
 

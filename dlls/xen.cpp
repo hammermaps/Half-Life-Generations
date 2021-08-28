@@ -228,7 +228,7 @@ public:
 	int			TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override { Attack(); return 0; }
 	void		HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void		Attack();
-	int			Classify() override { return CLASS_BARNACLE; }
+	Class_T		Classify() override { return CLASS_BARNACLE; }
 
 	int	Save( CSave &save ) override;
 	int	Restore( CRestore &restore ) override;
@@ -421,7 +421,7 @@ class CXenHull : public CPointEntity
 {
 public:
 	static CXenHull	*CreateHull( CBaseEntity *source, const Vector &mins, const Vector &maxs, const Vector &offset );
-	int			Classify() override { return CLASS_BARNACLE; }
+	Class_T	Classify() override { return CLASS_BARNACLE; }
 };
 
 CXenHull *CXenHull :: CreateHull( CBaseEntity *source, const Vector &mins, const Vector &maxs, const Vector &offset )

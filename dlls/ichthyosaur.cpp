@@ -55,7 +55,7 @@ public:
 	void  Spawn() override;
 	void  Precache() override;
 	void  SetYawSpeed() override;
-	int   Classify() override;
+	Class_T  Classify() override;
 	void  HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	CUSTOM_SCHEDULES;
 
@@ -75,8 +75,8 @@ public:
 	void  StartTask( Task_t *pTask ) override;
 	void  RunTask( Task_t *pTask ) override;
 
-	BOOL  CheckMeleeAttack1 ( float flDot, float flDist ) override;
-	BOOL  CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool  CheckMeleeAttack1 ( float flDot, float flDist ) override;
+	bool  CheckRangeAttack1 ( float flDot, float flDist ) override;
 
 	float ChangeYaw( int speed ) override;
 	Activity GetStoppedActivity() override;
@@ -326,7 +326,7 @@ IMPLEMENT_CUSTOM_SCHEDULES(CIchthyosaur, CFlyingMonster);
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CIchthyosaur :: Classify ()
+Class_T	CIchthyosaur :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
 }
@@ -335,13 +335,14 @@ int	CIchthyosaur :: Classify ()
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CIchthyosaur :: CheckMeleeAttack1 ( float flDot, float flDist )
+auto CIchthyosaur :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( flDot >= 0.7 && m_flEnemyTouched > gpGlobals->time - 0.2 )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+
+	return false;
 }
 
 void CIchthyosaur::BiteTouch( CBaseEntity *pOther )
@@ -373,14 +374,14 @@ void CIchthyosaur::CombatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 // CheckRangeAttack1  - swim in for a chomp
 //
 //=========================================================
-BOOL CIchthyosaur :: CheckRangeAttack1 ( float flDot, float flDist )
+auto CIchthyosaur :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( flDot > -0.7 && (m_bOnAttack || ( flDist <= 192 && m_idealDist <= 192)))
 	{
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================

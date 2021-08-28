@@ -26,7 +26,7 @@ class COFLoader : public CBaseMonster
 {
 public:
 
-	int Classify() override { return m_iClass ? m_iClass : CLASS_PLAYER_ALLY; }
+	Class_T Classify() override { return m_iClass ? m_iClass : CLASS_PLAYER_ALLY; }
 
 	int ISoundMask() override { return bits_SOUND_NONE; }
 

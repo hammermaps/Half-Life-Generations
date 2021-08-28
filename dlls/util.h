@@ -108,6 +108,13 @@ typedef int BOOL;
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
 
 
+#define DECLARE_CLASS( className, baseClassName ) \
+		typedef baseClassName BaseClass; \
+		typedef className ThisClass;
+
+
+#define DECLARE_CLASS_NOBASE( className )	typedef className ThisClass;
+
 //
 // Conversion among the three types of "entity", including identity-conversions.
 //

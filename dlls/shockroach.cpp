@@ -87,10 +87,10 @@ public:
 	void IdleSound() override;
 	void AlertSound() override;
 	void PrescheduleThink() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override { return false; };
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 
 	virtual float GetDamageAmount() { return gSkillData.shockroachDmgBite; }
@@ -167,7 +167,7 @@ const char *COFShockRoach::pBiteSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	COFShockRoach :: Classify ()
+Class_T	COFShockRoach :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_ALIEN_PREY;
 }
@@ -434,29 +434,12 @@ void COFShockRoach :: StartTask ( Task_t *pTask )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL COFShockRoach :: CheckRangeAttack1 ( float flDot, float flDist )
+auto COFShockRoach :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
-	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist <= 256 && flDot >= 0.65 )
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
+	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist <= 256 && flDot >= 0.65f )
+		return true;
 
-//=========================================================
-// CheckRangeAttack2
-//=========================================================
-BOOL COFShockRoach :: CheckRangeAttack2 ( float flDot, float flDist )
-{
-	return FALSE;
-	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
-#if 0
-	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist > 64 && flDist <= 256 && flDot >= 0.5 )
-	{
-		return TRUE;
-	}
-	return FALSE;
-#endif
+	return false;
 }
 
 int COFShockRoach :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )

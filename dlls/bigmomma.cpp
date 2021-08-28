@@ -192,7 +192,7 @@ public:
 	BOOL ShouldGoToNode();
 
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void LayHeadcrab();
 
@@ -285,9 +285,9 @@ public:
 		pev->absmax = pev->origin + Vector( 95, 95, 190 );
 	}
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist ) override;	// Slash
-	BOOL CheckMeleeAttack2( float flDot, float flDist ) override;	// Lay a crab
-	BOOL CheckRangeAttack1( float flDot, float flDist ) override;	// Mortar launch
+	bool CheckMeleeAttack1( float flDot, float flDist ) override;	// Slash
+	bool CheckMeleeAttack2( float flDot, float flDist ) override;	// Lay a crab
+	bool CheckRangeAttack1( float flDot, float flDist ) override;	// Mortar launch
 
 	int	Save( CSave &save ) override;
 	int	Restore( CRestore &restore ) override;
@@ -404,7 +404,7 @@ void CBigMomma :: KeyValue( KeyValueData *pkvd )
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CBigMomma :: Classify ()
+Class_T	CBigMomma :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
 }
@@ -786,9 +786,8 @@ void CBigMomma::NodeReach()
 		Remember( bits_MEMORY_ADVANCE_NODE );	// Move on if no health at this node
 }
 
-
-	// Slash
-BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
+// Slash
+auto CBigMomma::CheckMeleeAttack1( float flDot, float flDist ) -> bool
 {
 	if (flDot >= 0.7)
 	{
@@ -800,14 +799,14 @@ BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
 
 
 // Lay a crab
-BOOL CBigMomma::CheckMeleeAttack2( float flDot, float flDist )
+auto CBigMomma::CheckMeleeAttack2( float flDot, float flDist ) -> bool
 {
-	return CanLayCrab();
+	return CanLayCrab() ? true : false;
 }
 
 
 // Mortar launch
-BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
+auto CBigMomma::CheckRangeAttack1( float flDot, float flDist ) -> bool
 {
 	if ( flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time )
 	{
@@ -819,10 +818,11 @@ BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 			startPos.z += 180;
 			pev->movedir = VecCheckSplatToss( pev, startPos, pEnemy->BodyTarget( pev->origin ), RANDOM_FLOAT( 150, 500 ) );
 			if ( pev->movedir != g_vecZero )
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+
+	return false;
 }
 
 //=========================================================

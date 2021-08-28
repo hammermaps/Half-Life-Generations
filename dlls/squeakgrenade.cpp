@@ -37,7 +37,7 @@ class CSqueakGrenade : public CGrenade
 {
 	void Spawn() override;
 	void Precache() override;
-	int  Classify() override;
+	Class_T Classify() override;
 	void EXPORT SuperBounceTouch( CBaseEntity *pOther );
 	void EXPORT HuntThink();
 	int  BloodColor() override { return BLOOD_COLOR_YELLOW; }
@@ -78,10 +78,18 @@ IMPLEMENT_SAVERESTORE( CSqueakGrenade, CGrenade );
 
 #define SQUEEK_DETONATE_DELAY	15.0
 
-int CSqueakGrenade :: Classify ()
+Class_T CSqueakGrenade :: Classify ()
 {
 	if (m_iMyClass != 0)
-		return m_iMyClass; // protect against recursion
+	{
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == m_iMyClass)
+			{
+				return static_cast<Class_T>(i);
+			}
+		}
+	}
 
 	if (HasEnemy())
 	{

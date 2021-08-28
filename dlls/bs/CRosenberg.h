@@ -59,7 +59,7 @@ public:
 	void Precache() override;
 
 	void SetYawSpeed() override;
-	int  Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;

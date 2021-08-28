@@ -42,7 +42,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 	int ISoundMask() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -103,7 +103,7 @@ void CGenericMonster::KeyValue(KeyValueData* pkvd)
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CGenericMonster::Classify()
+Class_T	CGenericMonster::Classify()
 {
 	return	m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 }
@@ -298,9 +298,9 @@ class CDeadGenericMonster : public CBaseMonster
 public:
 	void Spawn() override;
 	void Precache() override;
-	int	Classify() override
+	Class_T	Classify() override
 	{
-		return CLASS_PLAYER_ALLY;
+		return m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 	}
 	void KeyValue(KeyValueData* pkvd);
 

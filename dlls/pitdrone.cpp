@@ -65,7 +65,7 @@ public:
 	void Precache() override;
 	void Spawn() override;
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	static void Shoot( entvars_t *pevOwner, Vector vecStart, Vector vecVelocity, Vector vecAngles );
 	void EXPORT SpikeTouch( CBaseEntity *pOther );
@@ -234,16 +234,16 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  ISoundMask() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void IdleSound() override;
 	void PainSound() override;
 	void AlertSound () override;
 	void StartTask ( Task_t *pTask ) override;
 	void RunTask ( Task_t *pTask ) override;
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckMeleeAttack2 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
 	void RunAI() override;
 	BOOL FValidateHintType ( short sHint ) override;
 	Schedule_t *GetSchedule() override;
@@ -307,14 +307,14 @@ int CPitdrone::IRelationship ( CBaseEntity *pTarget )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CPitdrone :: CheckRangeAttack1 ( float flDot, float flDist )
+auto CPitdrone :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( m_iInitialAmmo == -1
 		|| GetBodygroup( PitdroneBodygroup::Weapons ) == PitdroneWeapon::Empty
 		|| ( IsMoving() && flDist >= 512 ) )
 	{
 		// squid will far too far behind if he stops running to spit at this distance from the enemy.
-		return FALSE;
+		return false;
 	}
 
 	if ( flDist > 128 && flDist <= 784 && flDot >= 0.5 && gpGlobals->time >= m_flNextSpikeTime )
@@ -324,7 +324,7 @@ BOOL CPitdrone :: CheckRangeAttack1 ( float flDot, float flDist )
 			if ( fabs( pev->origin.z - m_hEnemy->pev->origin.z ) > 256 )
 			{
 				// don't try to spit at someone up really high or down really low.
-				return FALSE;
+				return false;
 			}
 		}
 
@@ -339,28 +339,30 @@ BOOL CPitdrone :: CheckRangeAttack1 ( float flDot, float flDist )
 			m_flNextSpikeTime = gpGlobals->time + 0.5;
 		}
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
-BOOL CPitdrone :: CheckMeleeAttack1 ( float flDot, float flDist )
+auto CPitdrone :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( flDist <= 64 && flDot >= 0.7f )
 	{
 		return RANDOM_LONG( 0, 3 ) == 0;
 	}
-	return FALSE;
+
+	return false;
 }
 
-BOOL CPitdrone :: CheckMeleeAttack2 ( float flDot, float flDist )
+auto CPitdrone :: CheckMeleeAttack2 ( float flDot, float flDist ) -> bool
 {
 	if ( flDist <= 64 && flDot >= 0.7f && !HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+
+	return false;
 }  
 
 //=========================================================
@@ -404,7 +406,7 @@ int CPitdrone :: ISoundMask ()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CPitdrone :: Classify ()
+Class_T	CPitdrone :: Classify ()
 {
 	return	m_iClass ? m_iClass : CLASS_ALIEN_PREDATOR;
 }

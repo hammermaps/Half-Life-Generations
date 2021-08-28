@@ -300,7 +300,7 @@ void CAGrunt::PainSound()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int CAGrunt::Classify()
+Class_T CAGrunt::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MILITARY;
 }
@@ -843,14 +843,12 @@ BOOL CAGrunt::FCanCheckAttacks()
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL CAGrunt::CheckMeleeAttack1(float flDot, float flDist)
+auto CAGrunt::CheckMeleeAttack1(float flDot, float flDist) -> bool
 {
-	if (HasConditions(bits_COND_SEE_ENEMY) && flDist <= AGRUNT_MELEE_DIST && flDot >= 0.6 && HasEnemy())
-	{
-		return TRUE;
-	}
+	if (HasConditions(bits_COND_SEE_ENEMY) && flDist <= AGRUNT_MELEE_DIST && flDot >= 0.6f && HasEnemy())
+		return true;
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
@@ -860,15 +858,12 @@ BOOL CAGrunt::CheckMeleeAttack1(float flDot, float flDist)
 // tracelines are done, so we may not want to do this every
 // server frame. Definitely not while firing. 
 //=========================================================
-BOOL CAGrunt::CheckRangeAttack1(float flDot, float flDist)
+auto CAGrunt::CheckRangeAttack1(float flDot, float flDist) -> bool
 {
 	if (gpGlobals->time < m_flNextHornetAttackCheck)
-	{
-		return m_fCanHornetAttack ? 1 : 0;
-	}
+		return m_fCanHornetAttack;
 
-	if (HasConditions(bits_COND_SEE_ENEMY) && flDist >= AGRUNT_MELEE_DIST && flDist <= 1024 && flDot >= 0.5 &&
-		NoFriendlyFire())
+	if (HasConditions(bits_COND_SEE_ENEMY) && flDist >= AGRUNT_MELEE_DIST && flDist <= 1024 && flDot >= 0.5f && NoFriendlyFire())
 	{
 		TraceResult tr;
 		Vector vecArmPos, vecArmDir;
@@ -880,17 +875,17 @@ BOOL CAGrunt::CheckRangeAttack1(float flDot, float flDist)
 		//	UTIL_TraceLine( vecArmPos, vecArmPos + gpGlobals->v_forward * 256, ignore_monsters, ENT(pev), &tr);
 		UTIL_TraceLine(vecArmPos, m_hEnemy->BodyTarget(vecArmPos), dont_ignore_monsters, ENT(pev), &tr);
 
-		if (tr.flFraction == 1.0 || tr.pHit == m_hEnemy->edict())
+		if (tr.flFraction == 1.0f || tr.pHit == m_hEnemy->edict())
 		{
 			m_flNextHornetAttackCheck = gpGlobals->time + RANDOM_FLOAT(2, 5);
 			m_fCanHornetAttack = true;
-			return m_fCanHornetAttack ? 1 : 0;
+			return m_fCanHornetAttack;
 		}
 	}
 
-	m_flNextHornetAttackCheck = gpGlobals->time + 0.2; // don't check for half second if this check wasn't successful
+	m_flNextHornetAttackCheck = gpGlobals->time + 0.2f; // don't check for half second if this check wasn't successful
 	m_fCanHornetAttack = false;
-	return m_fCanHornetAttack ? 1 : 0;
+	return m_fCanHornetAttack;
 }
 
 //=========================================================

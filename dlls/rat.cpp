@@ -32,7 +32,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 };
 LINK_ENTITY_TO_CLASS( monster_rat, CRat );
 
@@ -40,7 +40,7 @@ LINK_ENTITY_TO_CLASS( monster_rat, CRat );
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CRat :: Classify ()
+Class_T	CRat :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_INSECT; //LRC- maybe someone needs to give them a basic biology lesson...
 }

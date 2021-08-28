@@ -20,7 +20,7 @@
 class CTFGoalBase : public CTFGoal
 {
 public:
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void EXPORT BaseThink();
 

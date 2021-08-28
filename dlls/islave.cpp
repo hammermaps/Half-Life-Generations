@@ -47,11 +47,11 @@ public:
 	void UpdateOnRemove() override;
 	void SetYawSpeed() override;
 	int	 ISoundMask() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	int  IRelationship( CBaseEntity *pTarget ) override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override;
 	void CallForHelp( const char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
 	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
@@ -146,7 +146,7 @@ const char *CISlave::pDeathSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CISlave :: Classify ()
+Class_T	CISlave :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MILITARY;
 }
@@ -449,11 +449,11 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 //=========================================================
 // CheckRangeAttack1 - normal beam attack 
 //=========================================================
-BOOL CISlave :: CheckRangeAttack1 ( float flDot, float flDist )
+auto CISlave :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if (m_flNextAttack > gpGlobals->time)
 	{
-		return FALSE;
+		return false;
 	}
 
 	return CSquadMonster::CheckRangeAttack1( flDot, flDist );
@@ -462,27 +462,27 @@ BOOL CISlave :: CheckRangeAttack1 ( float flDot, float flDist )
 //=========================================================
 // CheckRangeAttack2 - check bravery and try to resurect dead comrades
 //=========================================================
-BOOL CISlave :: CheckRangeAttack2 ( float flDot, float flDist )
+auto CISlave :: CheckRangeAttack2 ( float flDot, float flDist ) -> bool
 {
 	if (m_flNextAttack > gpGlobals->time)
 	{
-		return FALSE;
+		return false;
 	}
 
-	m_hDead = NULL;
+	m_hDead = nullptr;
 	m_iBravery = 0;
 
-	CBaseEntity *pEntity = NULL;
-	while ((pEntity = UTIL_FindEntityByClassname( pEntity, "monster_alien_slave" )) != NULL)
+	CBaseEntity *pEntity = nullptr;
+	while ((pEntity = UTIL_FindEntityByClassname( pEntity, "monster_alien_slave" )) != nullptr)
 	{
 		TraceResult tr;
 
 		UTIL_TraceLine( EyePosition( ), pEntity->EyePosition( ), ignore_monsters, ENT(pev), &tr );
-		if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
+		if (tr.flFraction == 1.0f || tr.pHit == pEntity->edict())
 		{
 			if (pEntity->pev->deadflag == DEAD_DEAD)
 			{
-				float d = (pev->origin - pEntity->pev->origin).Length();
+				const float d = (pev->origin - pEntity->pev->origin).Length();
 				if (d < flDist)
 				{
 					m_hDead = pEntity;
@@ -496,10 +496,11 @@ BOOL CISlave :: CheckRangeAttack2 ( float flDot, float flDist )
 			}
 		}
 	}
-	if (m_hDead != NULL)
-		return TRUE;
-	else
-		return FALSE;
+
+	if (m_hDead != nullptr)
+		return true;
+
+	return false;
 }
 
 
@@ -895,7 +896,7 @@ class CDeadISlave : public CBaseMonster
 {
 public:
 	void Spawn() override;
-	int	Classify() override { return	CLASS_ALIEN_PASSIVE; }
+	Class_T	Classify() override { return	CLASS_ALIEN_PASSIVE; }
 
 	void KeyValue( KeyValueData *pkvd ) override;
 

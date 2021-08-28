@@ -2120,7 +2120,14 @@ void CEnvCustomize::Affect(CBaseEntity* pTarget, USE_TYPE useType)
 
 	if (m_iClass != 0)
 	{
-		pMonster->m_iClass = m_iClass;
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == m_iClass)
+			{
+				pMonster->m_iClass = static_cast<Class_T>(i);
+			}
+		}
+
 		if (pev->spawnflags & SF_CUSTOM_DEBUG)
 			ALERT(at_console, " class=%d", m_iClass);
 		if (pMonster->m_hEnemy)

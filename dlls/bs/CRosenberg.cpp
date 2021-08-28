@@ -495,9 +495,9 @@ void CRosenberg::RunTask(Task_t* pTask)
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CRosenberg::Classify(void)
+Class_T	CRosenberg::Classify()
 {
-	return	CLASS_HUMAN_PASSIVE;
+	return m_iClass ? m_iClass : CLASS_HUMAN_PASSIVE;
 }
 
 

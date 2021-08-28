@@ -20,7 +20,7 @@ class CRecruit : public CTalkMonster
 public:
 	int ISoundMask() override;
 
-	int Classify() override;
+	Class_T Classify() override;
 
 	void SetYawSpeed() override;
 

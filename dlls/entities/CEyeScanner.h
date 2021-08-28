@@ -25,7 +25,7 @@ public:
 	void EXPORT WaitForSequenceEnd();
 	int ObjectCaps() override { return CBaseMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
-	int Classify() override;
+	Class_T Classify() override;
 
 	int Save(CSave& save) override;
 	int Restore(CRestore& restore) override;

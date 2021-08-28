@@ -34,14 +34,14 @@ public:
 	int ISoundMask() override;
 	void BarneyFirePistol();
 	void AlertSound() override;
-	int Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;
 	int ObjectCaps() override { return CTalkMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
-	BOOL CheckRangeAttack1(float flDot, float flDist) override;
+	bool CheckRangeAttack1(float flDot, float flDist) override;
 
 	void DeclineFollowing() override;
 
@@ -64,10 +64,10 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 	int m_iBaseBody; //LRC - for barneys with different bodies
-	BOOL m_fGunDrawn;
+	bool m_fGunDrawn;
 	float m_painTime;
 	float m_checkAttackTime;
-	BOOL m_lastAttackCheck;
+	bool m_lastAttackCheck;
 
 	// UNDONE: What is this for?  It isn't used?
 	float m_flPlayerDamage; // how much pain has the player inflicted on me?

@@ -37,7 +37,7 @@ class CCrossbowBolt : public CBaseEntity
 {
 	void Spawn() override;
 	void Precache() override;
-	int  Classify () override;
+	Class_T  Classify () override;
 	void EXPORT BubbleThink();
 	void EXPORT BoltTouch( CBaseEntity *pOther );
 	void EXPORT ExplodeThink();
@@ -90,7 +90,7 @@ void CCrossbowBolt::Precache( )
 }
 
 
-int	CCrossbowBolt :: Classify ()
+Class_T	CCrossbowBolt :: Classify ()
 {
 	return	CLASS_NONE;
 }

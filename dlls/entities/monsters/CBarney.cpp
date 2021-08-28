@@ -232,54 +232,51 @@ void CBarney::AlertSound()
 //=========================================================
 void CBarney::SetYawSpeed()
 {
-	int ys;
-
-	ys = 0;
-
 	switch (m_Activity)
 	{
 	case ACT_IDLE:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	case ACT_WALK:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	case ACT_RUN:
-		ys = 90;
+		pev->yaw_speed = 90;
 		break;
 	default:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	}
-
-	pev->yaw_speed = ys;
 }
 
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBarney::CheckRangeAttack1(float flDot, float flDist)
+auto CBarney::CheckRangeAttack1(float flDot, float flDist) -> bool
 {
-	if (flDist <= 1024 && flDot >= 0.5)
+	if (flDist <= 1024 && flDot >= 0.5f)
 	{
 		if (gpGlobals->time > m_checkAttackTime)
 		{
 			TraceResult tr;
 
-			Vector shootOrigin = pev->origin + Vector(0, 0, 55);
+			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
 			CBaseEntity* pEnemy = m_hEnemy;
-			Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
+			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
 			UTIL_TraceLine(shootOrigin, shootTarget, dont_ignore_monsters, ENT(pev), &tr);
 			m_checkAttackTime = gpGlobals->time + 1;
-			if (tr.flFraction == 1.0 || (tr.pHit != nullptr && Instance(tr.pHit) == pEnemy))
-				m_lastAttackCheck = TRUE;
+			if (tr.flFraction == 1.0f || (tr.pHit != nullptr && Instance(tr.pHit) == pEnemy))
+				m_lastAttackCheck = true;
 			else
-				m_lastAttackCheck = FALSE;
-			m_checkAttackTime = gpGlobals->time + 1.5;
+				m_lastAttackCheck = false;
+
+			m_checkAttackTime = gpGlobals->time + 1.5f;
 		}
+
 		return m_lastAttackCheck;
 	}
-	return FALSE;
+
+	return false;
 }
 
 //=========================================================
@@ -373,7 +370,7 @@ void CBarney::HandleAnimEvent(MonsterEvent_t* pEvent)
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int CBarney::Classify()
+Class_T CBarney::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 }

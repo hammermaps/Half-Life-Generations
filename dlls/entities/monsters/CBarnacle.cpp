@@ -38,7 +38,7 @@ IMPLEMENT_SAVERESTORE(CBarnacle, CBaseMonster);
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CBarnacle::Classify()
+Class_T	CBarnacle::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }

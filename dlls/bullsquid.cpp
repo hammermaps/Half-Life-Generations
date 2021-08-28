@@ -194,7 +194,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  ISoundMask() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void IdleSound() override;
 	void PainSound() override;
@@ -203,9 +203,9 @@ public:
 	void AttackSound();
 	void StartTask ( Task_t *pTask ) override;
 	void RunTask ( Task_t *pTask ) override;
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckMeleeAttack2 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;
+	bool CheckMeleeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
 	void RunAI() override;
 	BOOL FValidateHintType ( short sHint ) override;
 	Schedule_t *GetSchedule() override;
@@ -318,22 +318,22 @@ int CBullsquid :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, f
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBullsquid :: CheckRangeAttack1 ( float flDot, float flDist )
+auto CBullsquid :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
 	if ( IsMoving() && flDist >= 512 )
 	{
 		// squid will far too far behind if he stops running to spit at this distance from the enemy.
-		return FALSE;
+		return false;
 	}
 
-	if ( flDist > 64 && flDist <= 784 && flDot >= 0.5 && gpGlobals->time >= m_flNextSpitTime )
+	if ( flDist > 64 && flDist <= 784 && flDot >= 0.5f && gpGlobals->time >= m_flNextSpitTime )
 	{
 		if (HasEnemy())
 		{
 			if ( fabs( pev->origin.z - m_hEnemy->pev->origin.z ) > 256 )
 			{
 				// don't try to spit at someone up really high or down really low.
-				return FALSE;
+				return false;
 			}
 		}
 
@@ -345,26 +345,25 @@ BOOL CBullsquid :: CheckRangeAttack1 ( float flDot, float flDist )
 		else
 		{
 			// not moving, so spit again pretty soon.
-			m_flNextSpitTime = gpGlobals->time + 0.5;
+			m_flNextSpitTime = gpGlobals->time + 0.5f;
 		}
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack1 - bullsquid is a big guy, so has a longer
 // melee range than most monsters. This is the tailwhip attack
 //=========================================================
-BOOL CBullsquid :: CheckMeleeAttack1 ( float flDot, float flDist )
+auto CBullsquid :: CheckMeleeAttack1 ( float flDot, float flDist ) -> bool
 {
-	if ( m_hEnemy->pev->health <= gSkillData.bullsquidDmgWhip && flDist <= 85 && flDot >= 0.7 )
-	{
-		return TRUE;
-	}
-	return FALSE;
+	if ( m_hEnemy->pev->health <= gSkillData.bullsquidDmgWhip && flDist <= 85 && flDot >= 0.7f )
+		return true;
+
+	return false;
 }
 
 //=========================================================
@@ -373,13 +372,13 @@ BOOL CBullsquid :: CheckMeleeAttack1 ( float flDot, float flDist )
 // this attack will not be performed if the tailwhip attack
 // is valid.
 //=========================================================
-BOOL CBullsquid :: CheckMeleeAttack2 ( float flDot, float flDist )
+auto CBullsquid :: CheckMeleeAttack2 ( float flDot, float flDist ) -> bool
 {
-	if ( flDist <= 85 && flDot >= 0.7 && !HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )		// The player & bullsquid can be as much as their bboxes 
-	{										// apart (48 * sqrt(3)) and he can still attack (85 is a little more than 48*sqrt(3))
-		return TRUE;
-	}
-	return FALSE;
+	// The player & bullsquid can be as much as their bboxes apart (48 * sqrt(3)) and he can still attack (85 is a little more than 48*sqrt(3))
+	if ( flDist <= 85 && flDot >= 0.7f && !HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )		
+		return true;
+	
+	return false;
 }  
 
 //=========================================================
@@ -425,7 +424,7 @@ int CBullsquid :: ISoundMask ()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CBullsquid :: Classify ()
+Class_T	CBullsquid :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_PREDATOR;
 }

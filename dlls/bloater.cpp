@@ -35,7 +35,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 
 	void PainSound() override;
@@ -44,8 +44,8 @@ public:
 	void AttackSnd();
 
 	// No range attacks
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override { return FALSE; }
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override { return FALSE; }
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override { return false; }
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override { return false; }
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 };
 
@@ -55,7 +55,7 @@ LINK_ENTITY_TO_CLASS( monster_bloater, CBloater );
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CBloater :: Classify ()
+Class_T	CBloater :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
 }

@@ -29,7 +29,7 @@ public:
 	int Restore(CRestore& restore) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	void KeyValue(KeyValueData* pkvd) override;
 

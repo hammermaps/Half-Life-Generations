@@ -224,7 +224,7 @@ void COFBabyVoltigore::PainSound()
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	COFBabyVoltigore::Classify()
+Class_T	COFBabyVoltigore::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MILITARY;
 }
@@ -463,24 +463,11 @@ BOOL COFBabyVoltigore::FCanCheckAttacks()
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL COFBabyVoltigore::CheckMeleeAttack1(float flDot, float flDist)
+auto COFBabyVoltigore::CheckMeleeAttack1(float flDot, float flDist) -> bool
 {
-	if (HasConditions(bits_COND_SEE_ENEMY) && flDist <= BABYVOLTIGORE_MELEE_DIST && flDot >= 0.6 && HasEnemy())
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-
-//=========================================================
-// CheckRangeAttack1 
-//
-// !!!LATER - we may want to load balance this. Several
-// tracelines are done, so we may not want to do this every
-// server frame. Definitely not while firing. 
-//=========================================================
-BOOL COFBabyVoltigore::CheckRangeAttack1(float flDot, float flDist)
-{
+	if (HasConditions(bits_COND_SEE_ENEMY) && flDist <= BABYVOLTIGORE_MELEE_DIST && flDot >= 0.6f && HasEnemy())
+		return true;
+	
 	return false;
 }
 

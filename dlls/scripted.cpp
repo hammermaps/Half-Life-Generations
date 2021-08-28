@@ -1198,7 +1198,7 @@ class CFurniture : public CBaseMonster
 public:
 	void Spawn(void);
 	void Die(void);
-	int	 Classify(void);
+	Class_T Classify(void);
 	virtual int	ObjectCaps(void) { return (CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 };
 
@@ -1244,7 +1244,7 @@ void CFurniture::Spawn()
 //=========================================================
 // ID's Furniture as neutral (noone will attack it)
 //=========================================================
-int CFurniture::Classify()
+Class_T CFurniture::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_NONE;
 }

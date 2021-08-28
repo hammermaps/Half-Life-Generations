@@ -34,7 +34,7 @@ class CApache : public CBaseMonster
 
 	void Spawn() override;
 	void Precache() override;
-	int  Classify() override { return CLASS_HUMAN_MILITARY; }
+	Class_T Classify() override { return m_iClass ? m_iClass : CLASS_HUMAN_MILITARY; }
 	int  BloodColor() override { return DONT_BLEED; }
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 	void GibMonster() override;

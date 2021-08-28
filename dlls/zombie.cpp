@@ -34,13 +34,13 @@
 
 class CZombie : public CBaseMonster
 {
+	DECLARE_CLASS(CZombie, CBaseMonster)
+
 public:
-	using BaseClass = CBaseMonster;
-	
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int Classify() override;
+	Class_T Classify() override;
 	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
 	int IgnoreConditions() override;
 
@@ -57,12 +57,13 @@ public:
 	static const char* pAttackMissSounds[];
 
 	// No range attacks
-	BOOL CheckRangeAttack1(float flDot, float flDist) override { return FALSE; }
-	BOOL CheckRangeAttack2(float flDot, float flDist) override { return FALSE; }
+	bool CheckRangeAttack1(float flDot, float flDist) override { return false; }
+	bool CheckRangeAttack2(float flDot, float flDist) override { return false; }
+
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 
 private:
-	float m_flNextFlinch;
+	float m_flNextFlinch = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_zombie, CZombie);
@@ -111,7 +112,7 @@ const char* CZombie::pPainSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int CZombie::Classify()
+Class_T CZombie::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_ALIEN_MONSTER;
 }

@@ -328,7 +328,7 @@ public:
 	void UpdatePlayerSound();
 	void DeathSound() override;
 
-	int Classify() override;
+	Class_T Classify() override;
 	void SetAnimation(PLAYER_ANIM playerAnim);
 	void SetWeaponAnimType(const char* szExtention);
 	char m_szAnimExtention[32];

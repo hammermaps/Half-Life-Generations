@@ -21,7 +21,7 @@ public:
 
 	void KeyValue(KeyValueData* pkvd) override;
 
-	int Classify() override { return CLASS_NONE; }
+	Class_T Classify() override { return CLASS_NONE; }
 
 	int is_ctf;
 };

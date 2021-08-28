@@ -486,9 +486,6 @@
     <ClCompile Include="..\..\dlls\func_tank_of.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dlls\hfgrunt.cpp">
-      <Filter>Source Files\dlls</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\dlls\skeleton.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>

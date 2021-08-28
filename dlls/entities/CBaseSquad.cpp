@@ -145,7 +145,7 @@ int CBaseSquad::SquadCount()
 //=========================================================
 int CBaseSquad::SquadRecruit(float searchRadius, int maxMembers)
 {
-	const int iMyClass = Classify();// cache this monster's class
+	const Class_T iMyClass = Classify();// cache this monster's class
 
 	// Don't recruit if I'm already in a group
 	if (InSquad())

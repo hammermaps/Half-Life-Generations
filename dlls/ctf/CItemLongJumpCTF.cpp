@@ -99,7 +99,7 @@ void CItemLongJumpCTF::Spawn()
 	m_pszItemName = "Jump";
 }
 
-int CItemLongJumpCTF::Classify()
+Class_T CItemLongJumpCTF::Classify()
 {
 	return CLASS_CTFITEM;
 }

@@ -35,7 +35,7 @@ void CDeadOtis::KeyValue(KeyValueData* pkvd)
 
 LINK_ENTITY_TO_CLASS(monster_otis_dead, CDeadOtis);
 
-int	CDeadOtis::Classify()
+Class_T	CDeadOtis::Classify()
 {
 	return m_iClass ? m_iClass : CLASS_PLAYER_ALLY;
 }

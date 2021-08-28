@@ -73,7 +73,7 @@ public:
 	MONSTERSTATE GetIdealState () override { return MONSTERSTATE_IDLE; }
 	auto CanPlaySequence(int interruptFlags) -> bool override { return true; }
 
-	int Classify() override;
+	Class_T Classify() override;
 
 	int Level( float dz );
 	int MyLevel();
@@ -239,7 +239,7 @@ typedef enum
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CTentacle :: Classify ()
+Class_T	CTentacle :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
 }

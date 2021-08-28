@@ -137,7 +137,13 @@ void CBreakable::KeyValue( KeyValueData* pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass") )
 	{
-		m_iClass = atoi( pkvd->szValue );
+		for (int i = 0; i < NUM_AI_CLASSES; i++)
+		{
+			if (static_cast<Class_T>(i) == atoi(pkvd->szValue))
+			{
+				m_iClass = static_cast<Class_T>(i);
+			}
+		}
 		pkvd->fHandled = TRUE;
 	}
 	else

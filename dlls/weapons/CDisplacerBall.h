@@ -27,7 +27,7 @@ public:
 
 	void Spawn() override;
 
-	int Classify() override;
+	Class_T Classify() override;
 
 	void EXPORT BallTouch( CBaseEntity* pOther );
 

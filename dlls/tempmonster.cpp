@@ -33,7 +33,7 @@ public:
 	void Spawn();
 	void Precache();
 	void SetYawSpeed();
-	int  Classify ();
+	Class_T Classify ();
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 };
 LINK_ENTITY_TO_CLASS( my_monster, CMyMonster );
@@ -42,7 +42,7 @@ LINK_ENTITY_TO_CLASS( my_monster, CMyMonster );
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CMyMonster :: Classify ()
+Class_T	CMyMonster :: Classify ()
 {
 	return	CLASS_MY_MONSTER;
 }

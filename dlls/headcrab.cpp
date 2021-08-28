@@ -86,10 +86,11 @@ public:
 	void IdleSound() override;
 	void AlertSound() override;
 	void PrescheduleThink() override;
-	int  Classify () override;
+	Class_T Classify () override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override { return false; }
+	bool CheckMeleeAttack1(float flDot, float flDist) override;
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 
 	virtual float GetDamageAmount() { return gSkillData.headcrabDmgBite; }
@@ -154,7 +155,7 @@ const char *CHeadCrab::pBiteSounds[] =
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CHeadCrab :: Classify ()
+Class_T	CHeadCrab :: Classify ()
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_PREY;
 }
@@ -406,29 +407,23 @@ void CHeadCrab :: StartTask ( Task_t *pTask )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CHeadCrab :: CheckRangeAttack1 ( float flDot, float flDist )
+auto CHeadCrab :: CheckRangeAttack1 ( float flDot, float flDist ) -> bool
 {
-	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist <= 256 && flDot >= 0.65 )
-	{
-		return TRUE;
-	}
-	return FALSE;
+	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist <= 256 && flDot >= 0.65f )
+		return true;
+
+	return false;
 }
 
 //=========================================================
-// CheckRangeAttack2
+// CheckMeleeAttack1  
 //=========================================================
-BOOL CHeadCrab :: CheckRangeAttack2 ( float flDot, float flDist )
+auto CHeadCrab::CheckMeleeAttack1(float flDot, float flDist) -> bool
 {
-	return FALSE;
-	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
-#if 0
-	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist > 64 && flDist <= 256 && flDot >= 0.5 )
-	{
-		return TRUE;
-	}
-	return FALSE;
-#endif
+	if (FBitSet(pev->flags, FL_ONGROUND) && flDist <= 16 && flDot >= 0.65f)
+		return true;
+
+	return false;
 }
 
 int CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
@@ -495,7 +490,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed () override;
 	float GetDamageAmount() override { return gSkillData.headcrabDmgBite * 0.3; }
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
 	Schedule_t* GetScheduleOfType ( int Type ) override;
 	int GetVoicePitch() override { return PITCH_NORM + RANDOM_LONG(40,50); }
 	float GetSoundVolue() override { return 0.8; }
@@ -532,19 +527,19 @@ void CBabyCrab :: SetYawSpeed ()
 }
 
 
-BOOL CBabyCrab :: CheckRangeAttack1( float flDot, float flDist )
+auto CBabyCrab :: CheckRangeAttack1( float flDot, float flDist ) -> bool
 {
 	if ( pev->flags & FL_ONGROUND )
 	{
 		if ( pev->groundentity && (pev->groundentity->v.flags & (FL_CLIENT|FL_MONSTER)) )
-			return TRUE;
+			return true;
 
 		// A little less accurate, but jump from closer
 		if ( flDist <= 180 && flDot >= 0.55 )
-			return TRUE;
+			return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 
